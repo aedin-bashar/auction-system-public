@@ -1,0 +1,52 @@
+<section class="login">
+  <header class="login__header">
+    <h1>Welcome Back</h1>
+    <p>Sign in to continue bidding.</p>
+  </header>
+
+  <form class="login__form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="login__field">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="you@example.com"
+        autocomplete="email"
+      />
+      <small *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+        Enter a valid email address.
+      </small>
+    </div>
+
+    <div class="login__field" [class.login__field--error]="!!errorMessage">
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        placeholder="Your password"
+        autocomplete="current-password"
+      />
+      <small *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
+        Password is required.
+      </small>
+      <a class="login__link" href="#">Forgot Password?</a>
+    </div>
+
+    <p class="login__error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <button type="submit" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Signing in...' : 'Sign In' }}
+    </button>
+  </form>
+
+  <p class="login__message login__message--success" *ngIf="successMessage">
+    {{ successMessage }}
+  </p>
+
+  <p class="login__footer">
+    New here?
+    <a class="login__link" routerLink="/register">Create an account</a>
+  </p>
+</section>

@@ -1,0 +1,47 @@
+<header class="navbar" [class.navbar--no-search]="!showSearch">
+  <div class="navbar__brand">
+    <span class="navbar__logo-dot" aria-hidden="true"></span>
+    <a routerLink="/" class="navbar__logo">Auction<span>System</span></a>
+  </div>
+
+  <nav class="navbar__nav" aria-label="Primary">
+    <a
+      *ngFor="let item of navItems"
+      [routerLink]="item.route"
+      routerLinkActive="is-active"
+      [routerLinkActiveOptions]="{ exact: item.route === '/' }"
+      class="navbar__link"
+    >
+      {{ item.label }}
+    </a>
+  </nav>
+
+  <div class="navbar__search" *ngIf="showSearch">
+    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+    <input
+      type="search"
+      [value]="query"
+      (input)="onSearch(($any($event.target)).value)"
+      (keydown.enter)="onSearchSubmit()"
+      placeholder="Search auctions..."
+      aria-label="Search auctions"
+    />
+  </div>
+
+  <div class="navbar__actions">
+    <app-theme-toggle [compact]="true"></app-theme-toggle>
+
+    <ng-container *ngIf="session; else guestActions">
+      <app-user-dropdown [user]="session" [compact]="false" (logout)="onLogout()"></app-user-dropdown>
+    </ng-container>
+    <ng-template #guestActions>
+      <a routerLink="/register" class="navbar__link">Sign up</a>
+      <a routerLink="/login" class="navbar__guest-login">
+        <span class="navbar__guest-avatar" aria-hidden="true">
+          <i class="fa-solid fa-user"></i>
+        </span>
+        <span class="navbar__guest-label">Log in</span>
+      </a>
+    </ng-template>
+  </div>
+</header>

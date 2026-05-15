@@ -1,0 +1,183 @@
+@use 'styles/shared/surface-mixins' as surface;
+
+.admin-settings {
+  @include surface.page-shell($max-width: 1180px, $margin: -0.9rem auto 0);
+}
+
+.admin-settings__header {
+  @include surface.section-header($padding: 1.2rem 1.3rem);
+}
+
+.admin-settings__kicker {
+  @include surface.section-kicker();
+}
+
+.admin-settings__header h1 {
+  margin: 0.3rem 0 0;
+  color: var(--text-0);
+}
+
+.admin-settings__subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-1);
+}
+
+.admin-settings__layout {
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr;
+  gap: 1rem;
+}
+
+.admin-settings__panel {
+  @include surface.section-panel($padding: 0.9rem);
+}
+
+.admin-settings__panel h2 {
+  margin: 0 0 0.8rem;
+  color: var(--text-0);
+  font-size: 1rem;
+}
+
+.admin-settings__toggle {
+  @include surface.table-row($padding: 0.68rem 0.75rem);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.admin-settings__toggle span {
+  color: var(--text-0);
+  font-size: 0.86rem;
+}
+
+.admin-settings__toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--neon-cyan);
+}
+
+.admin-settings__field-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 0.45rem;
+}
+
+.admin-settings__field-grid label {
+  display: grid;
+  gap: 0.32rem;
+  min-width: 0;
+}
+
+.admin-settings__field-grid span {
+  color: var(--text-1);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-settings__field-grid input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 10px;
+  color: var(--text-0);
+  background: var(--surface-input);
+  box-shadow: var(--theme-shadow-input);
+  padding: 0.62rem 0.7rem;
+}
+
+.admin-settings__actions {
+  margin-top: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.admin-settings__actions button {
+  border: none;
+  border-radius: 10px;
+  color: var(--accent-contrast);
+  font-weight: 600;
+  padding: 0.58rem 0.95rem;
+  background: var(--accent-gradient);
+  box-shadow: var(--button-shadow-primary);
+}
+
+.admin-settings__actions button:hover:not(:disabled) {
+  background: var(--accent-gradient-hover, var(--accent-gradient));
+  box-shadow: var(--button-shadow-primary-hover);
+}
+
+.admin-settings__actions button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.admin-settings__actions small {
+  color: var(--text-1);
+  font-size: 0.78rem;
+}
+
+.admin-settings__error {
+  color: var(--danger-text-soft);
+  font-size: 0.8rem;
+}
+
+.admin-settings__module {
+  @include surface.table-row($padding: 0.72rem 0.76rem);
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.admin-settings__module strong {
+  color: var(--text-0);
+  font-size: 0.85rem;
+}
+
+.admin-settings__module p {
+  margin: 0.3rem 0 0;
+  color: var(--text-1);
+  font-size: 0.78rem;
+}
+
+.admin-settings__module span {
+  align-self: flex-start;
+  border-radius: 999px;
+  color: var(--text-1);
+  padding: 0.22rem 0.5rem;
+  font-size: 0.74rem;
+  background: var(--surface-muted);
+}
+
+.admin-settings__module-status--on {
+  color: var(--neon-cyan) !important;
+  background: var(--surface-hover) !important;
+  box-shadow: var(--button-shadow-subtle);
+}
+
+@media (max-width: 1024px) {
+  .admin-settings__layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .admin-settings {
+    margin-top: 0;
+  }
+
+  .admin-settings__field-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-settings__actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

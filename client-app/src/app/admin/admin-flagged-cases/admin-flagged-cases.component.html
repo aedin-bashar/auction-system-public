@@ -1,0 +1,136 @@
+<section class="admin-flagged-cases">
+  <header class="admin-flagged-cases__header">
+    <div>
+      <p class="admin-flagged-cases__kicker">Admin Panel</p>
+      <h1>Flagged Cases</h1>
+      <p class="admin-flagged-cases__subtitle">Review reported auctions, inspect reporter notes, and resolve cases once they are triaged.</p>
+    </div>
+
+    <div class="admin-flagged-cases__stats">
+      <div class="admin-flagged-cases__stat">
+        <span>Open</span>
+        <strong>{{ openCount }}</strong>
+      </div>
+      <div class="admin-flagged-cases__stat admin-flagged-cases__stat--secondary">
+        <span>Resolved</span>
+        <strong>{{ resolvedCount }}</strong>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-flagged-cases__toolbar">
+    <label class="admin-flagged-cases__toggle">
+      <input type="checkbox" [(ngModel)]="includeResolved" (change)="onIncludeResolvedChanged()" />
+      <span>Include resolved cases</span>
+    </label>
+  </div>
+
+  <div class="admin-flagged-cases__layout">
+    <article class="admin-flagged-cases__list-panel">
+      <div class="admin-flagged-cases__empty" *ngIf="isLoading">Loading flagged cases...</div>
+      <div class="admin-flagged-cases__empty admin-flagged-cases__empty--error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <div class="admin-flagged-cases__table-head">
+        <span>Auction</span>
+        <span>Reporter</span>
+        <span>Reason</span>
+        <span>Status</span>
+      </div>
+
+      <button
+        type="button"
+        class="admin-flagged-cases__row"
+        *ngFor="let item of cases; trackBy: trackByCaseId"
+        [class.admin-flagged-cases__row--active]="item.caseId === selectedCaseId"
+        (click)="selectCase(item.caseId)"
+      >
+        <div class="admin-flagged-cases__identity">
+          <strong>{{ item.auctionTitle }}</strong>
+          <small>{{ asDate(item.createdAtUtc) }}</small>
+        </div>
+
+        <div class="admin-flagged-cases__text">
+          <strong>{{ item.reporterName }}</strong>
+          <small>{{ item.reportedByUserId }}</small>
+        </div>
+
+        <span class="admin-flagged-cases__reason">{{ item.reason }}</span>
+
+        <span class="admin-flagged-cases__status" [class.admin-flagged-cases__status--resolved]="item.status === 'Resolved'">
+          {{ item.status }}
+        </span>
+      </button>
+
+      <div class="admin-flagged-cases__empty" *ngIf="!isLoading && !errorMessage && cases.length === 0">
+        No flagged cases found.
+      </div>
+    </article>
+
+    <article class="admin-flagged-cases__detail-panel" *ngIf="selectedCase as selected">
+      <div class="admin-flagged-cases__detail-head">
+        <div>
+          <p class="admin-flagged-cases__meta">Case Detail</p>
+          <h2>{{ selected.auctionTitle }}</h2>
+        </div>
+        <span class="admin-flagged-cases__status-pill" [class.admin-flagged-cases__status-pill--resolved]="selected.status === 'Resolved'">
+          {{ selected.status }}
+        </span>
+      </div>
+
+      <dl class="admin-flagged-cases__detail-grid">
+        <div>
+          <dt>Reporter</dt>
+          <dd>{{ selected.reporterName }}</dd>
+        </div>
+        <div>
+          <dt>Reason</dt>
+          <dd>{{ selected.reason }}</dd>
+        </div>
+        <div>
+          <dt>Reported At</dt>
+          <dd>{{ asDate(selected.createdAtUtc) }}</dd>
+        </div>
+        <div>
+          <dt>Resolved At</dt>
+          <dd>{{ asDate(selected.resolvedAtUtc) }}</dd>
+        </div>
+      </dl>
+
+      <div class="admin-flagged-cases__detail-block">
+        <label>Auction</label>
+        <a [routerLink]="['/admin/auctions', selected.auctionId]">Open auction detail</a>
+      </div>
+
+      <div class="admin-flagged-cases__detail-block">
+        <label>Reporter Notes</label>
+        <p>{{ selected.details || 'No extra details supplied.' }}</p>
+      </div>
+
+      <div class="admin-flagged-cases__detail-block">
+        <label for="resolutionNote">Resolution Note</label>
+        <textarea
+          id="resolutionNote"
+          rows="4"
+          [(ngModel)]="resolutionNote"
+          maxlength="1000"
+          [disabled]="selected.status === 'Resolved' || isSaving"
+        ></textarea>
+      </div>
+
+      <p class="admin-flagged-cases__note" *ngIf="selected.resolvedBy">
+        Resolved by {{ selected.resolvedBy }}.
+      </p>
+
+      <div class="admin-flagged-cases__actions">
+        <button
+          type="button"
+          class="admin-flagged-cases__btn"
+          (click)="resolveSelected()"
+          [disabled]="selected.status === 'Resolved' || isSaving"
+        >
+          {{ isSaving ? 'Resolving...' : 'Resolve Case' }}
+        </button>
+      </div>
+    </article>
+  </div>
+</section>

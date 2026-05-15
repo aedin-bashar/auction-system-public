@@ -1,0 +1,49 @@
+<div class="edit-contact-modal" *ngIf="open" (click)="onBackdropClick()">
+  <div
+    class="edit-contact-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="edit-contact-modal-title"
+    aria-describedby="edit-contact-modal-desc"
+    (click)="onDialogClick($event)"
+  >
+    <p class="edit-contact-modal__kicker">Profile</p>
+    <h2 id="edit-contact-modal-title" class="edit-contact-modal__title">{{ title }}</h2>
+    <p id="edit-contact-modal-desc" class="edit-contact-modal__desc">{{ description }}</p>
+
+    <label class="edit-contact-modal__field" [for]="field">
+      <span>{{ label }}</span>
+
+      <textarea
+        *ngIf="field === 'address'; else nonAddressField"
+        [id]="field"
+        [(ngModel)]="draftValue"
+        rows="3"
+        maxlength="200"
+        [placeholder]="placeholder"
+      ></textarea>
+
+      <ng-template #nonAddressField>
+        <input
+          [id]="field"
+          [type]="field === 'email' ? 'email' : 'text'"
+          [(ngModel)]="draftValue"
+          [maxlength]="field === 'email' ? 320 : 20"
+          [placeholder]="placeholder"
+          [autocomplete]="field === 'email' ? 'email' : 'tel'"
+        />
+      </ng-template>
+    </label>
+
+    <p class="edit-contact-modal__error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <div class="edit-contact-modal__actions">
+      <button type="button" class="edit-contact-modal__btn edit-contact-modal__btn--save" (click)="save()">
+        Save Changes
+      </button>
+      <button type="button" class="edit-contact-modal__btn edit-contact-modal__btn--ghost" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

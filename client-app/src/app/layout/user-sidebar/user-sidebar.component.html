@@ -1,0 +1,37 @@
+<aside class="user-sidebar" [class.user-sidebar--collapsed]="collapsed">
+  <header class="user-sidebar__profile">
+    <span class="user-sidebar__avatar" aria-hidden="true">{{ initials }}</span>
+    <div class="user-sidebar__meta" [class.user-sidebar__meta--hidden]="collapsed">
+      <strong>{{ user?.fullName || 'Guest User' }}</strong>
+      <small>{{ user?.email || 'guest@auctionsystem.app' }}</small>
+    </div>
+  </header>
+
+  <nav class="user-sidebar__nav" aria-label="User navigation">
+    <a
+      *ngFor="let item of items"
+      [routerLink]="item.route"
+      routerLinkActive="is-active"
+      [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+      [attr.title]="collapsed ? item.label : null"
+      [attr.aria-label]="collapsed ? item.label : null"
+      class="user-sidebar__link"
+    >
+      <i [class]="item.icon" aria-hidden="true"></i>
+      <span class="user-sidebar__text" [class.user-sidebar__text--hidden]="collapsed">{{ item.label }}</span>
+    </a>
+  </nav>
+
+  <footer class="user-sidebar__footer">
+    <button
+      type="button"
+      class="user-sidebar__toggle"
+      (click)="toggleCollapsed()"
+      [attr.aria-label]="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+      [attr.title]="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+    >
+      <i class="fa-solid" [class.fa-angles-right]="collapsed" [class.fa-angles-left]="!collapsed" aria-hidden="true"></i>
+      <span class="user-sidebar__text" [class.user-sidebar__text--hidden]="collapsed">Collapse</span>
+    </button>
+  </footer>
+</aside>

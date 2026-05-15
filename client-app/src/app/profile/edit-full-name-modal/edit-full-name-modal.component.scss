@@ -1,0 +1,80 @@
+@use 'styles/shared/modal-mixins' as modal;
+
+.edit-name-modal {
+  @include modal.overlay();
+}
+
+.edit-name-modal__dialog {
+  @include modal.dialog($width: 560px);
+}
+
+.edit-name-modal__kicker {
+  @include modal.kicker();
+}
+
+.edit-name-modal__title {
+  @include modal.title();
+}
+
+.edit-name-modal__desc {
+  @include modal.description();
+}
+
+.edit-name-modal__field {
+  @include modal.field($margin-top: 1.15rem);
+}
+
+.edit-name-modal__field span {
+  @include modal.field-label();
+}
+
+.edit-name-modal__field input {
+  @include modal.input-control();
+}
+
+.edit-name-modal__field input:focus {
+  @include modal.input-focus();
+}
+
+.edit-name-modal__error {
+  @include modal.error-text($margin: 0.55rem 0 0);
+}
+
+.edit-name-modal__actions {
+  @include modal.actions-row();
+}
+
+.edit-name-modal__btn {
+  @include modal.button-base($transition: (transform 0.1s ease, box-shadow 0.2s ease));
+  @include modal.button-pressable();
+}
+
+.edit-name-modal__btn--save {
+  @include modal.button-save();
+}
+
+.edit-name-modal__btn--save:hover {
+  @include modal.button-save-hover();
+}
+
+.edit-name-modal__btn--ghost {
+  @include modal.button-ghost();
+}
+
+.edit-name-modal__btn--ghost:hover {
+  @include modal.button-ghost-hover();
+}
+
+@media (max-width: 520px) {
+  .edit-name-modal__dialog {
+    padding: 1.7rem 1.25rem 1.4rem;
+  }
+
+  .edit-name-modal__actions {
+    justify-content: stretch;
+  }
+
+  .edit-name-modal__btn {
+    width: 100%;
+  }
+}

@@ -1,0 +1,39 @@
+<div class="edit-name-modal" *ngIf="open" (click)="onBackdropClick()">
+  <div
+    class="edit-name-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="edit-name-modal-title"
+    aria-describedby="edit-name-modal-desc"
+    (click)="onDialogClick($event)"
+  >
+    <p class="edit-name-modal__kicker">Profile</p>
+    <h2 id="edit-name-modal-title" class="edit-name-modal__title">Edit Full Name</h2>
+    <p id="edit-name-modal-desc" class="edit-name-modal__desc">
+      Update the full name shown on your profile.
+    </p>
+
+    <label class="edit-name-modal__field" for="full-name">
+      <span>Full Name</span>
+      <input
+        id="full-name"
+        type="text"
+        [(ngModel)]="draftFullName"
+        maxlength="100"
+        placeholder="Enter your full name"
+        autocomplete="name"
+      />
+    </label>
+
+    <p class="edit-name-modal__error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <div class="edit-name-modal__actions">
+      <button type="button" class="edit-name-modal__btn edit-name-modal__btn--save" (click)="save()">
+        Save Changes
+      </button>
+      <button type="button" class="edit-name-modal__btn edit-name-modal__btn--ghost" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+@use 'styles/shared/modal-mixins' as modal;
+
+.edit-contact-modal {
+  @include modal.overlay();
+}
+
+.edit-contact-modal__dialog {
+  @include modal.dialog($width: 560px);
+}
+
+.edit-contact-modal__kicker {
+  @include modal.kicker();
+}
+
+.edit-contact-modal__title {
+  @include modal.title();
+}
+
+.edit-contact-modal__desc {
+  @include modal.description();
+}
+
+.edit-contact-modal__field {
+  @include modal.field($margin-top: 1.15rem);
+}
+
+.edit-contact-modal__field span {
+  @include modal.field-label();
+}
+
+.edit-contact-modal__field input,
+.edit-contact-modal__field textarea {
+  @include modal.input-control();
+  resize: vertical;
+  min-height: 44px;
+}
+
+.edit-contact-modal__field input:focus,
+.edit-contact-modal__field textarea:focus {
+  @include modal.input-focus();
+}
+
+.edit-contact-modal__error {
+  @include modal.error-text($margin: 0.55rem 0 0);
+}
+
+.edit-contact-modal__actions {
+  @include modal.actions-row();
+}
+
+.edit-contact-modal__btn {
+  @include modal.button-base($transition: (transform 0.1s ease, box-shadow 0.2s ease));
+  @include modal.button-pressable();
+}
+
+.edit-contact-modal__btn--save {
+  @include modal.button-save();
+}
+
+.edit-contact-modal__btn--save:hover {
+  @include modal.button-save-hover();
+}
+
+.edit-contact-modal__btn--ghost {
+  @include modal.button-ghost();
+}
+
+.edit-contact-modal__btn--ghost:hover {
+  @include modal.button-ghost-hover();
+}
+
+@media (max-width: 520px) {
+  .edit-contact-modal__dialog {
+    padding: 1.7rem 1.25rem 1.4rem;
+  }
+
+  .edit-contact-modal__actions {
+    justify-content: stretch;
+  }
+
+  .edit-contact-modal__btn {
+    width: 100%;
+  }
+}

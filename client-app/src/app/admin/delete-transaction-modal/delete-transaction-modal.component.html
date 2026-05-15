@@ -1,0 +1,30 @@
+<div class="delete-transaction-modal" *ngIf="open" (click)="onBackdropClick()">
+  <div
+    class="delete-transaction-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="delete-transaction-modal-title"
+    aria-describedby="delete-transaction-modal-desc"
+    (click)="onDialogClick($event)"
+  >
+    <p class="delete-transaction-modal__kicker">Admin Transactions</p>
+    <h2 id="delete-transaction-modal-title" class="delete-transaction-modal__title">Delete Transaction</h2>
+    <p id="delete-transaction-modal-desc" class="delete-transaction-modal__desc">This permanently removes the transaction from admin records.</p>
+
+    <div class="delete-transaction-modal__transaction" *ngIf="transaction">
+      <strong>{{ transaction.user }}</strong>
+      <span>{{ transaction.amount }} &middot; {{ transaction.status }}</span>
+      <small>ID: {{ transaction.id }}</small>
+    </div>
+
+    <div class="delete-transaction-modal__actions">
+      <button type="button" class="delete-transaction-modal__btn delete-transaction-modal__btn--danger" (click)="delete()">
+        Delete Transaction
+      </button>
+      <button type="button" class="delete-transaction-modal__btn delete-transaction-modal__btn--ghost" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+

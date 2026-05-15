@@ -1,0 +1,401 @@
+.create-auction {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+  max-width: none;
+  margin: -0.9rem 0 0;
+}
+
+.create-auction__header,
+.create-auction__form {
+  border-radius: var(--radius-12);
+  background: var(--glass-bg);
+  box-shadow: var(--theme-shadow-panel);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.create-auction__header {
+  padding: 1.2rem 1.35rem;
+}
+
+.create-auction__kicker {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+  text-shadow: var(--icon-shadow-primary);
+}
+
+h1 {
+  margin: 0.2rem 0 0;
+  font-size: 1.85rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text-0);
+}
+
+.create-auction__subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-1);
+}
+
+.create-auction__form {
+  padding: 1.25rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.create-auction__grid {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.create-auction__field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.create-auction__field label {
+  font-size: 0.9rem;
+  color: var(--text-0);
+}
+
+.create-auction__field input,
+.create-auction__field select,
+.create-auction__field textarea {
+  width: 100%;
+  border-radius: 10px;
+  background: var(--surface-input);
+  color: var(--text-0);
+  padding: 0.68rem 0.8rem;
+  box-shadow: var(--theme-shadow-input);
+  border: 1px solid var(--border-accent);
+}
+
+.create-auction__field input::placeholder,
+.create-auction__field textarea::placeholder {
+  color: var(--text-2);
+}
+
+.create-auction__field select {
+  color: var(--text-0);
+}
+
+.create-auction__field textarea {
+  resize: vertical;
+  min-height: 130px;
+}
+
+.create-auction__category {
+  position: relative;
+}
+
+.create-auction__category-trigger {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border-accent);
+  padding: 0.45rem 0.65rem;
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--text-0);
+  background: var(--surface-input);
+  box-shadow: var(--theme-shadow-input);
+}
+
+.create-auction__category-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: var(--brand-accent);
+  background: var(--surface-hover);
+  border: 1px solid var(--border-accent);
+}
+
+.create-auction__category-label {
+  text-align: left;
+}
+
+.create-auction__category-chevron {
+  color: var(--brand-accent);
+  font-size: 0.72rem;
+}
+
+.create-auction__category-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 0.3rem);
+  border-radius: 12px;
+  border: 1px solid var(--border-accent);
+  background: var(--surface-inline-strong);
+  box-shadow: var(--theme-shadow-dropdown);
+  padding: 0.35rem;
+  display: grid;
+  gap: 0.2rem;
+  z-index: 100;
+}
+
+.create-auction__category-option {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-0);
+  padding: 0.5rem 0.6rem;
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  align-items: center;
+  gap: 0.55rem;
+  text-align: left;
+}
+
+.create-auction__category-option i {
+  color: var(--brand-accent);
+}
+
+.create-auction__category-option:hover,
+.create-auction__category-option.is-selected {
+  background: var(--surface-hover);
+  border-color: var(--border-accent-soft);
+}
+
+.create-auction__split-input {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 112px;
+  gap: 0.55rem;
+}
+
+.create-auction__currency {
+  position: relative;
+}
+
+.create-auction__currency-trigger {
+  display: grid;
+  grid-template-columns: 20px 1fr 14px;
+  gap: 0.5rem;
+  padding-right: 0.55rem;
+}
+
+.create-auction__currency-label {
+  text-align: left;
+}
+
+.create-auction__currency-chevron {
+  justify-self: end;
+}
+
+.create-auction__currency-option {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 0.5rem;
+}
+
+.create-auction__currency-flag {
+  width: 22px;
+  height: 16px;
+  border-radius: 2px;
+  object-fit: contain;
+  border: 1px solid var(--border-accent-soft);
+}
+
+.create-auction__split-input--date-time {
+  grid-template-columns: minmax(0, 1fr) 140px;
+}
+
+.create-auction__date-time-wrap {
+  display: grid;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.create-auction__date-input-wrap {
+  position: relative;
+  width: min(320px, 100%);
+}
+
+.create-auction__date-input-wrap .flatpickr-wrapper {
+  width: 100%;
+}
+
+.create-auction__date-input-wrap input {
+  padding-right: 2.4rem;
+}
+
+.create-auction__calendar-icon {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  color: var(--brand-accent);
+  pointer-events: none;
+}
+
+.create-auction__dropzone {
+  border-radius: 12px;
+  border: 1px dashed var(--border-accent-strong);
+  background: var(--surface-muted);
+  min-height: 180px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  gap: 0.3rem;
+  padding: 1.1rem;
+  box-shadow: none;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.create-auction__dropzone--active {
+  border-color: var(--brand-accent);
+  box-shadow: var(--button-shadow-subtle-hover);
+  transform: translateY(-1px);
+}
+
+.create-auction__dropzone i {
+  font-size: 1.5rem;
+  color: var(--brand-accent);
+  text-shadow: var(--icon-shadow-primary);
+}
+
+.create-auction__dropzone p {
+  margin: 0;
+  color: var(--text-0);
+  font-weight: 600;
+}
+
+.create-auction__dropzone span {
+  color: var(--text-1);
+  font-size: 0.86rem;
+}
+
+.create-auction__dropzone input[type='file'] {
+  display: none;
+}
+
+.create-auction__upload-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 0.95rem;
+  font-weight: 700;
+  color: var(--brand-accent);
+  background: var(--surface-hover);
+  box-shadow: var(--button-shadow-subtle);
+  border: 1px solid var(--border-accent);
+  cursor: pointer;
+}
+
+.create-auction__dropzone small {
+  color: var(--text-1);
+}
+
+.create-auction__preview-wrap {
+  position: relative;
+  width: min(420px, 100%);
+}
+
+.create-auction__preview-image {
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 1px solid var(--border-accent);
+  background: var(--surface-muted);
+}
+
+.create-auction__preview-remove {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  width: 1.9rem;
+  height: 1.9rem;
+  border: 1px solid var(--border-accent);
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: var(--text-0);
+  background: var(--surface-inline-strong);
+  box-shadow: var(--button-shadow-subtle);
+  cursor: pointer;
+}
+
+.create-auction__preview-remove:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-accent-strong);
+}
+
+.create-auction__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.create-auction__error {
+  margin: 0;
+  color: var(--danger-text-soft);
+  font-size: 0.9rem;
+}
+
+.create-auction__btn {
+  border-radius: 10px;
+  padding: 0.62rem 1rem;
+  font-weight: 700;
+  border: none;
+}
+
+.create-auction__btn:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.create-auction__btn--ghost {
+  color: var(--brand-accent);
+  border: 1px solid var(--border-accent-soft);
+  background: var(--surface-inline);
+  box-shadow: var(--button-shadow-subtle);
+}
+
+.create-auction__btn--primary {
+  color: var(--accent-contrast);
+  background: var(--accent-gradient);
+  box-shadow: var(--button-shadow-primary);
+  border: 1px solid transparent;
+}
+
+.create-auction__btn--primary:hover:not(:disabled) {
+  background: var(--accent-gradient-hover, var(--accent-gradient));
+  box-shadow: var(--button-shadow-primary-hover);
+}
+
+.create-auction :where(input, select, textarea, button, .create-auction__upload-btn):focus-visible {
+  box-shadow: var(--focus-ring) !important;
+}
+
+@media (min-width: 900px) {
+  .create-auction__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .create-auction__field--full,
+  .create-auction__field--upload {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .create-auction {
+    margin-top: 0;
+  }
+
+  .create-auction__actions {
+    flex-direction: column-reverse;
+  }
+
+  .create-auction__btn {
+    width: 100%;
+  }
+}

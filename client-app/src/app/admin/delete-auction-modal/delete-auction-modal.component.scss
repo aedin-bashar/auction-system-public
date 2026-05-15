@@ -1,0 +1,50 @@
+@use 'styles/shared/modal-mixins' as modal;
+
+.delete-auction-modal {
+  @include modal.overlay();
+}
+
+.delete-auction-modal__dialog {
+  @include modal.dialog($width: 520px);
+}
+
+.delete-auction-modal__kicker {
+  @include modal.kicker();
+}
+
+.delete-auction-modal__title {
+  @include modal.title();
+}
+
+.delete-auction-modal__desc {
+  @include modal.description();
+}
+
+.delete-auction-modal__auction {
+  @include modal.info-panel($shadow: 0 0 0 1px rgba(255, 59, 92, 0.34) inset);
+}
+
+.delete-auction-modal__auction strong {
+  color: var(--text-0);
+}
+
+.delete-auction-modal__auction span {
+  color: var(--text-1);
+  font-size: 0.85rem;
+}
+
+.delete-auction-modal__actions {
+  @include modal.actions-row();
+}
+
+.delete-auction-modal__btn {
+  @include modal.button-base();
+}
+
+.delete-auction-modal__btn--danger {
+  @include modal.button-danger();
+}
+
+.delete-auction-modal__btn--ghost {
+  @include modal.button-ghost();
+}

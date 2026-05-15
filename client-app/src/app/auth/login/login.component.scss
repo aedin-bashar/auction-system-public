@@ -1,0 +1,91 @@
+@use 'styles/shared/auth-mixins' as auth;
+
+.login {
+  @include auth.auth-card();
+}
+
+.login::before {
+  @include auth.auth-card-highlight();
+}
+
+.login__header h1 {
+  @include auth.auth-title();
+}
+
+.login__header p {
+  @include auth.auth-subtitle();
+}
+
+.login__form {
+  @include auth.auth-form();
+}
+
+.login__field {
+  @include auth.auth-field();
+}
+
+.login__field input {
+  @include auth.auth-input();
+}
+
+.login__field input:focus {
+  @include auth.auth-input-focus();
+}
+
+.login__field--error input {
+  box-shadow: 0 0 0 1px rgba(255, 59, 92, 0.7) inset, 0 0 12px rgba(255, 59, 92, 0.35);
+}
+
+.login__field small {
+  color: var(--danger);
+}
+
+.login__error {
+  margin: 0;
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  background: rgba(255, 60, 80, 0.12);
+  border: 1px solid rgba(255, 60, 80, 0.4);
+  font-size: 0.85rem;
+  color: var(--danger);
+}
+
+.login__link {
+  justify-self: end;
+  font-size: 0.85rem;
+  color: var(--text-1);
+  text-decoration: none;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.login__link:hover {
+  color: var(--neon-cyan);
+  text-shadow: var(--icon-shadow-primary);
+}
+
+button {
+  @include auth.auth-button();
+}
+
+button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login__message {
+  margin: 0;
+}
+
+.login__message--success {
+  color: var(--success);
+}
+
+.login__message--error {
+  color: var(--danger);
+}
+
+.login__footer {
+  margin: 0;
+  text-align: center;
+  color: var(--text-1);
+}

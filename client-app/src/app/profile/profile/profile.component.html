@@ -1,0 +1,103 @@
+<section class="profile">
+  <div class="profile__loading" *ngIf="isLoading" aria-live="polite" aria-label="Loading profile">
+    <div class="profile__spinner" aria-hidden="true"></div>
+    <span>Loading profile...</span>
+  </div>
+  <p class="profile__subtitle" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <header class="profile__header">
+    <p class="profile__kicker">User Profile</p>
+    <h1>{{ profile.fullName }}</h1>
+    <p class="profile__subtitle">Manage your account details and contact information.</p>
+  </header>
+
+  <article class="profile__card">
+    <div class="profile__row">
+      <span class="profile__label">Full Name</span>
+      <div class="profile__value-group">
+        <span class="profile__value">{{ profile.fullName }}</span>
+        <button
+          type="button"
+          class="profile__action"
+          (click)="openEditFullNameModal()"
+          [disabled]="isSaving"
+          aria-label="Edit full name"
+          title="Edit full name"
+        >
+          <i class="fa-solid fa-pen" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="profile__row">
+      <span class="profile__label">Email</span>
+      <div class="profile__value-group">
+        <span class="profile__value">{{ profile.email }}</span>
+        <button
+          type="button"
+          class="profile__action"
+          (click)="openEditContactModal('email')"
+          [disabled]="isSaving"
+          aria-label="Edit email"
+          title="Edit email"
+        >
+          <i class="fa-solid fa-pen" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="profile__row">
+      <span class="profile__label">Phone Number</span>
+      <div class="profile__value-group">
+        <span class="profile__value">{{ profile.phoneNumber }}</span>
+        <button
+          type="button"
+          class="profile__action"
+          (click)="openEditContactModal('phone')"
+          [disabled]="isSaving"
+          aria-label="Edit phone number"
+          title="Edit phone number"
+        >
+          <i class="fa-solid fa-pen" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="profile__row">
+      <span class="profile__label">Address</span>
+      <div class="profile__value-group">
+        <span class="profile__value">{{ profile.address }}</span>
+        <button
+          type="button"
+          class="profile__action"
+          (click)="openEditContactModal('address')"
+          [disabled]="isSaving"
+          aria-label="Edit address"
+          title="Edit address"
+        >
+          <i class="fa-solid fa-pen" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="profile__meta">
+      <span>Role: <strong>{{ profile.role }}</strong></span>
+      <span>Member Since: <strong>{{ profile.joinedOn }}</strong></span>
+    </div>
+  </article>
+
+  <app-edit-full-name-modal
+    [open]="isEditFullNameModalOpen"
+    [fullName]="profile.fullName"
+    (openChange)="onEditFullNameModalOpenChange($event)"
+    (fullNameSaved)="onFullNameSaved($event)"
+  />
+
+  <app-edit-contact-modal
+    [open]="isEditContactModalOpen"
+    [field]="activeContactField"
+    [value]="activeContactValue"
+    (openChange)="onEditContactModalOpenChange($event)"
+    (valueSaved)="onContactValueSaved($event)"
+  />
+</section>

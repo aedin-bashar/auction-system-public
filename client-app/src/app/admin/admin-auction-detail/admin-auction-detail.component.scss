@@ -1,0 +1,316 @@
+@use 'styles/shared/surface-mixins' as surface;
+
+.admin-auction-detail {
+  @include surface.page-shell($max-width: 1080px, $margin: 0 auto);
+}
+
+.admin-auction-detail__header {
+  @include surface.section-header($padding: 1.1rem 1.35rem 1.25rem);
+}
+
+.admin-auction-detail__back {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--neon-cyan);
+  text-decoration: none;
+  font-size: 0.84rem;
+  margin-bottom: 0.8rem;
+}
+
+.admin-auction-detail__kicker {
+  @include surface.section-kicker();
+}
+
+.admin-auction-detail__header h1 {
+  margin: 0.3rem 0 0;
+  color: var(--text-0);
+}
+
+.admin-auction-detail__subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-1);
+}
+
+.admin-auction-detail__header-actions {
+  margin-top: 0.85rem;
+  display: flex;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.admin-auction-detail__start-btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 0.55rem 0.8rem;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(34, 197, 94, 0.22));
+  color: var(--text-0);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow:
+    0 0 0 1px rgba(16, 185, 129, 0.38) inset,
+    0 0 12px rgba(16, 185, 129, 0.2);
+}
+
+.admin-auction-detail__end-btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 0.55rem 0.8rem;
+  background: var(--accent-gradient);
+  color: var(--accent-contrast);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--button-shadow-primary);
+}
+
+.admin-auction-detail__end-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.admin-auction-detail__end-btn:hover:not(:disabled),
+.admin-auction-detail__save-btn:hover:not(:disabled) {
+  background: var(--accent-gradient-hover, var(--accent-gradient));
+  box-shadow: var(--button-shadow-primary-hover);
+}
+
+.admin-auction-detail__start-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.admin-auction-detail__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.admin-stat-card {
+  @include surface.stat-card();
+}
+
+.admin-stat-card span {
+  color: var(--text-1);
+  font-size: 0.78rem;
+}
+
+.admin-stat-card strong {
+  margin-top: 0.35rem;
+  display: block;
+  color: var(--text-0);
+  font-size: 1.2rem;
+}
+
+.admin-auction-detail__content {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 0.85rem;
+}
+
+.admin-auction-detail__panel {
+  @include surface.section-panel($padding: 1rem);
+}
+
+.admin-auction-detail__panel h2 {
+  margin: 0;
+  color: var(--text-0);
+  font-size: 1rem;
+}
+
+.admin-auction-detail__panel dl {
+  margin: 0.9rem 0 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.admin-auction-detail__panel dl div {
+  @include surface.table-row($padding: 0.65rem 0.75rem);
+  display: flex;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.admin-auction-detail__panel dt {
+  color: var(--text-1);
+  font-size: 0.82rem;
+}
+
+.admin-auction-detail__panel dd {
+  margin: 0;
+  color: var(--text-0);
+  font-size: 0.84rem;
+  text-align: right;
+}
+
+.admin-auction-detail__description-block {
+  margin-top: 0.9rem;
+  border: 1px solid var(--border-accent);
+  border-radius: 10px;
+  background: var(--surface-inline);
+  padding: 0.65rem 0.75rem;
+}
+
+.admin-auction-detail__description-block span {
+  display: block;
+  color: var(--text-1);
+  font-size: 0.78rem;
+  margin-bottom: 0.35rem;
+}
+
+.admin-auction-detail__description {
+  margin: 0;
+  color: var(--text-0);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.admin-auction-detail__image-preview {
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.admin-auction-detail__image-preview img {
+  width: 100%;
+  height: 260px;
+  object-fit: contain;
+  background: var(--surface-muted);
+  padding: 0.35rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-accent);
+}
+
+.admin-auction-detail__image-preview small {
+  color: var(--text-1);
+  font-size: 0.78rem;
+}
+
+.admin-auction-detail__edit-form {
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.admin-auction-detail__edit-form label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.admin-auction-detail__edit-form label span {
+  color: var(--text-1);
+  font-size: 0.8rem;
+}
+
+.admin-auction-detail__edit-form input,
+.admin-auction-detail__edit-form select,
+.admin-auction-detail__edit-form textarea {
+  width: 100%;
+  border: 1px solid var(--border-accent);
+  border-radius: 10px;
+  background: var(--surface-input);
+  color: var(--text-0);
+  box-shadow: var(--theme-shadow-input);
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+}
+
+.admin-auction-detail__edit-form textarea {
+  resize: vertical;
+}
+
+.admin-auction-detail__price-row {
+  display: grid;
+  grid-template-columns: 1fr 156px;
+  gap: 0.6rem;
+}
+
+.admin-auction-detail__save-btn {
+  justify-self: start;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 0.55rem 0.8rem;
+  background: var(--accent-gradient);
+  color: var(--accent-contrast);
+  box-shadow: var(--button-shadow-primary);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-auction-detail__save-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.admin-auction-detail__panel ul {
+  margin: 0.85rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.admin-auction-detail__panel li {
+  @include surface.table-row($padding: 0.65rem 0.75rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.admin-auction-detail__panel li strong {
+  color: var(--text-0);
+  font-size: 0.88rem;
+}
+
+.admin-auction-detail__panel li small {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--text-1);
+  font-size: 0.76rem;
+}
+
+.admin-auction-detail__panel li span {
+  color: var(--neon-cyan);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.admin-auction-detail__empty {
+  @include surface.section-panel($padding: 1.25rem);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--text-1);
+}
+
+.admin-auction-detail__empty i {
+  color: var(--neon-purple);
+  text-shadow: var(--icon-shadow-secondary);
+}
+
+.admin-auction-detail__empty p {
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .admin-auction-detail__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-auction-detail__content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-auction-detail__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-auction-detail__price-row {
+    grid-template-columns: 1fr;
+  }
+}

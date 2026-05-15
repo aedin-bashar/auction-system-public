@@ -1,0 +1,42 @@
+<section class="admin-dashboard">
+  <header class="admin-dashboard__header">
+    <p class="admin-dashboard__kicker">Admin Panel</p>
+    <h1>Dashboard Overview</h1>
+    <p class="admin-dashboard__subtitle">Monitor live marketplace counts and recent platform activity from persisted data.</p>
+  </header>
+
+  <p *ngIf="isLoading" class="admin-dashboard__feedback">Loading dashboard statistics...</p>
+  <p *ngIf="errorMessage" class="admin-dashboard__feedback admin-dashboard__feedback--error">{{ errorMessage }}</p>
+
+  <section class="admin-dashboard__kpis">
+    <article class="admin-kpi" *ngFor="let item of kpis">
+      <div class="admin-kpi__top">
+        <span class="admin-kpi__label">{{ item.label }}</span>
+        <i [class]="item.icon" aria-hidden="true"></i>
+      </div>
+      <strong class="admin-kpi__value">{{ item.value }}</strong>
+      <span class="admin-kpi__meta">{{ item.detail }}</span>
+    </article>
+  </section>
+
+  <article class="admin-dashboard__activity">
+    <div class="admin-dashboard__panel-header">
+      <h2>Recent Activity</h2>
+      <span>Latest Events</span>
+    </div>
+
+    <ul *ngIf="activity.length > 0; else noActivity">
+      <li *ngFor="let item of activity">
+        <div>
+          <strong>{{ item.title }}</strong>
+          <p>{{ item.subtitle }}</p>
+        </div>
+        <small>{{ item.at }}</small>
+      </li>
+    </ul>
+
+    <ng-template #noActivity>
+      <p class="admin-dashboard__empty">No recent activity is available yet.</p>
+    </ng-template>
+  </article>
+</section>

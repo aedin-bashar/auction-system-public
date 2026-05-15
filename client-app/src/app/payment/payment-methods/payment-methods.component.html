@@ -1,0 +1,66 @@
+<section class="payment-methods">
+  <header class="payment-methods__header">
+    <div>
+      <p class="payment-methods__kicker">Billing</p>
+      <h1>Payment Methods</h1>
+      <p class="payment-methods__subtitle">Manage your saved cards for faster checkout and bidding.</p>
+    </div>
+
+    <button type="button" class="payment-methods__add-btn" (click)="openAdd()">
+      <i class="fa-solid fa-plus" aria-hidden="true"></i>
+      <span>Add New Card</span>
+    </button>
+  </header>
+
+  <article class="payment-methods__panel" *ngIf="methods.length > 0; else emptyState">
+    <div class="payment-method" *ngFor="let method of methods; trackBy: trackById">
+      <div class="payment-method__left">
+        <span class="payment-method__brand">{{ method.brand }}</span>
+        <strong class="payment-method__number">•••• •••• •••• {{ method.last4 }}</strong>
+        <small class="payment-method__meta">{{ method.holderName }} · Expires {{ method.expiry }}</small>
+      </div>
+
+      <div class="payment-method__right">
+        <span class="payment-method__badge" *ngIf="method.isDefault">Default</span>
+        <div class="payment-method__actions">
+          <button
+            type="button"
+            class="payment-method__action"
+            (click)="openEdit(method)"
+            aria-label="Edit payment method"
+            title="Edit payment method"
+          >
+            <i class="fa-solid fa-pen" aria-hidden="true"></i>
+          </button>
+          <button
+            type="button"
+            class="payment-method__action payment-method__action--danger"
+            (click)="openRemove(method)"
+            aria-label="Remove payment method"
+            title="Remove payment method"
+          >
+            <i class="fa-solid fa-trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <ng-template #emptyState>
+    <article class="payment-methods__empty">
+      <i class="fa-regular fa-credit-card" aria-hidden="true"></i>
+      <h2>No payment methods yet</h2>
+      <p>Add a card to start placing secure bids.</p>
+      <button type="button" class="payment-methods__add-btn" (click)="openAdd()">Add your first card</button>
+    </article>
+  </ng-template>
+
+  <app-payment-method-modal
+    [open]="isModalOpen"
+    [mode]="modalMode"
+    [method]="selectedMethod"
+    (openChange)="onModalOpenChange($event)"
+    (saved)="onSaved($event)"
+    (removed)="onRemoved($event)"
+  />
+</section>

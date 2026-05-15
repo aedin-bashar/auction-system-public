@@ -1,0 +1,209 @@
+/* Shared modal primitives */
+
+$modal-dialog-shadow: var(--theme-shadow-modal);
+
+@mixin overlay(
+  $z-index: 1060,
+  $background: var(--surface-overlay),
+  $padding: 1.5rem,
+  $blur: 10px
+) {
+  position: fixed;
+  inset: 0;
+  z-index: $z-index;
+  display: grid;
+  place-items: center;
+  padding: $padding;
+  background: $background;
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+}
+
+@mixin dialog(
+  $width: 560px,
+  $padding: 2rem 2.2rem 1.75rem,
+  $radius: var(--radius-12),
+  $background: var(--glass-bg),
+  $shadow: var(--theme-shadow-modal)
+) {
+  width: min($width, 100%);
+  padding: $padding;
+  border-radius: $radius;
+  background: $background;
+  box-shadow: $shadow;
+}
+
+@mixin kicker($font-size: 0.8rem, $letter-spacing: 0.09em) {
+  margin: 0;
+  font-size: $font-size;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing;
+  color: var(--brand-accent);
+  text-shadow: var(--icon-shadow-primary);
+}
+
+@mixin title($margin: 0.35rem 0 0.45rem, $font-size: 1.7rem, $color: var(--text-0), $shadow: null) {
+  margin: $margin;
+  font-size: $font-size;
+  color: $color;
+
+  @if $shadow != null {
+    text-shadow: $shadow;
+  }
+}
+
+@mixin description($margin: 0, $color: var(--text-1), $line-height: null) {
+  margin: $margin;
+  color: $color;
+
+  @if $line-height != null {
+    line-height: $line-height;
+  }
+}
+
+@mixin info-panel(
+  $margin-top: 1rem,
+  $radius: 10px,
+  $background: var(--surface-muted),
+  $shadow: 0 0 0 1px var(--border-accent-soft) inset,
+  $padding: 0.82rem,
+  $gap: 0.2rem
+) {
+  margin-top: $margin-top;
+  border-radius: $radius;
+  background: $background;
+  box-shadow: $shadow;
+  padding: $padding;
+  display: grid;
+  gap: $gap;
+}
+
+@mixin field($margin-top: 1.1rem, $gap: 0.45rem) {
+  margin-top: $margin-top;
+  display: grid;
+  gap: $gap;
+}
+
+@mixin field-label($font-size: 0.9rem, $color: var(--text-1)) {
+  color: $color;
+  font-size: $font-size;
+}
+
+@mixin input-control(
+  $padding: 0.72rem 0.85rem,
+  $radius: 10px,
+  $background: var(--surface-input),
+  $shadow: var(--theme-shadow-input),
+  $transition: box-shadow 0.2s ease,
+  $text-color: var(--text-0),
+  $border: null
+) {
+  width: 100%;
+
+  @if $border != null {
+    border: $border;
+  }
+
+  border-radius: $radius;
+  background: $background;
+  color: $text-color;
+  padding: $padding;
+  box-shadow: $shadow;
+  transition: $transition;
+}
+
+@mixin input-focus($shadow: var(--theme-shadow-input-focus), $outer-shadow: null) {
+  outline: none;
+
+  @if $outer-shadow != null {
+    box-shadow: $shadow, $outer-shadow;
+  } @else {
+    box-shadow: $shadow;
+  }
+}
+
+@mixin checkbox-row($margin-top: 1rem, $gap: 0.65rem, $font-size: null) {
+  margin-top: $margin-top;
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  align-items: center;
+  gap: $gap;
+  color: var(--text-1);
+
+  @if $font-size != null {
+    font-size: $font-size;
+  }
+}
+
+@mixin error-text($margin: 0.6rem 0 0, $color: var(--danger), $font-size: 0.86rem) {
+  margin: $margin;
+  color: $color;
+  font-size: $font-size;
+}
+
+@mixin actions-row($margin-top: 1.15rem, $gap: 0.75rem, $justify: flex-end, $wrap: wrap) {
+  margin-top: $margin-top;
+  display: flex;
+  gap: $gap;
+  justify-content: $justify;
+  flex-wrap: $wrap;
+}
+
+@mixin button-base(
+  $padding: 0.6rem 1rem,
+  $radius: 10px,
+  $font-weight: 600,
+  $border: none,
+  $transition: null
+) {
+  border-radius: $radius;
+  padding: $padding;
+  font-weight: $font-weight;
+  border: $border;
+
+  @if $transition != null {
+    transition: $transition;
+  }
+}
+
+@mixin button-pressable($offset: 1px) {
+  &:active {
+    transform: translateY($offset);
+  }
+}
+
+@mixin button-save {
+  color: var(--accent-contrast);
+  background: var(--accent-gradient);
+  box-shadow: var(--button-shadow-primary);
+}
+
+@mixin button-save-hover {
+  background: var(--accent-gradient-hover, var(--accent-gradient));
+  box-shadow: var(--button-shadow-primary-hover);
+}
+
+@mixin button-primary-cyan {
+  color: var(--accent-contrast);
+  background: var(--accent-gradient);
+  box-shadow: var(--button-shadow-primary);
+}
+
+@mixin button-danger {
+  color: rgba(255, 255, 255, 0.94);
+  background: linear-gradient(180deg, rgba(255, 52, 92, 0.95), rgba(200, 30, 70, 0.95));
+  box-shadow:
+    0 0 0 1px rgba(255, 90, 120, 0.25) inset,
+    0 10px 26px rgba(0, 0, 0, 0.55),
+    0 0 18px rgba(255, 59, 92, 0.38);
+}
+
+@mixin button-ghost {
+  color: var(--brand-accent);
+  background: var(--surface-inline);
+  box-shadow: var(--theme-shadow-ghost);
+}
+
+@mixin button-ghost-hover {
+  box-shadow: var(--theme-shadow-ghost-hover);
+}

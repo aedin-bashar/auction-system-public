@@ -1,0 +1,27 @@
+<section class="settings">
+  <header class="settings__header">
+    <p class="settings__kicker">Account Security</p>
+    <h1>Settings</h1>
+    <p class="settings__subtitle">Protect your account with password controls.</p>
+  </header>
+
+  <article class="settings__card">
+    <div class="settings__row">
+      <div class="settings__content">
+        <p class="settings__label">Password</p>
+        <p class="settings__value">Last updated: {{ lastPasswordUpdate }}</p>
+      </div>
+      <button type="button" class="settings__action" (click)="openChangePasswordModal()">
+        Change Password
+      </button>
+    </div>
+  </article>
+
+  <app-change-password-modal
+    [open]="isChangePasswordModalOpen"
+    [busy]="isPasswordSaving"
+    [serverError]="passwordError"
+    (openChange)="onChangePasswordModalOpenChange($event)"
+    (passwordChanged)="onPasswordChanged($event)"
+  />
+</section>

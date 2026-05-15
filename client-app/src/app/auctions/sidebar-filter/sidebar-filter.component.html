@@ -1,0 +1,32 @@
+<aside class="sidebar-filter" aria-label="Auction filters">
+  <div class="sidebar-filter__header">
+    <p class="sidebar-filter__kicker">Filter</p>
+    <button type="button" class="sidebar-filter__clear" (click)="clearAll()">Clear</button>
+  </div>
+
+  <section class="sidebar-filter__group">
+    <h3>Category</h3>
+    <label class="sidebar-filter__option" *ngFor="let category of categories">
+      <input
+        type="checkbox"
+        [checked]="isSelected(category)"
+        (change)="onCategoryChange(category, $any($event.target).checked)"
+      />
+      <span>{{ category }}</span>
+    </label>
+  </section>
+
+  <section class="sidebar-filter__group">
+    <h3>Price Range</h3>
+    <div class="sidebar-filter__prices">
+      <label>
+        <span>Min</span>
+        <input type="number" min="0" [(ngModel)]="minPrice" (ngModelChange)="onPriceChange()" />
+      </label>
+      <label>
+        <span>Max</span>
+        <input type="number" min="0" [(ngModel)]="maxPrice" (ngModelChange)="onPriceChange()" />
+      </label>
+    </div>
+  </section>
+</aside>

@@ -1,0 +1,66 @@
+<section class="admin-reports">
+  <header class="admin-reports__header">
+    <div>
+      <p class="admin-reports__kicker">Admin Panel</p>
+      <h1>Reports</h1>
+      <p class="admin-reports__subtitle">Monitor auction performance, bidding behavior, and platform health signals.</p>
+    </div>
+
+    <label class="admin-reports__range">
+      <span>Range</span>
+      <select [(ngModel)]="selectedRange" (ngModelChange)="onRangeChanged()">
+        <option *ngFor="let range of ranges" [value]="range">{{ range }}</option>
+      </select>
+    </label>
+  </header>
+
+  <p class="admin-reports__status" *ngIf="isLoading">Loading report...</p>
+  <p class="admin-reports__status admin-reports__status--error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <section class="admin-reports__kpis" aria-label="KPI overview">
+    <article class="admin-reports__kpi" *ngFor="let kpi of kpis">
+      <p>{{ kpi.label }}</p>
+      <strong>{{ kpi.value }}</strong>
+      <span [class.admin-reports__trend--up]="kpi.trendUp">{{ kpi.trend }}</span>
+    </article>
+  </section>
+
+  <div class="admin-reports__layout">
+    <article class="admin-reports__panel">
+      <div class="admin-reports__panel-head">
+        <h2>Top Auctions</h2>
+        <small>{{ lastGeneratedAt ? (lastGeneratedAt | date: 'medium') : selectedRange }}</small>
+      </div>
+
+      <div class="admin-reports__table-head">
+        <span>Auction</span>
+        <span>Bids</span>
+        <span>Highest Bid</span>
+        <span>Status</span>
+      </div>
+
+      <div class="admin-reports__row" *ngFor="let auction of topAuctions">
+        <strong>{{ auction.title }}</strong>
+        <span>{{ auction.bids }}</span>
+        <span>{{ auction.highestBid }}</span>
+        <span [class.admin-reports__status--active]="auction.status === 'Active'">{{ auction.status }}</span>
+      </div>
+      <div class="admin-reports__row" *ngIf="topAuctions.length === 0">
+        <strong>No detailed auction breakdown available.</strong>
+        <span>-</span>
+        <span>-</span>
+        <span>-</span>
+      </div>
+    </article>
+
+    <article class="admin-reports__panel admin-reports__panel--feed">
+      <div class="admin-reports__panel-head">
+        <h2>System Signals</h2>
+      </div>
+
+      <ul>
+        <li *ngFor="let item of activityFeed">{{ item }}</li>
+      </ul>
+    </article>
+  </div>
+</section>

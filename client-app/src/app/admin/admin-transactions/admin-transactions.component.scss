@@ -1,0 +1,267 @@
+@use 'styles/shared/surface-mixins' as surface;
+
+.admin-transactions {
+  @include surface.page-shell($max-width: 1180px, $margin: -0.9rem auto 0);
+}
+
+.admin-transactions__header {
+  @include surface.section-header();
+}
+
+.admin-transactions__kicker {
+  @include surface.section-kicker();
+}
+
+.admin-transactions__header h1 {
+  margin: 0.3rem 0 0;
+  color: var(--text-0);
+}
+
+.admin-transactions__subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-1);
+}
+
+.admin-transactions__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.admin-transactions__list-panel,
+.admin-transactions__detail-panel {
+  @include surface.section-panel($padding: 0.85rem);
+}
+
+.admin-transactions__table-header {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 0.8fr 0.7fr;
+  gap: 0.55rem;
+  padding: 0.2rem 0.45rem 0.55rem;
+  color: var(--text-1);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-transactions__row {
+  width: 100%;
+  border: none;
+  margin: 0;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 0.8fr 0.7fr;
+  gap: 0.55rem;
+  align-items: center;
+  @include surface.table-row($padding: 0.75rem 0.82rem);
+  margin-bottom: 0.55rem;
+}
+
+.admin-transactions__row--active {
+  box-shadow: var(--button-shadow-subtle-hover);
+}
+
+.admin-transactions__identity,
+.admin-transactions__text {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.admin-transactions__identity strong,
+.admin-transactions__text strong {
+  color: var(--text-0);
+  font-size: 0.85rem;
+}
+
+.admin-transactions__identity small,
+.admin-transactions__text small {
+  color: var(--text-1);
+  font-size: 0.78rem;
+}
+
+.admin-transactions__amount {
+  color: var(--icon-primary);
+  text-shadow: var(--icon-shadow-primary);
+  font-size: 0.87rem;
+  font-weight: 700;
+}
+
+.admin-transactions__status {
+  color: var(--success);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.admin-transactions__status--refunded {
+  color: var(--icon-secondary);
+  text-shadow: var(--icon-shadow-secondary);
+}
+
+.admin-transactions__detail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.admin-transactions__meta {
+  margin: 0;
+  color: var(--text-1);
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.admin-transactions__detail-head h2 {
+  margin: 0.2rem 0 0;
+  color: var(--text-0);
+  font-size: 1.15rem;
+}
+
+.admin-transactions__status-pill {
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  color: var(--icon-primary);
+  background: var(--surface-hover);
+  box-shadow: 0 0 0 1px var(--border-accent) inset;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.admin-transactions__detail-grid {
+  margin: 0.95rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.admin-transactions__detail-grid div {
+  @include surface.table-row($padding: 0.58rem 0.65rem);
+}
+
+.admin-transactions__detail-grid dt {
+  margin: 0;
+  color: var(--text-1);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-transactions__detail-grid dd {
+  margin: 0.25rem 0 0;
+  color: var(--text-0);
+  font-size: 0.84rem;
+}
+
+.admin-transactions__edit-block {
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.admin-transactions__edit-block label {
+  color: var(--text-0);
+  font-size: 0.8rem;
+}
+
+.admin-transactions__edit-block textarea {
+  border: none;
+  border-radius: 10px;
+  padding: 0.72rem 0.8rem;
+  background: var(--surface-input-strong);
+  box-shadow: var(--theme-shadow-input);
+  color: var(--text-0);
+  resize: vertical;
+}
+
+.admin-transactions__note {
+  margin: 0.75rem 0 0;
+  color: var(--text-1);
+  font-size: 0.82rem;
+}
+
+.admin-transactions__actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.admin-transactions__btn {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 1rem;
+  padding: 0;
+  box-shadow: none;
+}
+
+.admin-transactions__btn--save {
+  color: var(--accent-contrast);
+  background: var(--accent-gradient);
+  border-color: var(--border-accent-soft);
+  box-shadow: none;
+}
+
+.admin-transactions__btn--save:hover:not(:disabled) {
+  background: var(--accent-gradient-hover, var(--accent-gradient));
+}
+
+.admin-transactions__btn--refund {
+  color: var(--icon-primary);
+  background: var(--surface-hover);
+  border-color: var(--border-accent);
+  box-shadow: none;
+}
+
+.admin-transactions__btn--delete {
+  color: rgba(255, 109, 136, 0.95);
+  background: rgba(255, 59, 92, 0.08);
+  border-color: rgba(255, 59, 92, 0.35);
+  box-shadow: none;
+}
+
+.admin-transactions__btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-transactions__empty {
+  @include surface.table-row($padding: 0.75rem 0.82rem);
+  color: var(--text-1);
+}
+
+.admin-transactions__empty--error {
+  box-shadow: 0 0 0 1px rgba(255, 109, 136, 0.35) inset;
+  color: rgba(255, 109, 136, 0.95);
+}
+
+@media (max-width: 1120px) {
+  .admin-transactions__layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 780px) {
+  .admin-transactions {
+    margin-top: 0;
+  }
+
+  .admin-transactions__table-header {
+    display: none;
+  }
+
+  .admin-transactions__row {
+    grid-template-columns: 1fr;
+    gap: 0.28rem;
+  }
+
+  .admin-transactions__detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

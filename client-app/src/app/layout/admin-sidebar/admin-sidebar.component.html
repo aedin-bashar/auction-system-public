@@ -1,0 +1,37 @@
+<aside class="admin-sidebar" [class.admin-sidebar--collapsed]="collapsed">
+  <header class="admin-sidebar__profile">
+    <span class="admin-sidebar__avatar" aria-hidden="true">{{ initials }}</span>
+    <div class="admin-sidebar__meta" [class.admin-sidebar__meta--hidden]="collapsed">
+      <strong>{{ adminName }}</strong>
+      <small>{{ adminEmail }}</small>
+      <span class="admin-sidebar__badge">ADMIN</span>
+    </div>
+  </header>
+
+  <nav class="admin-sidebar__nav" aria-label="Admin navigation">
+    <a
+      *ngFor="let item of items"
+      [routerLink]="item.route"
+      routerLinkActive="is-active"
+      [attr.title]="collapsed ? item.label : null"
+      [attr.aria-label]="collapsed ? item.label : null"
+      class="admin-sidebar__link"
+    >
+      <i [class]="item.icon" aria-hidden="true"></i>
+      <span class="admin-sidebar__text" [class.admin-sidebar__text--hidden]="collapsed">{{ item.label }}</span>
+    </a>
+  </nav>
+
+  <footer class="admin-sidebar__footer">
+    <button
+      type="button"
+      class="admin-sidebar__toggle"
+      (click)="toggleCollapsed()"
+      [attr.aria-label]="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+      [attr.title]="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+    >
+      <i class="fa-solid" [class.fa-angles-right]="collapsed" [class.fa-angles-left]="!collapsed" aria-hidden="true"></i>
+      <span class="admin-sidebar__text" [class.admin-sidebar__text--hidden]="collapsed">Collapse</span>
+    </button>
+  </footer>
+</aside>

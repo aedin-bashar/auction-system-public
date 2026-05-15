@@ -1,0 +1,185 @@
+@use 'styles/shared/modal-mixins' as modal;
+
+.place-bid-modal {
+  @include modal.overlay($z-index: 1070);
+}
+
+.place-bid-modal__dialog {
+  @include modal.dialog($width: 560px, $padding: 2rem 2.15rem 1.75rem);
+}
+
+.place-bid-modal__kicker {
+  @include modal.kicker($font-size: 0.78rem);
+}
+
+.place-bid-modal__title {
+  @include modal.title(
+    $margin: 0.35rem 0 0.5rem,
+    $font-size: 1.8rem,
+    $shadow: var(--brand-shadow-soft)
+  );
+}
+
+.place-bid-modal__desc {
+  @include modal.description($line-height: 1.45);
+}
+
+.place-bid-modal__desc strong {
+  color: var(--text-0);
+}
+
+.place-bid-modal__stats {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  border-radius: 12px;
+  padding: 0.8rem 0.85rem;
+  background: var(--surface-muted);
+  box-shadow: 0 0 0 1px var(--border-accent-soft) inset;
+}
+
+.place-bid-modal__stat {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.place-bid-modal__stat--right {
+  justify-items: end;
+  text-align: right;
+}
+
+.place-bid-modal__stat span {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  color: var(--text-1);
+}
+
+.place-bid-modal__stat strong {
+  color: var(--neon-cyan);
+  font-size: 1rem;
+  text-shadow: var(--icon-shadow-primary);
+}
+
+.place-bid-modal__field {
+  @include modal.field($margin-top: 1rem);
+}
+
+.place-bid-modal__realtime {
+  margin: 0.85rem 0 0;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.34rem 0.66rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.place-bid-modal__realtime--winning {
+  color: var(--neon-cyan);
+  background: var(--surface-hover);
+  box-shadow: 0 0 0 1px var(--border-accent-soft) inset;
+}
+
+.place-bid-modal__realtime--outbid {
+  color: var(--danger-text-soft);
+  background: var(--surface-danger);
+  box-shadow: 0 0 0 1px var(--surface-danger-border) inset;
+}
+
+.place-bid-modal__field span {
+  @include modal.field-label();
+}
+
+.place-bid-modal__field input {
+  @include modal.input-control($border: 0, $padding: 0.74rem 0.88rem);
+}
+
+.place-bid-modal__field input:focus {
+  @include modal.input-focus();
+}
+
+.place-bid-modal__field input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.place-bid-modal__error {
+  @include modal.error-text($margin: 0.7rem 0 0, $font-size: 0.85rem);
+}
+
+.place-bid-modal__actions {
+  @include modal.actions-row($margin-top: 1.2rem);
+}
+
+.place-bid-modal__btn {
+  @include modal.button-base(
+    $padding: 0.62rem 1.02rem,
+    $font-weight: 700,
+    $border: 0,
+    $transition: (transform 0.1s ease, box-shadow 0.2s ease, filter 0.2s ease)
+  );
+}
+
+.place-bid-modal__btn {
+  @include modal.button-pressable();
+}
+
+.place-bid-modal__btn:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.place-bid-modal__btn--primary {
+  color: var(--accent-contrast);
+  background: var(--accent-gradient);
+  box-shadow: var(--button-shadow-primary);
+}
+
+.place-bid-modal__btn--primary:hover:not(:disabled) {
+  background: var(--accent-gradient-hover, var(--accent-gradient));
+  box-shadow: var(--button-shadow-primary-hover);
+}
+
+.place-bid-modal__btn--ghost {
+  color: var(--brand-accent);
+  background: var(--surface-inline);
+  box-shadow: var(--theme-shadow-ghost);
+}
+
+.place-bid-modal__btn--ghost:hover:not(:disabled) {
+  box-shadow: var(--theme-shadow-ghost-hover);
+}
+
+@media (max-width: 560px) {
+  .place-bid-modal {
+    padding: 1rem;
+  }
+
+  .place-bid-modal__dialog {
+    padding: 1.7rem 1.2rem 1.3rem;
+  }
+
+  .place-bid-modal__title {
+    font-size: 1.45rem;
+  }
+
+  .place-bid-modal__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .place-bid-modal__stat--right {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .place-bid-modal__actions {
+    justify-content: stretch;
+  }
+
+  .place-bid-modal__btn {
+    width: 100%;
+  }
+}

@@ -1,0 +1,51 @@
+@use 'styles/shared/modal-mixins' as modal;
+
+.delete-transaction-modal {
+  @include modal.overlay($background: rgba(6, 10, 18, 0.76));
+}
+
+.delete-transaction-modal__dialog {
+  @include modal.dialog($width: 520px);
+}
+
+.delete-transaction-modal__kicker {
+  @include modal.kicker();
+}
+
+.delete-transaction-modal__title {
+  @include modal.title();
+}
+
+.delete-transaction-modal__desc {
+  @include modal.description();
+}
+
+.delete-transaction-modal__transaction {
+  @include modal.info-panel($shadow: 0 0 0 1px rgba(255, 59, 92, 0.34) inset);
+}
+
+.delete-transaction-modal__transaction strong {
+  color: var(--text-0);
+}
+
+.delete-transaction-modal__transaction span,
+.delete-transaction-modal__transaction small {
+  color: var(--text-1);
+  font-size: 0.85rem;
+}
+
+.delete-transaction-modal__actions {
+  @include modal.actions-row();
+}
+
+.delete-transaction-modal__btn {
+  @include modal.button-base();
+}
+
+.delete-transaction-modal__btn--danger {
+  @include modal.button-danger();
+}
+
+.delete-transaction-modal__btn--ghost {
+  @include modal.button-ghost();
+}

@@ -1,0 +1,22 @@
+<div class="search-bar" role="search" aria-label="Auction search">
+  <i class="fa-solid fa-magnifying-glass search-bar__icon" aria-hidden="true"></i>
+
+  <input
+    type="search"
+    class="search-bar__input"
+    [value]="query"
+    (input)="onInput(($any($event.target)).value)"
+    placeholder="Search auctions, items, sellers..."
+    aria-label="Search auctions"
+  />
+
+  <button
+    *ngIf="query.length > 0"
+    type="button"
+    class="search-bar__clear"
+    (click)="clear()"
+    aria-label="Clear search"
+  >
+    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+  </button>
+</div>

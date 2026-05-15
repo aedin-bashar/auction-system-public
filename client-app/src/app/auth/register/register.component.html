@@ -1,0 +1,91 @@
+<section class="register">
+  <header class="register__header">
+    <h1>Create Your Account</h1>
+    <p>Join the auction floor in minutes.</p>
+  </header>
+
+  <form class="register__form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="register__field">
+      <label for="fullName">Full Name</label>
+      <input
+        id="fullName"
+        type="text"
+        formControlName="fullName"
+        placeholder="Full Name"
+        autocomplete="name"
+      />
+      <small *ngIf="form.get('fullName')?.touched && form.get('fullName')?.invalid">
+        Full name is required.
+      </small>
+    </div>
+
+    <div class="register__field">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="Email Address"
+        autocomplete="email"
+      />
+      <small *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+        Enter a valid email address.
+      </small>
+    </div>
+
+    <div class="register__field">
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        placeholder="Password"
+        autocomplete="new-password"
+      />
+      <small *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
+        Password is required.
+      </small>
+    </div>
+
+    <div class="register__field" [class.register__field--error]="form.errors?.['passwordMismatch']">
+      <label for="confirmPassword">Confirm Password</label>
+      <input
+        id="confirmPassword"
+        type="password"
+        formControlName="confirmPassword"
+        placeholder="Confirm Password"
+        autocomplete="new-password"
+      />
+      <small *ngIf="form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid">
+        Confirm your password.
+      </small>
+      <p class="register__error" *ngIf="form.errors?.['passwordMismatch']">
+        Passwords do not match.
+      </p>
+    </div>
+
+    <label class="register__checkbox">
+      <input type="checkbox" formControlName="acceptTerms" />
+      <span>
+        I agree to the
+        <a class="register__link" href="#">Terms of Service</a>
+      </span>
+    </label>
+
+    <button type="submit" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Creating account...' : 'Sign Up' }}
+    </button>
+  </form>
+
+  <p class="register__message register__message--success" *ngIf="successMessage">
+    {{ successMessage }}
+  </p>
+  <p class="register__message register__message--error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </p>
+
+  <p class="register__footer">
+    Already have an account?
+    <a class="register__link" routerLink="/login">Login</a>
+  </p>
+</section>

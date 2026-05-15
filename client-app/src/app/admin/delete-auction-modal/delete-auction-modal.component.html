@@ -1,0 +1,28 @@
+<div class="delete-auction-modal" *ngIf="open" (click)="onBackdropClick()">
+  <div
+    class="delete-auction-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="delete-auction-modal-title"
+    aria-describedby="delete-auction-modal-desc"
+    (click)="onDialogClick($event)"
+  >
+    <p class="delete-auction-modal__kicker">Admin Auctions</p>
+    <h2 id="delete-auction-modal-title" class="delete-auction-modal__title">Delete Auction</h2>
+    <p id="delete-auction-modal-desc" class="delete-auction-modal__desc">This action is permanent and cannot be undone.</p>
+
+    <div class="delete-auction-modal__auction" *ngIf="auction">
+      <strong>{{ auction.title }}</strong>
+      <span>{{ auction.seller }} · {{ auction.status }}</span>
+    </div>
+
+    <div class="delete-auction-modal__actions">
+      <button type="button" class="delete-auction-modal__btn delete-auction-modal__btn--danger" (click)="delete()">
+        Delete Auction
+      </button>
+      <button type="button" class="delete-auction-modal__btn delete-auction-modal__btn--ghost" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

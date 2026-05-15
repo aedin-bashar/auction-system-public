@@ -1,0 +1,71 @@
+@use 'styles/shared/modal-mixins' as modal;
+
+.refund-modal {
+  @include modal.overlay();
+}
+
+.refund-modal__dialog {
+  @include modal.dialog($width: 560px);
+}
+
+.refund-modal__kicker {
+  @include modal.kicker();
+}
+
+.refund-modal__title {
+  @include modal.title();
+}
+
+.refund-modal__desc {
+  @include modal.description();
+}
+
+.refund-modal__transaction {
+  @include modal.info-panel();
+}
+
+.refund-modal__transaction strong {
+  color: var(--text-0);
+}
+
+.refund-modal__transaction span {
+  color: var(--text-1);
+  font-size: 0.85rem;
+}
+
+.refund-modal__label {
+  display: inline-block;
+  margin-top: 1rem;
+  margin-bottom: 0.35rem;
+  color: var(--text-0);
+  font-size: 0.84rem;
+}
+
+.refund-modal__textarea {
+  @include modal.input-control($border: none, $transition: none);
+  resize: vertical;
+}
+
+.refund-modal__textarea::placeholder {
+  color: var(--text-2);
+}
+
+.refund-modal__error {
+  @include modal.error-text($margin: 0.5rem 0 0, $color: var(--danger-text-soft), $font-size: 0.82rem);
+}
+
+.refund-modal__actions {
+  @include modal.actions-row();
+}
+
+.refund-modal__btn {
+  @include modal.button-base();
+}
+
+.refund-modal__btn--primary {
+  @include modal.button-primary-cyan();
+}
+
+.refund-modal__btn--ghost {
+  @include modal.button-ghost();
+}

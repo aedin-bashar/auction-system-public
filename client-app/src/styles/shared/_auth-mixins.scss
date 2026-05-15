@@ -1,0 +1,73 @@
+/* Shared auth form primitives */
+
+@mixin auth-card($max-width: 420px, $margin: 2.5rem auto 0, $padding: 2rem 2.25rem) {
+  position: relative;
+  max-width: $max-width;
+  margin: $margin;
+  padding: $padding;
+  display: grid;
+  gap: 1.5rem;
+  background: var(--glass-bg);
+  border-radius: var(--radius-12);
+  box-shadow: var(--theme-shadow-panel);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+@mixin auth-card-highlight {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: var(--button-shadow-subtle);
+  pointer-events: none;
+}
+
+@mixin auth-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--brand-accent);
+  text-shadow: var(--icon-shadow-primary);
+}
+
+@mixin auth-subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-1);
+  text-align: center;
+}
+
+@mixin auth-form {
+  display: grid;
+  gap: 1rem;
+}
+
+@mixin auth-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+@mixin auth-input {
+  padding: 0.7rem 0.85rem;
+  border-radius: 10px;
+  background: var(--surface-input);
+  color: var(--text-0);
+  box-shadow: var(--theme-shadow-input);
+  transition: box-shadow 0.2s ease;
+}
+
+@mixin auth-input-focus {
+  box-shadow: var(--theme-shadow-input-focus);
+  outline: none;
+}
+
+@mixin auth-button {
+  border: 0;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  background: var(--accent-gradient);
+  color: var(--accent-contrast);
+  box-shadow: var(--button-shadow-primary);
+}

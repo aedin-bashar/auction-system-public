@@ -1,0 +1,62 @@
+<section class="admin-settings">
+  <header class="admin-settings__header">
+    <p class="admin-settings__kicker">Admin Panel</p>
+    <h1>System Settings</h1>
+    <p class="admin-settings__subtitle">Configure platform behavior, security controls, and transaction safety rules.</p>
+  </header>
+
+  <div class="admin-settings__layout">
+    <article class="admin-settings__panel">
+      <h2>Global Controls</h2>
+
+      <label class="admin-settings__toggle">
+        <span>Maintenance Mode</span>
+        <input type="checkbox" [(ngModel)]="maintenanceMode" />
+      </label>
+
+      <label class="admin-settings__toggle">
+        <span>Allow Guest Bidding</span>
+        <input type="checkbox" [(ngModel)]="allowGuestBidding" />
+      </label>
+
+      <div class="admin-settings__field-grid">
+        <label>
+          <span>Min Bid Increment ($)</span>
+          <input type="number" min="1" [(ngModel)]="minBidIncrement" />
+        </label>
+
+        <label>
+          <span>Auto Extend (minutes)</span>
+          <input type="number" min="0" [(ngModel)]="auctionExtensionMinutes" />
+        </label>
+
+        <label>
+          <span>Settlement Window (hours)</span>
+          <input type="number" min="1" [(ngModel)]="settlementWindowHours" />
+        </label>
+      </div>
+
+      <div class="admin-settings__actions">
+        <button type="button" (click)="saveChanges()" [disabled]="isSaving">
+          {{ isSaving ? 'Saving...' : 'Save Settings' }}
+        </button>
+        <small *ngIf="lastSavedAt">Saved {{ lastSavedAt | date: 'medium' }}</small>
+      </div>
+      <small class="admin-settings__error" *ngIf="errorMessage">{{ errorMessage }}</small>
+    </article>
+
+    <article class="admin-settings__panel admin-settings__panel--summary">
+      <h2>Modules</h2>
+
+      <div class="admin-settings__module" *ngFor="let section of sections">
+        <div>
+          <strong>{{ section.title }}</strong>
+          <p>{{ section.description }}</p>
+        </div>
+        <span [class.admin-settings__module-status--on]="section.enabled">
+          {{ section.enabled ? 'Enabled' : 'Disabled' }}
+        </span>
+      </div>
+    </article>
+  </div>
+</section>

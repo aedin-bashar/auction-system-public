@@ -1,0 +1,113 @@
+<section class="admin-auctions">
+  <header class="admin-auctions__header">
+    <p class="admin-auctions__kicker">Admin Panel</p>
+    <h1>Auction Management</h1>
+    <p class="admin-auctions__subtitle">Monitor listings, review status, and inspect auction-level activity.</p>
+  </header>
+
+  <p class="admin-auctions__subtitle" *ngIf="isLoading">Loading auctions...</p>
+  <p class="admin-auctions__subtitle" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <article class="admin-auctions__panel" *ngIf="!isLoading && !errorMessage">
+    <div class="admin-auctions__filters">
+      <div class="admin-auctions__search-wrap">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        <input
+          class="admin-auctions__search"
+          type="search"
+          placeholder="Search by title or seller…"
+          [(ngModel)]="titleFilter"
+          aria-label="Search auctions by title or seller"
+        />
+      </div>
+      <div class="admin-auctions__status-filter" role="group" aria-label="Filter by status">
+        <button
+          type="button"
+          class="admin-auctions__status-btn"
+          [class.admin-auctions__status-btn--selected]="statusFilter === 'all'"
+          (click)="statusFilter = 'all'"
+        >All</button>
+        <button
+          type="button"
+          class="admin-auctions__status-btn admin-auctions__status-btn--active-opt"
+          [class.admin-auctions__status-btn--selected]="statusFilter === 'Active'"
+          (click)="statusFilter = 'Active'"
+        >Active</button>
+        <button
+          type="button"
+          class="admin-auctions__status-btn admin-auctions__status-btn--ended-opt"
+          [class.admin-auctions__status-btn--selected]="statusFilter === 'Ended'"
+          (click)="statusFilter = 'Ended'"
+        >Ended</button>
+        <button
+          type="button"
+          class="admin-auctions__status-btn admin-auctions__status-btn--draft-opt"
+          [class.admin-auctions__status-btn--selected]="statusFilter === 'Draft'"
+          (click)="statusFilter = 'Draft'"
+        >Draft</button>
+      </div>
+    </div>
+
+    <div class="admin-auctions__table-header">
+      <span>Auction</span>
+      <span>Seller</span>
+      <span>Category</span>
+      <span>Current Bid</span>
+      <span>Ends</span>
+      <span>Status</span>
+      <span>Action</span>
+    </div>
+
+    <div class="admin-auctions__row" *ngFor="let auction of filteredAuctions; trackBy: trackByAuctionId">
+      <div class="admin-auctions__auction">
+        <strong>{{ auction.title }}</strong>
+        <small>{{ auction.bidCount }} bids</small>
+      </div>
+
+      <span class="admin-auctions__text">{{ auction.seller }}</span>
+      <span class="admin-auctions__text">{{ auction.category }}</span>
+      <span class="admin-auctions__bid">{{ auction.currentBid }}</span>
+      <span class="admin-auctions__text">{{ auction.endsAt }}</span>
+
+      <span class="admin-auctions__status" [class.admin-auctions__status--ended]="auction.status === 'Ended'" [class.admin-auctions__status--draft]="auction.status === 'Draft'">
+        {{ auction.status }}
+      </span>
+
+      <div class="admin-auctions__actions">
+        <a
+          class="admin-auctions__action"
+          [routerLink]="['/admin/auctions', auction.id]"
+          title="View auction details"
+          aria-label="View auction details"
+        >
+          <i class="fa-solid fa-eye" aria-hidden="true"></i>
+        </a>
+
+        <button
+          type="button"
+          class="admin-auctions__action admin-auctions__action--danger"
+          (click)="openDelete(auction)"
+          [disabled]="isSaving"
+          title="Delete auction"
+          aria-label="Delete auction"
+        >
+          <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <p
+      class="admin-auctions__empty"
+      *ngIf="filteredAuctions.length === 0"
+    >
+      No auctions match your filters.
+    </p>
+  </article>
+
+  <app-delete-auction-modal
+    [open]="isDeleteModalOpen"
+    [auction]="selectedAuction"
+    (openChange)="onDeleteOpenChange($event)"
+    (confirmed)="onAuctionDeleted($event)"
+  />
+</section>

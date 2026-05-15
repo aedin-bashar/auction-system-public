@@ -1,0 +1,64 @@
+@use 'styles/shared/modal-mixins' as modal;
+
+.edit-user-modal {
+  @include modal.overlay();
+}
+
+.edit-user-modal__dialog {
+  @include modal.dialog($width: 560px);
+}
+
+.edit-user-modal__kicker {
+  @include modal.kicker();
+}
+
+.edit-user-modal__title {
+  @include modal.title();
+}
+
+.edit-user-modal__desc {
+  @include modal.description();
+}
+
+.edit-user-modal__field {
+  @include modal.field();
+}
+
+.edit-user-modal__field span {
+  @include modal.field-label();
+}
+
+.edit-user-modal__field input,
+.edit-user-modal__field select {
+  @include modal.input-control($transition: none);
+}
+
+.edit-user-modal__checkbox {
+  @include modal.checkbox-row();
+}
+
+.edit-user-modal__checkbox input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--neon-cyan);
+}
+
+.edit-user-modal__error {
+  @include modal.error-text();
+}
+
+.edit-user-modal__actions {
+  @include modal.actions-row();
+}
+
+.edit-user-modal__btn {
+  @include modal.button-base();
+}
+
+.edit-user-modal__btn--save {
+  @include modal.button-save();
+}
+
+.edit-user-modal__btn--ghost {
+  @include modal.button-ghost();
+}

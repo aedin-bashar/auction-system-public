@@ -1,0 +1,292 @@
+@use 'styles/shared/surface-mixins' as surface;
+
+.admin-flagged-cases {
+  @include surface.page-shell($max-width: 1180px, $margin: -0.9rem auto 0);
+  --admin-flagged-cases-panel-height: clamp(37rem, 54vh, 32rem);
+}
+
+:host-context([data-theme='light']) .admin-flagged-cases {
+  --text-1: #334155;
+  --text-2: #475569;
+}
+
+.admin-flagged-cases__header {
+  @include surface.section-header($padding: 1.2rem 1.3rem);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.admin-flagged-cases__kicker {
+  @include surface.section-kicker();
+}
+
+.admin-flagged-cases__header h1 {
+  margin: 0.3rem 0 0;
+  color: var(--text-0);
+}
+
+.admin-flagged-cases__subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-1);
+  max-width: 60ch;
+}
+
+.admin-flagged-cases__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 110px));
+  gap: 0.7rem;
+}
+
+.admin-flagged-cases__stat {
+  @include surface.stat-card($padding: 0.75rem 0.8rem);
+}
+
+.admin-flagged-cases__stat span {
+  display: block;
+  color: var(--text-1);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+}
+
+.admin-flagged-cases__stat strong {
+  margin-top: 0.25rem;
+  display: block;
+  color: var(--text-0);
+  font-size: 1.2rem;
+}
+
+.admin-flagged-cases__stat--secondary strong {
+  color: var(--icon-primary);
+}
+
+.admin-flagged-cases__toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.admin-flagged-cases__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-1);
+  font-size: 0.9rem;
+}
+
+.admin-flagged-cases__layout {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.admin-flagged-cases__list-panel,
+.admin-flagged-cases__detail-panel {
+  @include surface.section-panel($padding: 0.95rem);
+  height: var(--admin-flagged-cases-panel-height);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.admin-flagged-cases__list-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-flagged-cases__table-head {
+  position: sticky;
+  top: 0;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 0.9fr 0.7fr;
+  gap: 0.75rem;
+  padding: 0 0.35rem 0.55rem;
+  color: var(--text-1);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  background: var(--glass-bg);
+  z-index: 1;
+}
+
+.admin-flagged-cases__row {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 0.9fr 0.7fr;
+  gap: 0.75rem;
+  align-items: center;
+  text-align: left;
+  padding: 0.85rem 0.35rem;
+  border-radius: 14px;
+  color: inherit;
+}
+
+.admin-flagged-cases__row:hover,
+.admin-flagged-cases__row--active {
+  background: var(--surface-hover);
+  box-shadow: 0 0 0 1px var(--border-accent-soft) inset;
+}
+
+.admin-flagged-cases__identity,
+.admin-flagged-cases__text {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.admin-flagged-cases__identity strong,
+.admin-flagged-cases__text strong,
+.admin-flagged-cases__reason {
+  color: var(--text-0);
+}
+
+.admin-flagged-cases__identity small,
+.admin-flagged-cases__text small {
+  color: var(--text-1);
+  font-size: 0.78rem;
+}
+
+.admin-flagged-cases__status,
+.admin-flagged-cases__status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.28rem 0.58rem;
+  font-size: 0.78rem;
+  color: var(--icon-primary);
+  background: var(--surface-hover);
+  box-shadow: 0 0 0 1px var(--border-accent) inset;
+}
+
+.admin-flagged-cases__status--resolved,
+.admin-flagged-cases__status-pill--resolved {
+  color: var(--warning);
+  background: rgba(245, 158, 11, 0.14);
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.28) inset;
+}
+
+.admin-flagged-cases__detail-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.admin-flagged-cases__meta {
+  margin: 0;
+  color: var(--text-1);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.admin-flagged-cases__detail-head h2 {
+  margin: 0.25rem 0 0;
+  color: var(--text-0);
+}
+
+.admin-flagged-cases__detail-grid {
+  margin: 1rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.admin-flagged-cases__detail-grid dt,
+.admin-flagged-cases__detail-block label {
+  color: var(--text-1);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+}
+
+.admin-flagged-cases__detail-grid dd,
+.admin-flagged-cases__detail-block p,
+.admin-flagged-cases__detail-block a {
+  margin: 0.22rem 0 0;
+  color: var(--text-0);
+}
+
+.admin-flagged-cases__detail-block {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.admin-flagged-cases__detail-block textarea {
+  min-height: 110px;
+  border: 0;
+  border-radius: 12px;
+  padding: 0.75rem 0.9rem;
+  color: var(--text-0);
+  background: var(--surface-input-strong);
+  box-shadow: var(--theme-shadow-input);
+  resize: vertical;
+}
+
+.admin-flagged-cases__detail-block textarea:focus {
+  outline: none;
+  box-shadow: var(--theme-shadow-input-focus);
+}
+
+.admin-flagged-cases__detail-block textarea:disabled {
+  opacity: 0.72;
+}
+
+.admin-flagged-cases__note {
+  margin: 1rem 0 0;
+  color: var(--text-1);
+  font-size: 0.85rem;
+}
+
+.admin-flagged-cases__actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.admin-flagged-cases__btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  color: var(--accent-contrast);
+  font-weight: 700;
+  background: var(--accent-gradient);
+  box-shadow: var(--button-shadow-primary);
+}
+
+.admin-flagged-cases__btn:hover:not(:disabled) {
+  background: var(--accent-gradient-hover, var(--accent-gradient));
+  box-shadow: var(--button-shadow-primary-hover);
+}
+
+.admin-flagged-cases__btn:disabled {
+  opacity: 0.65;
+}
+
+.admin-flagged-cases__empty {
+  padding: 1rem 0.35rem;
+  color: var(--text-1);
+}
+
+.admin-flagged-cases__empty--error {
+  color: var(--warning);
+}
+
+@media (max-width: 1080px) {
+  .admin-flagged-cases__layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .admin-flagged-cases__header {
+    flex-direction: column;
+  }
+
+  .admin-flagged-cases__stats,
+  .admin-flagged-cases__detail-grid,
+  .admin-flagged-cases__table-head,
+  .admin-flagged-cases__row {
+    grid-template-columns: 1fr;
+  }
+}

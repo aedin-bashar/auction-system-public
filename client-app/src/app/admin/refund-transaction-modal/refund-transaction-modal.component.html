@@ -1,0 +1,41 @@
+<div class="refund-modal" *ngIf="open" (click)="onBackdropClick()">
+  <div
+    class="refund-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="refund-modal-title"
+    aria-describedby="refund-modal-desc"
+    (click)="onDialogClick($event)"
+  >
+    <p class="refund-modal__kicker">Admin Transactions</p>
+    <h2 id="refund-modal-title" class="refund-modal__title">Process Refund</h2>
+    <p id="refund-modal-desc" class="refund-modal__desc">Confirm refund details before returning the amount to user wallet.</p>
+
+    <div class="refund-modal__transaction" *ngIf="transaction">
+      <strong>{{ transaction.user }}</strong>
+      <span>{{ transaction.amount }} &middot; {{ transaction.status }}</span>
+    </div>
+
+    <label class="refund-modal__label" for="refundReason">Refund reason</label>
+    <textarea
+      id="refundReason"
+      class="refund-modal__textarea"
+      rows="4"
+      maxlength="300"
+      placeholder="Describe why this transaction is being refunded"
+      [(ngModel)]="reason"
+    ></textarea>
+
+    <p class="refund-modal__error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <div class="refund-modal__actions">
+      <button type="button" class="refund-modal__btn refund-modal__btn--primary" (click)="submit()">
+        Confirm Refund
+      </button>
+      <button type="button" class="refund-modal__btn refund-modal__btn--ghost" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+

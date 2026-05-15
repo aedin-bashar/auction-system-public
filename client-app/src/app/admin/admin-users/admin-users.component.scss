@@ -1,0 +1,224 @@
+@use 'styles/shared/surface-mixins' as surface;
+
+.admin-users {
+  @include surface.page-shell($max-width: 1180px, $margin: -0.9rem auto 0);
+}
+
+.admin-users__header {
+  @include surface.section-header();
+}
+
+.admin-users__kicker {
+  @include surface.section-kicker();
+}
+
+.admin-users__header h1 {
+  margin: 0.3rem 0 0;
+  color: var(--text-0);
+}
+
+.admin-users__subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-1);
+}
+
+.admin-users__panel {
+  @include surface.section-panel($padding: 0.85rem, $gap: 0.6rem);
+}
+
+.admin-users__table-header,
+.admin-users__row {
+  display: grid;
+  grid-template-columns: 1.05fr 1.25fr 0.65fr 0.65fr 0.8fr 0.9fr;
+  gap: 0.7rem;
+  align-items: center;
+}
+
+.admin-users__table-header {
+  padding: 0 0.45rem;
+  color: var(--text-1);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-users__row {
+  @include surface.table-row();
+}
+
+.admin-users__name {
+  color: var(--text-0);
+  font-weight: 600;
+}
+
+.admin-users__email,
+.admin-users__joined,
+.admin-users__role {
+  color: var(--text-1);
+  font-size: 0.86rem;
+}
+
+.admin-users__status {
+  color: var(--success);
+  font-size: 0.84rem;
+}
+
+.admin-users__status--inactive {
+  color: #ffd166;
+}
+
+.admin-users__actions {
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
+.admin-users__action {
+  width: 56px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid var(--border-accent-soft);
+  box-shadow: none;
+  color: var(--icon-primary);
+  background: var(--surface-hover);
+  font-size: 1rem;
+  padding: 0;
+}
+
+.admin-users__action--danger {
+  border-color: rgba(255, 59, 92, 0.35);
+  box-shadow: none;
+  color: rgba(255, 109, 136, 0.95);
+  background: rgba(255, 59, 92, 0.08);
+}
+
+// ── Filters ──────────────────────────────────────────────────────────────────
+
+.admin-users__filters {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0 0.45rem 0.5rem;
+  border-bottom: 1px solid var(--divider-color);
+  margin-bottom: 0.35rem;
+}
+
+.admin-users__search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 180px;
+
+  i {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-1);
+    font-size: 0.8rem;
+    pointer-events: none;
+  }
+}
+
+.admin-users__search {
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 2.1rem;
+  background: var(--surface-input);
+  border: 1px solid var(--border-accent-soft);
+  border-radius: 8px;
+  color: var(--text-0);
+  font-size: 0.86rem;
+  outline: none;
+  transition: border-color 0.15s;
+
+  &::placeholder {
+    color: var(--text-1);
+  }
+
+  &:focus {
+    border-color: var(--border-accent-strong);
+  }
+
+  &::-webkit-search-cancel-button {
+    cursor: pointer;
+  }
+}
+
+.admin-users__status-filter {
+  display: inline-flex;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-accent-soft);
+  flex-shrink: 0;
+}
+
+.admin-users__status-btn {
+  padding: 0.45rem 0.9rem;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border-accent-soft);
+  color: var(--text-1);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &:hover:not(.admin-users__status-btn--selected) {
+    background: var(--surface-hover);
+    color: var(--text-0);
+  }
+}
+
+.admin-users__status-btn--selected {
+  background: var(--surface-hover-strong);
+  color: var(--icon-primary);
+}
+
+.admin-users__status-btn--active-opt.admin-users__status-btn--selected {
+  background: rgba(0, 220, 130, 0.12);
+  color: var(--success);
+}
+
+.admin-users__status-btn--inactive-opt.admin-users__status-btn--selected {
+  background: rgba(255, 209, 102, 0.12);
+  color: #ffd166;
+}
+
+.admin-users__empty {
+  padding: 1.5rem 0.45rem;
+  color: var(--text-1);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+@media (max-width: 1120px) {
+  .admin-users__table-header,
+  .admin-users__row {
+    grid-template-columns: 1fr 1.2fr 0.8fr 0.8fr 0.9fr;
+  }
+
+  .admin-users__table-header :last-child,
+  .admin-users__row :last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 760px) {
+  .admin-users {
+    margin-top: 0;
+  }
+
+  .admin-users__table-header {
+    display: none;
+  }
+
+  .admin-users__row {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
+  }
+}

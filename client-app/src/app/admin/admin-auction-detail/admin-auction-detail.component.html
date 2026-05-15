@@ -1,0 +1,210 @@
+<section class="admin-auction-detail">
+  <header class="admin-auction-detail__header">
+    <a class="admin-auction-detail__back" routerLink="/admin/auctions">
+      <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+      Back to auctions
+    </a>
+
+    <ng-container *ngIf="auction as item; else notFoundTitle">
+      <p class="admin-auction-detail__kicker">Auction Detail</p>
+      <h1>{{ item.title }}</h1>
+      <p class="admin-auction-detail__subtitle">Review listing details, bidder activity, and moderation metadata.</p>
+      <div class="admin-auction-detail__header-actions">
+        <button type="button" class="admin-auction-detail__start-btn" (click)="startAuction()" [disabled]="!canStartAuction()">
+          Start Auction
+        </button>
+        <button type="button" class="admin-auction-detail__end-btn" (click)="endAuction()" [disabled]="!canEndAuction()">
+          End Auction
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-template #notFoundTitle>
+      <p class="admin-auction-detail__kicker">Auction Detail</p>
+      <h1>Auction Not Found</h1>
+      <p class="admin-auction-detail__subtitle">The requested auction could not be located.</p>
+    </ng-template>
+  </header>
+
+  <p class="admin-auction-detail__subtitle" *ngIf="isLoading">Loading auction detail...</p>
+  <p class="admin-auction-detail__subtitle" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <ng-container *ngIf="auction as item; else notFoundPanel">
+    <section class="admin-auction-detail__stats">
+      <article class="admin-stat-card">
+        <span>Current Bid</span>
+        <strong>{{ item.currentBid }}</strong>
+      </article>
+      <article class="admin-stat-card">
+        <span>Bid Count</span>
+        <strong>{{ item.bidCount }}</strong>
+      </article>
+      <article class="admin-stat-card">
+        <span>Status</span>
+        <strong>{{ item.status }}</strong>
+      </article>
+      <article class="admin-stat-card">
+        <span>Highest Bidder</span>
+        <strong>{{ item.highestBidder }}</strong>
+      </article>
+    </section>
+
+    <section class="admin-auction-detail__content">
+      <article class="admin-auction-detail__panel">
+        <h2>Listing Information</h2>
+
+        <dl>
+          <div>
+            <dt>Auction ID</dt>
+            <dd>{{ item.id }}</dd>
+          </div>
+          <div>
+            <dt>Seller</dt>
+            <dd>{{ item.seller }}</dd>
+          </div>
+          <div>
+            <dt>Category</dt>
+            <dd>{{ item.category }}</dd>
+          </div>
+          <div>
+            <dt>Starting Price</dt>
+            <dd>{{ item.startingPrice }}</dd>
+          </div>
+          <div>
+            <dt>Started</dt>
+            <dd>{{ item.startedAt }}</dd>
+          </div>
+          <div>
+            <dt>Ends</dt>
+            <dd>{{ item.endsAt }}</dd>
+          </div>
+        </dl>
+
+        <div class="admin-auction-detail__description-block">
+          <span>Description</span>
+          <p class="admin-auction-detail__description">{{ item.description }}</p>
+        </div>
+
+        <div class="admin-auction-detail__image-preview">
+          <img [src]="item.imageUrl" alt="Auction image" loading="lazy" decoding="async" (error)="onImageError($event)" />
+          <small>{{ item.imageCount }} image(s)</small>
+        </div>
+      </article>
+
+      <article class="admin-auction-detail__panel">
+        <h2>Edit Auction</h2>
+
+        <form class="admin-auction-detail__edit-form" [formGroup]="editForm" (ngSubmit)="saveAuctionChanges()">
+          <label>
+            <span>Title</span>
+            <input type="text" formControlName="title" />
+          </label>
+
+          <label>
+            <span>Category</span>
+            <div class="admin-auction-detail__select-wrap">
+              <select formControlName="category" class="admin-auction-detail__native-select">
+                <option *ngFor="let option of categoryOptions" [value]="option">{{ option }}</option>
+              </select>
+              <i class="fa-solid fa-chevron-down admin-auction-detail__select-chevron" aria-hidden="true"></i>
+            </div>
+          </label>
+
+          <label>
+            <span>Description</span>
+            <textarea rows="4" formControlName="description"></textarea>
+          </label>
+
+          <div class="admin-auction-detail__price-row">
+            <label>
+              <span>Starting Price</span>
+              <input type="number" min="0" step="0.01" formControlName="startingPriceAmount" />
+            </label>
+
+            <label>
+              <span>Currency</span>
+              <div class="admin-auction-detail__currency" #currencyDropdown>
+                <button
+                  type="button"
+                  class="admin-auction-detail__currency-trigger"
+                  aria-label="Currency"
+                  [attr.aria-expanded]="currencyMenuOpen"
+                  (click)="toggleCurrencyMenu()"
+                >
+                  <img
+                    class="admin-auction-detail__currency-flag"
+                    [src]="flagUrl(selectedCurrencyOption?.countryCode ?? 'us')"
+                    [alt]="(selectedCurrencyOption?.label ?? 'USD') + ' flag'"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span class="admin-auction-detail__currency-label">{{ selectedCurrencyOption?.label ?? 'USD' }}</span>
+                  <i class="fa-solid fa-chevron-down admin-auction-detail__currency-chevron" aria-hidden="true"></i>
+                </button>
+
+                <div class="admin-auction-detail__currency-menu" *ngIf="currencyMenuOpen">
+                  <button
+                    *ngFor="let option of currencyOptions"
+                    type="button"
+                    class="admin-auction-detail__currency-option"
+                    [class.is-selected]="editForm.controls.currency.value === option.value"
+                    (click)="selectCurrency(option)"
+                  >
+                    <img
+                      class="admin-auction-detail__currency-flag"
+                      [src]="flagUrl(option.countryCode)"
+                      [alt]="option.label + ' flag'"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <span>{{ option.label }}</span>
+                  </button>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <label>
+            <span>End Time (UTC)</span>
+            <input type="text" formControlName="endTimeUtc" placeholder="YYYY-MM-DD hh:mm AM/PM" />
+          </label>
+
+          <label>
+            <span>Replace Images</span>
+            <div class="admin-auction-detail__file-picker">
+              <label for="adminAuctionImages" class="admin-auction-detail__file-btn">Choose Files</label>
+              <span>{{ selectedImageFileNames.length > 0 ? selectedImageFileNames.join(', ') : 'No file chosen' }}</span>
+              <input id="adminAuctionImages" type="file" accept="image/*" multiple (change)="onImagesSelected($event)" />
+            </div>
+          </label>
+
+          <button type="submit" class="admin-auction-detail__save-btn" [disabled]="!canSaveEdit()">
+            Save Changes
+          </button>
+        </form>
+      </article>
+
+      <article class="admin-auction-detail__panel">
+        <h2>Recent Bids</h2>
+
+        <ul>
+          <li *ngFor="let bid of item.bids">
+            <div>
+              <strong>{{ bid.bidder }}</strong>
+              <small>{{ bid.at }}</small>
+            </div>
+            <span>{{ bid.amount }}</span>
+          </li>
+        </ul>
+      </article>
+    </section>
+  </ng-container>
+
+  <ng-template #notFoundPanel>
+    <article class="admin-auction-detail__empty" *ngIf="!isLoading">
+      <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+      <p>Open an auction from the list page to view details.</p>
+    </article>
+  </ng-template>
+
+</section>

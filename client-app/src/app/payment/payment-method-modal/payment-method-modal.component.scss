@@ -1,0 +1,109 @@
+@use 'styles/shared/modal-mixins' as modal;
+
+.payment-modal {
+  @include modal.overlay();
+}
+
+.payment-modal__dialog {
+  @include modal.dialog($width: 600px);
+}
+
+.payment-modal__kicker {
+  @include modal.kicker();
+}
+
+.payment-modal__title {
+  @include modal.title();
+}
+
+.payment-modal__desc {
+  @include modal.description();
+}
+
+.payment-modal__row {
+  display: grid;
+  grid-template-columns: 1fr 170px;
+  gap: 0.7rem;
+}
+
+.payment-modal__field {
+  @include modal.field();
+}
+
+.payment-modal__field span {
+  @include modal.field-label();
+}
+
+.payment-modal__field input {
+  @include modal.input-control();
+}
+
+.payment-modal__field input:focus {
+  @include modal.input-focus();
+}
+
+.payment-modal__checkbox {
+  @include modal.checkbox-row();
+}
+
+.payment-modal__checkbox input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--neon-cyan);
+}
+
+.payment-modal__warning {
+  margin: 1rem 0 0;
+  color: var(--text-0);
+}
+
+.payment-modal__error {
+  @include modal.error-text();
+}
+
+.payment-modal__actions {
+  @include modal.actions-row();
+}
+
+.payment-modal__btn {
+  @include modal.button-base($transition: (transform 0.1s ease, box-shadow 0.2s ease));
+  @include modal.button-pressable();
+}
+
+.payment-modal__btn--save {
+  @include modal.button-save();
+}
+
+.payment-modal__btn--save:hover {
+  @include modal.button-save-hover();
+}
+
+.payment-modal__btn--danger {
+  @include modal.button-danger();
+}
+
+.payment-modal__btn--ghost {
+  @include modal.button-ghost();
+}
+
+.payment-modal__btn--ghost:hover {
+  @include modal.button-ghost-hover();
+}
+
+@media (max-width: 520px) {
+  .payment-modal__dialog {
+    padding: 1.7rem 1.25rem 1.4rem;
+  }
+
+  .payment-modal__row {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-modal__actions {
+    justify-content: stretch;
+  }
+
+  .payment-modal__btn {
+    width: 100%;
+  }
+}

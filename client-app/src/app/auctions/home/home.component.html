@@ -1,0 +1,108 @@
+<section class="home">
+  <header class="home__header">
+    <p class="home__kicker">Live Marketplace</p>
+    <h1>Active Auctions</h1>
+    <p class="home__subtitle">Discover trending lots and place bids before the timer ends.</p>
+  </header>
+
+  <section class="home__content">
+    <app-sidebar-filter class="home__sidebar" [categories]="categories" (filterChanged)="onFilterChanged($event)" />
+
+    <div class="home__main">
+      <p class="home__feedback home__feedback--success" *ngIf="reportRequestSuccess">
+        <span>{{ reportRequestSuccess }}</span>
+        <button type="button" (click)="dismissReportFeedback()" aria-label="Dismiss report feedback">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </p>
+
+      <section class="home__grid" aria-label="Active auction grid">
+        <app-auction-card
+          *ngFor="let item of pagedItems; trackBy: trackById"
+          [item]="item"
+          [bidDisabled]="isAuthenticated && !canCurrentUserBid"
+          [bidDisabledReason]="'Only bidder accounts can place bids.'"
+          [bidButtonText]="isAuthenticated && !canCurrentUserBid ? 'Bidder Only' : 'Place Bid'"
+          (placeBid)="onPlaceBid($event)"
+          (reportAuction)="onReportAuction($event)"
+          (toggleWatchlist)="onToggleWatchlist($event)"
+        />
+      </section>
+
+      <nav class="home__pagination" *ngIf="totalPages > 1" aria-label="Auction pages">
+        <div class="home__pagination-controls">
+          <button
+            class="home__page-btn home__page-btn--nav"
+            (click)="onPageChange(1)"
+            [disabled]="currentPage === 1"
+            aria-label="First page"
+          >
+            <i class="fa-solid fa-angles-left" aria-hidden="true"></i>
+          </button>
+
+          <button
+            class="home__page-btn home__page-btn--nav"
+            (click)="onPageChange(currentPage - 1)"
+            [disabled]="currentPage === 1"
+            aria-label="Previous page"
+          >
+            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          </button>
+
+          <ng-container *ngFor="let page of visiblePageNumbers">
+            <span *ngIf="page === '...'" class="home__page-ellipsis" aria-hidden="true">…</span>
+            <button
+              *ngIf="page !== '...'"
+              class="home__page-btn"
+              [class.home__page-btn--active]="page === currentPage"
+              (click)="onPageChange(+page)"
+              [attr.aria-current]="page === currentPage ? 'page' : null"
+            >{{ page }}</button>
+          </ng-container>
+
+          <button
+            class="home__page-btn home__page-btn--nav"
+            (click)="onPageChange(currentPage + 1)"
+            [disabled]="currentPage === totalPages"
+            aria-label="Next page"
+          >
+            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
+
+          <button
+            class="home__page-btn home__page-btn--nav"
+            (click)="onPageChange(totalPages)"
+            [disabled]="currentPage === totalPages"
+            aria-label="Last page"
+          >
+            <i class="fa-solid fa-angles-right" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <p class="home__page-info">
+          Page {{ currentPage }} of {{ totalPages }}
+          <span class="home__page-count">({{ filteredItems.length }} auctions)</span>
+        </p>
+      </nav>
+    </div>
+  </section>
+
+  <app-place-bid-modal
+    [open]="placeBidModalOpen"
+    [item]="selectedBidItem"
+    [pending]="bidRequestPending"
+    [serverError]="bidRequestError"
+    [bidRealtimeState]="selectedBidItem?.bidRealtimeState ?? null"
+    (openChange)="onPlaceBidModalOpenChange($event)"
+    (submitted)="onPlaceBidSubmitted($event)"
+  ></app-place-bid-modal>
+
+  <app-report-auction-modal
+    [open]="reportModalOpen"
+    [item]="selectedReportItem"
+    [pending]="reportRequestPending"
+    [serverError]="reportRequestError"
+    (openChange)="onReportModalOpenChange($event)"
+    (submitted)="onReportAuctionSubmitted($event)"
+  ></app-report-auction-modal>
+</section>

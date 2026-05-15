@@ -1,0 +1,66 @@
+<div class="place-bid-modal" *ngIf="open" (click)="onBackdropClick()">
+  <div
+    class="place-bid-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="place-bid-modal-title"
+    aria-describedby="place-bid-modal-desc"
+    (click)="onDialogClick($event)"
+  >
+    <p class="place-bid-modal__kicker">Live Auction</p>
+    <h2 id="place-bid-modal-title" class="place-bid-modal__title">Place Your Bid</h2>
+    <p id="place-bid-modal-desc" class="place-bid-modal__desc">
+      Submit a higher bid to compete for
+      <strong>{{ item?.title }}</strong>.
+    </p>
+
+    <div class="place-bid-modal__stats">
+      <div class="place-bid-modal__stat">
+        <span>Current Bid</span>
+        <strong>{{ item?.currentBidAmount | number: '1.0-2' }} {{ item?.currency }}</strong>
+      </div>
+
+      <div class="place-bid-modal__stat place-bid-modal__stat--right">
+        <span>Minimum Bid</span>
+        <strong>{{ minimumBid | number: '1.0-2' }} {{ item?.currency }}</strong>
+      </div>
+    </div>
+
+    <p
+      class="place-bid-modal__realtime"
+      [class.place-bid-modal__realtime--winning]="bidRealtimeState === 'winning'"
+      [class.place-bid-modal__realtime--outbid]="bidRealtimeState === 'outbid'"
+      *ngIf="bidRealtimeState"
+      role="status"
+      aria-live="polite"
+    >
+      {{ bidRealtimeState === 'winning' ? 'You are currently winning this auction.' : 'You have been outbid. Place a higher bid now.' }}
+    </p>
+
+    <label class="place-bid-modal__field">
+      <span>Bid Amount ({{ item?.currency }})</span>
+      <input
+        type="number"
+        [value]="bidAmount"
+        [min]="minimumBid"
+        step="1"
+        inputmode="decimal"
+        placeholder="0.00"
+        [disabled]="pending"
+        (input)="bidAmount = $any($event.target).value"
+      />
+    </label>
+
+    <p class="place-bid-modal__error" *ngIf="errorMessage || serverError">{{ errorMessage ?? serverError }}</p>
+
+    <div class="place-bid-modal__actions">
+      <button type="button" class="place-bid-modal__btn place-bid-modal__btn--ghost" [disabled]="pending" (click)="cancel()">
+        Cancel
+      </button>
+
+      <button type="button" class="place-bid-modal__btn place-bid-modal__btn--primary" [disabled]="pending" (click)="submit()">
+        {{ pending ? 'Placing Bid...' : 'Place Bid' }}
+      </button>
+    </div>
+  </div>
+</div>

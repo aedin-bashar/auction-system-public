@@ -1,0 +1,28 @@
+<div class="delete-user-modal" *ngIf="open" (click)="onBackdropClick()">
+  <div
+    class="delete-user-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="delete-user-modal-title"
+    aria-describedby="delete-user-modal-desc"
+    (click)="onDialogClick($event)"
+  >
+    <p class="delete-user-modal__kicker">Admin Users</p>
+    <h2 id="delete-user-modal-title" class="delete-user-modal__title">Delete User</h2>
+    <p id="delete-user-modal-desc" class="delete-user-modal__desc">This action is permanent and cannot be undone.</p>
+
+    <div class="delete-user-modal__user" *ngIf="user">
+      <strong>{{ user.fullName }}</strong>
+      <span>{{ user.email }} · {{ user.role }}</span>
+    </div>
+
+    <div class="delete-user-modal__actions">
+      <button type="button" class="delete-user-modal__btn delete-user-modal__btn--danger" (click)="delete()">
+        Delete User
+      </button>
+      <button type="button" class="delete-user-modal__btn delete-user-modal__btn--ghost" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

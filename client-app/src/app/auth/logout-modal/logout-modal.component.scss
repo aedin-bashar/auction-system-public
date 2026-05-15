@@ -1,0 +1,82 @@
+@use 'styles/shared/modal-mixins' as modal;
+
+.logout-modal {
+  @include modal.overlay($z-index: 1050);
+}
+
+.logout-modal__dialog {
+  @include modal.dialog($width: 520px, $padding: 2.25rem 2.5rem 1.9rem);
+  text-align: center;
+}
+
+.logout-modal__title {
+  margin: 0 0 0.6rem;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--brand-accent);
+  text-shadow: var(--icon-shadow-primary);
+}
+
+.logout-modal__desc {
+  margin: 0 0 1.6rem;
+  color: var(--text-1);
+  line-height: 1.35;
+}
+
+.logout-modal__actions {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: center;
+}
+
+.logout-modal__btn {
+  width: min(340px, 100%);
+  @include modal.button-base(
+    $padding: 0.85rem 1.1rem,
+    $radius: 12px,
+    $font-weight: 700,
+    $border: 0,
+    $transition: (transform 0.08s ease, box-shadow 0.2s ease, filter 0.2s ease)
+  );
+  letter-spacing: 0.01em;
+  cursor: pointer;
+
+  @include modal.button-pressable();
+}
+
+.logout-modal__btn--danger {
+  @include modal.button-danger();
+}
+
+.logout-modal__btn--danger:hover {
+  filter: brightness(1.05);
+  box-shadow:
+    0 0 0 1px rgba(255, 90, 120, 0.32) inset,
+    0 10px 26px rgba(0, 0, 0, 0.55),
+    0 0 22px rgba(255, 59, 92, 0.48);
+}
+
+.logout-modal__btn--ghost {
+  width: auto;
+  padding: 0.45rem 0.95rem;
+  font-size: 0.9rem;
+  color: var(--brand-accent);
+  background: var(--surface-inline);
+  box-shadow: var(--theme-shadow-ghost);
+}
+
+.logout-modal__btn--ghost:hover {
+  color: var(--brand-accent);
+  box-shadow: var(--theme-shadow-ghost-hover);
+}
+
+@media (max-width: 480px) {
+  .logout-modal__dialog {
+    padding: 2rem 1.5rem 1.6rem;
+  }
+
+  .logout-modal__title {
+    font-size: 1.65rem;
+  }
+}

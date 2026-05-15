@@ -1,0 +1,90 @@
+.theme-toggle {
+  display: inline-grid;
+  gap: 0.45rem;
+  padding: 0.38rem;
+  border-radius: 14px;
+  background: var(--surface-inline);
+  box-shadow: var(--theme-shadow-inline);
+}
+
+.theme-toggle__label {
+  margin: 0;
+  color: var(--text-1);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.theme-toggle__options {
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.theme-toggle__option {
+  border: 0;
+  border-radius: 12px;
+  padding: 0.6rem 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  color: var(--text-1);
+  background: var(--surface-input);
+  box-shadow: var(--button-shadow-subtle);
+  transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.theme-toggle__option i {
+  color: currentColor;
+}
+
+.theme-toggle__option:not(.theme-toggle__option--active):hover {
+  color: var(--text-0);
+  background: var(--surface-hover);
+  box-shadow: var(--button-shadow-subtle-hover, var(--button-shadow-subtle));
+}
+
+.theme-toggle__option--active {
+  color: var(--accent-contrast);
+  background: var(--accent-gradient);
+  box-shadow: var(--button-shadow-primary);
+}
+
+.theme-toggle__option--active:hover {
+  color: var(--accent-contrast);
+  background: var(--accent-gradient-hover, var(--accent-gradient));
+  box-shadow: var(--button-shadow-primary-hover, var(--button-shadow-primary));
+}
+
+.theme-toggle__option--active i {
+  color: inherit;
+  text-shadow: none;
+}
+
+.theme-toggle__option:active {
+  transform: translateY(1px);
+}
+
+.theme-toggle--compact {
+  gap: 0;
+  padding: 0.3rem;
+}
+
+.theme-toggle--compact .theme-toggle__option {
+  padding: 0.48rem 0.7rem;
+  min-width: 72px;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 760px) {
+  .theme-toggle--compact .theme-toggle__option span {
+    display: none;
+  }
+
+  .theme-toggle--compact .theme-toggle__option {
+    min-width: 44px;
+    padding: 0.48rem;
+  }
+}

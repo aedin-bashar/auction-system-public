@@ -1,0 +1,67 @@
+<app-navbar [session]="session" [showSearch]="showSearch" (searchChanged)="onSearchChanged($event)" (logoutRequested)="onLogout()"></app-navbar>
+
+<main
+  class="app-shell"
+  [class.app-shell--single-column]="sidebarMode === 'none'"
+  [class.app-shell--user-collapsed]="sidebarMode === 'user' && userSidebarCollapsed"
+  [class.app-shell--admin-collapsed]="sidebarMode === 'admin' && adminSidebarCollapsed"
+>
+  <aside class="app-shell__sidebar" *ngIf="sidebarMode === 'user'">
+    <app-user-sidebar
+      [user]="session"
+      [collapsed]="userSidebarCollapsed"
+      (collapsedChange)="onUserSidebarCollapsedChange($event)"
+    ></app-user-sidebar>
+  </aside>
+
+  <aside class="app-shell__sidebar" *ngIf="sidebarMode === 'admin'">
+    <app-admin-sidebar
+      [adminName]="session?.fullName || 'System Administrator'"
+      [adminEmail]="session?.email || 'admin@bashar.se'"
+      [collapsed]="adminSidebarCollapsed"
+      (collapsedChange)="onAdminSidebarCollapsedChange($event)"
+    ></app-admin-sidebar>
+  </aside>
+
+  <section class="app-shell__content">
+    <div class="app-shell__loading" *ngIf="isLoading$ | async" aria-live="polite" aria-label="Loading data">
+      <div class="app-shell__spinner" aria-hidden="true"></div>
+      <span>Loading...</span>
+    </div>
+
+    <router-outlet></router-outlet>
+  </section>
+</main>
+
+<footer class="app-footer" aria-label="Site footer">
+  <p class="app-footer__copy">Copyright &copy; {{ currentYear }} Bashar Aedin. All rights reserved.</p>
+  <nav class="app-footer__socials" aria-label="Social links">
+    <a
+      class="app-footer__social-link"
+      href="https://github.com/aedin-bashar"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Bashar Aedin on GitHub"
+    >
+      <i class="fa-brands fa-github" aria-hidden="true"></i>
+    </a>
+    <a
+      class="app-footer__social-link"
+      href="https://www.linkedin.com/in/bashar-aedin/"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Bashar Aedin on LinkedIn"
+    >
+      <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+    </a>
+    <a
+      class="app-footer__social-link"
+      href="https://bashar.se"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Bashar Aedin's website"
+    >
+      <i class="fa-solid fa-globe" aria-hidden="true"></i>
+    </a>
+  </nav>
+</footer>

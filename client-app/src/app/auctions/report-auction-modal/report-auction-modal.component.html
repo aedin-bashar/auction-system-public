@@ -1,0 +1,48 @@
+<div class="report-auction-modal" *ngIf="open" (click)="onBackdropClick()">
+  <div
+    class="report-auction-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="report-auction-modal-title"
+    aria-describedby="report-auction-modal-desc"
+    (click)="onDialogClick($event)"
+  >
+    <p class="report-auction-modal__kicker">Marketplace Safety</p>
+    <h2 id="report-auction-modal-title" class="report-auction-modal__title">Report Auction</h2>
+    <p id="report-auction-modal-desc" class="report-auction-modal__desc">
+      Send this listing to the admin moderation queue for
+      <strong>{{ item?.title }}</strong>.
+    </p>
+
+    <label class="report-auction-modal__field">
+      <span>Reason</span>
+      <select [disabled]="pending" [value]="reason" (change)="reason = $any($event.target).value">
+        <option *ngFor="let itemReason of reasons" [value]="itemReason">{{ itemReason }}</option>
+      </select>
+    </label>
+
+    <label class="report-auction-modal__field">
+      <span>Details</span>
+      <textarea
+        rows="4"
+        maxlength="1000"
+        placeholder="Add context for the moderation team if needed."
+        [disabled]="pending"
+        (input)="details = $any($event.target).value"
+      >{{ details }}</textarea>
+    </label>
+
+    <p class="report-auction-modal__hint">{{ details.length }}/1000 characters</p>
+    <p class="report-auction-modal__error" *ngIf="errorMessage || serverError">{{ errorMessage ?? serverError }}</p>
+
+    <div class="report-auction-modal__actions">
+      <button type="button" class="report-auction-modal__btn report-auction-modal__btn--ghost" [disabled]="pending" (click)="cancel()">
+        Cancel
+      </button>
+
+      <button type="button" class="report-auction-modal__btn report-auction-modal__btn--primary" [disabled]="pending" (click)="submit()">
+        {{ pending ? 'Submitting...' : 'Submit Report' }}
+      </button>
+    </div>
+  </div>
+</div>

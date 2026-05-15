@@ -1,0 +1,82 @@
+<div class="user-dropdown" [class.user-dropdown--compact]="compact">
+  <button
+    type="button"
+    class="user-dropdown__trigger"
+    (click)="toggle($event)"
+    [attr.aria-expanded]="isOpen"
+    aria-haspopup="menu"
+    aria-label="User menu"
+  >
+    <span class="user-dropdown__avatar" aria-hidden="true">{{ initials }}</span>
+
+    <span class="user-dropdown__meta" *ngIf="!compact">
+      <strong>{{ user?.fullName || 'Guest User' }}</strong>
+      <small>{{ user?.role || 'Bidder' }}</small>
+    </span>
+
+    <i class="fa-solid fa-chevron-down user-dropdown__chevron" [class.is-open]="isOpen" aria-hidden="true"></i>
+  </button>
+
+  <div
+    class="user-dropdown__menu"
+    *ngIf="isOpen"
+    role="menu"
+    (click)="onMenuClick($event)"
+  >
+    <ng-container *ngIf="isAdmin">
+      <a routerLink="/admin/dashboard" role="menuitem" class="user-dropdown__item" (click)="close()">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Admin Dashboard</span>
+      </a>
+
+      <a routerLink="/admin/auctions" role="menuitem" class="user-dropdown__item" (click)="close()">
+        <i class="fa-solid fa-gavel"></i>
+        <span>Manage Auctions</span>
+      </a>
+
+      <a routerLink="/create" role="menuitem" class="user-dropdown__item" (click)="close()">
+        <i class="fa-solid fa-plus"></i>
+        <span>Create Auction</span>
+      </a>
+
+      <a routerLink="/admin/users" role="menuitem" class="user-dropdown__item" (click)="close()">
+        <i class="fa-solid fa-users"></i>
+        <span>Manage Users</span>
+      </a>
+
+      <a routerLink="/admin/flagged-cases" role="menuitem" class="user-dropdown__item" (click)="close()">
+        <i class="fa-solid fa-flag"></i>
+        <span>Flagged Cases</span>
+      </a>
+
+      <div class="user-dropdown__divider"></div>
+    </ng-container>
+
+    <a routerLink="/profile" role="menuitem" class="user-dropdown__item" (click)="close()">
+      <i class="fa-regular fa-user"></i>
+      <span>My Profile</span>
+    </a>
+
+    <a routerLink="/settings" role="menuitem" class="user-dropdown__item" (click)="close()">
+      <i class="fa-solid fa-gear"></i>
+      <span>Settings</span>
+    </a>
+
+    <a routerLink="/my-bids" role="menuitem" class="user-dropdown__item" (click)="close()">
+      <i class="fa-solid fa-gavel"></i>
+      <span>My Bids</span>
+    </a>
+
+    <a routerLink="/watchlist" role="menuitem" class="user-dropdown__item" (click)="close()">
+      <i class="fa-regular fa-heart"></i>
+      <span>Watchlist</span>
+    </a>
+
+    <div class="user-dropdown__divider"></div>
+
+    <button type="button" role="menuitem" class="user-dropdown__item user-dropdown__item--danger" (click)="onLogout()">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span>Log Out</span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<p
+  *ngIf="hasState"
+  class="bid-state-feedback"
+  [class.bid-state-feedback--winning]="state === 'winning'"
+  [class.bid-state-feedback--outbid]="state === 'outbid'"
+  [class.bid-state-feedback--compact]="compact"
+  role="status"
+  aria-live="polite"
+>
+  <span class="bid-state-feedback__dot" aria-hidden="true"></span>
+  <span>{{ label }}</span>
+</p>

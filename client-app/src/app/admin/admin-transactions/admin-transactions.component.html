@@ -1,0 +1,152 @@
+<section class="admin-transactions">
+  <header class="admin-transactions__header">
+    <p class="admin-transactions__kicker">Admin Panel</p>
+    <h1>Transaction Management</h1>
+    <p class="admin-transactions__subtitle">Monitor transaction flow, inspect details, issue refunds, and remove records.</p>
+  </header>
+
+  <div class="admin-transactions__layout">
+    <article class="admin-transactions__list-panel">
+      <div class="admin-transactions__empty" *ngIf="isLoading">
+        Loading transactions...
+      </div>
+
+      <div class="admin-transactions__empty admin-transactions__empty--error" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="admin-transactions__table-header">
+        <span>Transaction</span>
+        <span>User</span>
+        <span>Amount</span>
+        <span>Status</span>
+      </div>
+
+      <button
+        type="button"
+        class="admin-transactions__row"
+        *ngFor="let transaction of transactions; trackBy: trackByTransactionId"
+        [class.admin-transactions__row--active]="transaction.id === selectedTransactionId"
+        (click)="selectTransaction(transaction.id)"
+      >
+        <div class="admin-transactions__identity">
+          <strong>{{ transaction.id }}</strong>
+          <small>{{ asDate(transaction.createdAt) }}</small>
+        </div>
+
+        <div class="admin-transactions__text">
+          <strong>{{ transaction.user }}</strong>
+          <small>{{ transaction.type }}</small>
+        </div>
+
+        <span class="admin-transactions__amount">{{ asMoney(transaction.amount, transaction.currency) }}</span>
+
+        <span
+          class="admin-transactions__status"
+          [class.admin-transactions__status--refunded]="transaction.status === 'Refunded'"
+        >
+          {{ transaction.status }}
+        </span>
+      </button>
+
+      <div class="admin-transactions__empty" *ngIf="!isLoading && transactions.length === 0">
+        No transactions available.
+      </div>
+    </article>
+
+    <article class="admin-transactions__detail-panel" *ngIf="selectedTransaction as selected">
+      <div class="admin-transactions__detail-head">
+        <div>
+          <p class="admin-transactions__meta">Transaction Detail</p>
+          <h2>{{ selected.id }}</h2>
+        </div>
+        <span class="admin-transactions__status-pill">{{ selected.status }}</span>
+      </div>
+
+      <dl class="admin-transactions__detail-grid">
+        <div>
+          <dt>User</dt>
+          <dd>{{ selected.user }} ({{ selected.userId }})</dd>
+        </div>
+        <div>
+          <dt>Amount</dt>
+          <dd>{{ asMoney(selected.amount, selected.currency) }}</dd>
+        </div>
+        <div>
+          <dt>Reference</dt>
+          <dd>{{ selected.reference }}</dd>
+        </div>
+        <div>
+          <dt>Wallet Balance</dt>
+          <dd>
+            {{
+              selected.walletBalance !== null
+                ? asMoney(selected.walletBalance, selected.walletBalanceCurrency ?? selected.currency)
+                : '-'
+            }}
+          </dd>
+        </div>
+      </dl>
+
+      <div class="admin-transactions__edit-block">
+        <label for="transactionDescription">Description</label>
+        <textarea
+          #descriptionInput
+          id="transactionDescription"
+          rows="4"
+          [(ngModel)]="draftDescription"
+          maxlength="300"
+        ></textarea>
+      </div>
+
+      <p class="admin-transactions__note" *ngIf="selected.refundReason">
+        Refund reason: {{ selected.refundReason }}
+      </p>
+
+      <div class="admin-transactions__actions">
+        <button
+          type="button"
+          class="admin-transactions__btn admin-transactions__btn--save"
+          (click)="saveDescription(descriptionInput.value)"
+          title="Save transaction edit"
+          aria-label="Save transaction edit"
+        >
+          <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
+        </button>
+        <button
+          type="button"
+          class="admin-transactions__btn admin-transactions__btn--refund"
+          (click)="openRefund()"
+          [disabled]="selected.status === 'Refunded' || isSaving"
+          title="Refund transaction"
+          aria-label="Refund transaction"
+        >
+          <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+        </button>
+        <button
+          type="button"
+          class="admin-transactions__btn admin-transactions__btn--delete"
+          (click)="openDelete()"
+          title="Delete transaction"
+          aria-label="Delete transaction"
+        >
+          <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+        </button>
+      </div>
+    </article>
+  </div>
+
+  <app-refund-transaction-modal
+    [open]="isRefundModalOpen"
+    [transaction]="selectedTransaction ? { id: selectedTransaction.id, user: selectedTransaction.user, amount: asMoney(selectedTransaction.amount, selectedTransaction.currency), status: selectedTransaction.status } : null"
+    (openChange)="onRefundModalOpenChange($event)"
+    (confirmed)="onRefundConfirmed($event)"
+  />
+
+  <app-delete-transaction-modal
+    [open]="isDeleteModalOpen"
+    [transaction]="selectedTransaction ? { id: selectedTransaction.id, user: selectedTransaction.user, amount: asMoney(selectedTransaction.amount, selectedTransaction.currency), status: selectedTransaction.status } : null"
+    (openChange)="onDeleteModalOpenChange($event)"
+    (confirmed)="onDeleteConfirmed($event)"
+  />
+</section>

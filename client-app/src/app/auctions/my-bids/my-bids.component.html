@@ -1,0 +1,66 @@
+<section class="my-bids" aria-label="My Bids">
+  <header class="my-bids__header glass-panel neon-border">
+    <div>
+      <p class="my-bids__kicker">Realtime Bidding</p>
+      <h1>My Bids</h1>
+      <p class="my-bids__subtitle">Track all active bids and instantly see when you are winning or outbid.</p>
+    </div>
+
+    <div class="my-bids__stats">
+      <div class="my-bids__stat my-bids__stat--winning">
+        <span>Winning</span>
+        <strong>{{ winningCount }}</strong>
+      </div>
+      <div class="my-bids__stat my-bids__stat--outbid">
+        <span>Outbid</span>
+        <strong>{{ outbidCount }}</strong>
+      </div>
+    </div>
+  </header>
+
+  <p class="my-bids__subtitle" *ngIf="isLoading">Loading your bids...</p>
+  <p class="my-bids__subtitle" *ngIf="!isLoading && loadError">{{ loadError }}</p>
+  <p class="my-bids__subtitle" *ngIf="!isLoading && !loadError && items.length === 0">You have no active bids yet.</p>
+
+  <div class="my-bids__list" *ngIf="!isLoading && !loadError && items.length > 0">
+    <article class="my-bid-card" *ngFor="let item of items; trackBy: trackByAuctionId">
+      <div class="my-bid-card__image-wrap">
+        <img [src]="item.imageUrl" [alt]="item.title" loading="lazy" decoding="async" (error)="onImageError($event)" />
+      </div>
+
+      <div class="my-bid-card__content">
+        <div class="my-bid-card__top-row">
+          <h2>{{ item.title }}</h2>
+          <span class="my-bid-card__status" [class.my-bid-card__status--outbid]="!isWinning(item)">
+            {{ getStatusLabel(item) }}
+          </span>
+        </div>
+
+        <div class="my-bid-card__meta">
+          <span><i class="fa-regular fa-clock" aria-hidden="true"></i> {{ item.endTimeLabel }}</span>
+          <span><i class="fa-solid fa-gavel" aria-hidden="true"></i> {{ item.bidsCount }} bids</span>
+        </div>
+
+        <div class="my-bid-card__prices">
+          <p>
+            Your Max Bid
+            <strong>{{ item.currency }} {{ item.myMaxBid | number: '1.0-0' }}</strong>
+          </p>
+          <p>
+            Current Highest
+            <strong>{{ item.currency }} {{ item.currentHighestBid | number: '1.0-0' }}</strong>
+          </p>
+        </div>
+
+        <p class="my-bid-card__notice" [class.my-bid-card__notice--outbid]="!isWinning(item)">
+          <ng-container *ngIf="isWinning(item); else outbidNotice">
+            You currently hold the top bid.
+          </ng-container>
+          <ng-template #outbidNotice>
+            You are outbid by {{ item.currency }} {{ getOutbidDifference(item) | number: '1.0-0' }}.
+          </ng-template>
+        </p>
+      </div>
+    </article>
+  </div>
+</section>

@@ -1,0 +1,131 @@
+/* Shared page/surface primitives */
+
+$section-header-shadow: var(--theme-shadow-header);
+
+$panel-shadow: var(--theme-shadow-panel);
+
+$soft-card-shadow: var(--theme-shadow-soft);
+
+$list-card-shadow: var(--theme-shadow-list);
+
+@mixin page-shell($gap: 1rem, $max-width: null, $margin: null) {
+  display: grid;
+  gap: $gap;
+
+  @if $max-width != null {
+    max-width: $max-width;
+  }
+
+  @if $margin != null {
+    margin: $margin;
+  }
+}
+
+@mixin section-header(
+  $padding: 1.25rem 1.35rem,
+  $background: var(--surface-elevated),
+  $shadow: var(--theme-shadow-header)
+) {
+  padding: $padding;
+  border-radius: var(--radius-12);
+  background: $background;
+  box-shadow: $shadow;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+@mixin section-kicker($font-size: 0.82rem, $letter-spacing: 0.1em) {
+  margin: 0;
+  font-size: $font-size;
+  letter-spacing: $letter-spacing;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+  text-shadow: var(--icon-shadow-primary);
+}
+
+@mixin section-panel(
+  $padding: 0.85rem,
+  $background: var(--glass-bg),
+  $shadow: var(--theme-shadow-panel),
+  $gap: null
+) {
+  border-radius: var(--radius-12);
+  background: $background;
+  box-shadow: $shadow;
+  padding: $padding;
+
+  @if $gap != null {
+    display: grid;
+    gap: $gap;
+  }
+}
+
+@mixin stat-card(
+  $padding: 0.9rem,
+  $radius: 12px,
+  $background: var(--surface-muted),
+  $shadow: var(--theme-shadow-soft)
+) {
+  border-radius: $radius;
+  padding: $padding;
+  background: $background;
+  box-shadow: $shadow;
+}
+
+@mixin soft-stat(
+  $padding: 0.55rem 0.7rem,
+  $radius: 12px,
+  $background: var(--surface-muted),
+  $shadow: var(--theme-shadow-soft)
+) {
+  border-radius: $radius;
+  padding: $padding;
+  background: $background;
+  box-shadow: $shadow;
+}
+
+@mixin list-card(
+  $columns: 180px minmax(0, 1fr),
+  $gap: 0.95rem,
+  $padding: 0.8rem,
+  $radius: 12px,
+  $background: var(--surface-muted),
+  $shadow: var(--theme-shadow-list)
+) {
+  display: grid;
+  grid-template-columns: $columns;
+  gap: $gap;
+  border-radius: $radius;
+  padding: $padding;
+  background: $background;
+  box-shadow: $shadow;
+}
+
+@mixin media-thumb($radius: 10px, $min-height: 122px) {
+  border-radius: $radius;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--border-accent-soft) inset;
+  background: var(--surface-muted);
+  min-height: $min-height;
+}
+
+@mixin status-pill(
+  $padding: 0.3rem 0.7rem,
+  $radius: 999px,
+  $background: var(--surface-hover),
+  $color: var(--brand-accent),
+  $shadow: 0 0 0 1px var(--border-accent) inset
+) {
+  border-radius: $radius;
+  padding: $padding;
+  background: $background;
+  color: $color;
+  box-shadow: $shadow;
+}
+
+@mixin table-row($padding: 0.72rem 0.82rem, $radius: 10px) {
+  border-radius: $radius;
+  background: var(--surface-muted);
+  box-shadow: 0 0 0 1px var(--border-accent-soft) inset;
+  padding: $padding;
+}

@@ -1,0 +1,71 @@
+<div class="payment-modal" *ngIf="open" (click)="onBackdropClick()">
+  <div
+    class="payment-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="payment-modal-title"
+    aria-describedby="payment-modal-desc"
+    (click)="onDialogClick($event)"
+  >
+    <p class="payment-modal__kicker">Payment Methods</p>
+    <h2 id="payment-modal-title" class="payment-modal__title">{{ title }}</h2>
+    <p id="payment-modal-desc" class="payment-modal__desc">{{ description }}</p>
+
+    <ng-container *ngIf="mode !== 'remove'; else removeTemplate">
+      <label class="payment-modal__field">
+        <span>Card Holder Name</span>
+        <input type="text" [(ngModel)]="holderName" maxlength="100" placeholder="John Doe" autocomplete="cc-name" />
+      </label>
+
+      <label class="payment-modal__field">
+        <span>Card Number</span>
+        <input
+          type="text"
+          [(ngModel)]="cardNumber"
+          maxlength="19"
+          placeholder="{{ mode === 'edit' ? 'Leave blank to keep existing number' : '1234123412341234' }}"
+          autocomplete="cc-number"
+        />
+      </label>
+
+      <div class="payment-modal__row">
+        <label class="payment-modal__field">
+          <span>Expiry (MM/YY)</span>
+          <input type="text" [(ngModel)]="expiry" maxlength="5" placeholder="MM/YY" autocomplete="cc-exp" />
+        </label>
+
+        <label class="payment-modal__field" *ngIf="mode === 'add'">
+          <span>CVV</span>
+          <input type="password" [(ngModel)]="cvv" maxlength="4" placeholder="123" autocomplete="cc-csc" />
+        </label>
+      </div>
+
+      <label class="payment-modal__checkbox">
+        <input type="checkbox" [(ngModel)]="makeDefault" />
+        <span>Set as default payment method</span>
+      </label>
+    </ng-container>
+
+    <ng-template #removeTemplate>
+      <p class="payment-modal__warning">
+        Remove <strong>{{ method?.brand }} •••• {{ method?.last4 }}</strong> from your wallet?
+      </p>
+    </ng-template>
+
+    <p class="payment-modal__error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <div class="payment-modal__actions">
+      <button
+        type="button"
+        class="payment-modal__btn"
+        [class.payment-modal__btn--danger]="mode === 'remove'"
+        [class.payment-modal__btn--save]="mode !== 'remove'"
+        (click)="submit()"
+      >
+        {{ mode === 'add' ? 'Add Card' : mode === 'edit' ? 'Save Changes' : 'Remove Card' }}
+      </button>
+
+      <button type="button" class="payment-modal__btn payment-modal__btn--ghost" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+</div>

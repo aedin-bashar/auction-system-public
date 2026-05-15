@@ -1,0 +1,59 @@
+<article class="auction-card" aria-label="Auction item card">
+  <div class="auction-card__media-wrap">
+    <img class="auction-card__media" [src]="item.imageUrl" [alt]="item.title" loading="lazy" decoding="async" (error)="onImageError($event)" />
+    <span class="auction-card__category">{{ item.category }}</span>
+  </div>
+
+  <div class="auction-card__content">
+    <h3 class="auction-card__title">{{ item.title }}</h3>
+
+    <div class="auction-card__meta">
+      <div class="auction-card__metric">
+        <span class="auction-card__label">Current Bid</span>
+        <strong class="auction-card__value">{{ item.currentBidAmount | number: '1.0-2' }} {{ item.currency }}</strong>
+      </div>
+
+      <div class="auction-card__metric auction-card__metric--right">
+        <span class="auction-card__label">Time Left</span>
+        <strong class="auction-card__value auction-card__value--time">{{ item.timeLeft }}</strong>
+      </div>
+    </div>
+
+    <div class="auction-card__footer">
+      <div class="auction-card__status-wrap">
+        <small class="auction-card__bids">{{ item.bidsCount }} bids</small>
+        <app-bid-state-feedback [state]="item.bidRealtimeState" [compact]="true" />
+      </div>
+      <div class="auction-card__actions">
+        <button
+          type="button"
+          class="auction-card__utility-btn"
+          title="Report listing"
+          aria-label="Report listing"
+          (click)="onReportAuction()"
+        >
+          <i class="fa-solid fa-flag" aria-hidden="true"></i>
+        </button>
+
+        <button
+          type="button"
+          class="auction-card__watch-btn"
+          [class.auction-card__watch-btn--active]="item.inWatchlist"
+          [attr.aria-pressed]="item.inWatchlist"
+          [title]="item.inWatchlist ? 'Remove from watchlist' : 'Add to watchlist'"
+          (click)="onToggleWatchlist()"
+        >
+          <i class="fa-solid" [class.fa-heart]="item.inWatchlist" [class.fa-heart-circle-plus]="!item.inWatchlist" aria-hidden="true"></i>
+        </button>
+
+        <button
+          type="button"
+          class="auction-card__action"
+          [disabled]="bidDisabled"
+          [title]="bidDisabled ? bidDisabledReason : bidButtonText"
+          (click)="onPlaceBid()"
+        >{{ bidButtonText }}</button>
+      </div>
+    </div>
+  </div>
+</article>

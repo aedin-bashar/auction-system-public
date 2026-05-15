@@ -1,0 +1,186 @@
+.auction-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-12);
+  background: var(--glass-bg);
+  box-shadow: var(--theme-shadow-card);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  transition: transform 0.12s ease, box-shadow 0.2s ease;
+}
+
+.auction-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--theme-shadow-card-hover);
+}
+
+.auction-card__media-wrap {
+  position: relative;
+  aspect-ratio: 16 / 11;
+  margin: 0.55rem 0.55rem 0;
+  background: var(--surface-media);
+  border-radius: calc(var(--radius-12) + 2px);
+  box-shadow: 0 0 0 1px var(--border-accent-soft) inset;
+  overflow: hidden;
+}
+
+.auction-card__media {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  padding: 0;
+  border-radius: inherit;
+  background: var(--surface-muted);
+  display: block;
+}
+
+.auction-card__category {
+  position: absolute;
+  inset: 0.7rem auto auto 0.7rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  color: var(--neon-cyan);
+  text-transform: uppercase;
+  background: var(--surface-inline);
+  box-shadow: 0 0 0 1px var(--border-accent) inset;
+}
+
+.auction-card__content {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 0.8rem;
+  padding: 0.9rem 0.95rem 0.95rem;
+  align-items: start;
+}
+
+.auction-card__title {
+  margin: 0;
+  color: var(--text-0);
+  font-size: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.auction-card__meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.auction-card__metric {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.auction-card__metric--right {
+  justify-items: end;
+  text-align: right;
+}
+
+.auction-card__label {
+  color: var(--text-1);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+}
+
+.auction-card__value {
+  color: var(--neon-cyan);
+  font-size: 0.96rem;
+}
+
+.auction-card__value--time {
+  color: var(--text-1);
+}
+
+.auction-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem;
+  align-self: end;
+}
+
+.auction-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.auction-card__status-wrap {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.auction-card__bids {
+  color: var(--text-1);
+  font-size: 0.78rem;
+}
+
+.auction-card__action {
+  border: 0;
+  border-radius: 10px;
+  padding: 0.42rem 0.78rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-contrast);
+  background: var(--accent-gradient);
+  box-shadow: var(--button-shadow-primary);
+  transition: box-shadow 0.2s ease;
+}
+
+.auction-card__action:hover {
+  background: var(--accent-gradient-hover, var(--accent-gradient));
+  box-shadow: var(--button-shadow-primary-hover);
+}
+
+.auction-card__action:disabled {
+  cursor: not-allowed;
+  color: var(--text-1);
+  background: var(--surface-inline-strong);
+  box-shadow: var(--button-shadow-subtle);
+}
+
+.auction-card__watch-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 10px;
+  color: var(--text-1);
+  background: var(--surface-inline-strong);
+  box-shadow: 0 0 0 1px var(--border-accent-soft) inset;
+  transition: color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auction-card__utility-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 10px;
+  color: var(--warning);
+  background: var(--surface-inline-strong);
+  box-shadow: 0 0 0 1px rgba(154, 103, 0, 0.18) inset;
+  transition: color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auction-card__utility-btn:hover {
+  color: var(--warning);
+  background: rgba(154, 103, 0, 0.08);
+  box-shadow: 0 0 0 1px rgba(154, 103, 0, 0.26) inset;
+}
+
+.auction-card__watch-btn:hover {
+  color: var(--neon-cyan);
+  box-shadow: var(--button-shadow-subtle-hover);
+}
+
+.auction-card__watch-btn--active {
+  color: var(--danger);
+  background: var(--surface-danger);
+  box-shadow: 0 0 0 1px var(--surface-danger-border) inset;
+}

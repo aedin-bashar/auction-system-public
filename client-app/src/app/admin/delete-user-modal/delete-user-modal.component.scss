@@ -1,0 +1,50 @@
+@use 'styles/shared/modal-mixins' as modal;
+
+.delete-user-modal {
+  @include modal.overlay();
+}
+
+.delete-user-modal__dialog {
+  @include modal.dialog($width: 520px);
+}
+
+.delete-user-modal__kicker {
+  @include modal.kicker();
+}
+
+.delete-user-modal__title {
+  @include modal.title();
+}
+
+.delete-user-modal__desc {
+  @include modal.description();
+}
+
+.delete-user-modal__user {
+  @include modal.info-panel($shadow: 0 0 0 1px rgba(255, 59, 92, 0.34) inset);
+}
+
+.delete-user-modal__user strong {
+  color: var(--text-0);
+}
+
+.delete-user-modal__user span {
+  color: var(--text-1);
+  font-size: 0.85rem;
+}
+
+.delete-user-modal__actions {
+  @include modal.actions-row();
+}
+
+.delete-user-modal__btn {
+  @include modal.button-base();
+}
+
+.delete-user-modal__btn--danger {
+  @include modal.button-danger();
+}
+
+.delete-user-modal__btn--ghost {
+  @include modal.button-ghost();
+}

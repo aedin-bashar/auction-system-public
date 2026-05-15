@@ -1,0 +1,105 @@
+<section class="admin-users">
+  <header class="admin-users__header">
+    <p class="admin-users__kicker">Admin Panel</p>
+    <h1>User Management</h1>
+    <p class="admin-users__subtitle">Review and maintain platform users, roles, and account status.</p>
+  </header>
+
+  <article class="admin-users__panel">
+    <p *ngIf="isLoading">Loading users...</p>
+    <p *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <div class="admin-users__filters" *ngIf="!isLoading && !errorMessage">
+      <div class="admin-users__search-wrap">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        <input
+          class="admin-users__search"
+          type="search"
+          placeholder="Search by name or email…"
+          [(ngModel)]="nameFilter"
+          aria-label="Search users by name or email"
+        />
+      </div>
+      <div class="admin-users__status-filter" role="group" aria-label="Filter by status">
+        <button
+          type="button"
+          class="admin-users__status-btn"
+          [class.admin-users__status-btn--selected]="statusFilter === 'all'"
+          (click)="statusFilter = 'all'"
+        >All</button>
+        <button
+          type="button"
+          class="admin-users__status-btn admin-users__status-btn--active-opt"
+          [class.admin-users__status-btn--selected]="statusFilter === 'active'"
+          (click)="statusFilter = 'active'"
+        >Active</button>
+        <button
+          type="button"
+          class="admin-users__status-btn admin-users__status-btn--inactive-opt"
+          [class.admin-users__status-btn--selected]="statusFilter === 'inactive'"
+          (click)="statusFilter = 'inactive'"
+        >Inactive</button>
+      </div>
+    </div>
+
+    <div class="admin-users__table-header" *ngIf="!isLoading && !errorMessage">
+      <span>Name</span>
+      <span>Email</span>
+      <span>Role</span>
+      <span>Status</span>
+      <span>Joined</span>
+      <span>Actions</span>
+    </div>
+
+    <div class="admin-users__row" *ngFor="let user of filteredUsers; trackBy: trackById">
+      <span class="admin-users__name">{{ user.fullName }}</span>
+      <span class="admin-users__email">{{ user.email }}</span>
+      <span class="admin-users__role">{{ user.role }}</span>
+      <span class="admin-users__status" [class.admin-users__status--inactive]="!user.isActive">
+        {{ user.isActive ? 'Active' : 'Inactive' }}
+      </span>
+      <span class="admin-users__joined">{{ user.joinedOn }}</span>
+      <div class="admin-users__actions">
+        <button
+          type="button"
+          class="admin-users__action"
+          (click)="openEdit(user)"
+          title="Edit user"
+          aria-label="Edit user"
+        >
+          <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+        </button>
+        <button
+          type="button"
+          class="admin-users__action admin-users__action--danger"
+          (click)="openDelete(user)"
+          title="Delete user"
+          aria-label="Delete user"
+        >
+          <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <p
+      class="admin-users__empty"
+      *ngIf="!isLoading && !errorMessage && filteredUsers.length === 0"
+    >
+      No users match your filters.
+    </p>
+  </article>
+
+  <app-edit-user-modal
+    [open]="isEditModalOpen"
+    [user]="selectedUser"
+    (openChange)="onEditOpenChange($event)"
+    (saved)="onUserSaved($event)"
+  />
+
+  <app-delete-user-modal
+    [open]="isDeleteModalOpen"
+    [user]="selectedUser"
+    (openChange)="onDeleteOpenChange($event)"
+    (confirmed)="onUserDeleted($event)"
+  />
+</section>

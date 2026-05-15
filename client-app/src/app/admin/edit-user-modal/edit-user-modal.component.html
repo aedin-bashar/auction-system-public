@@ -1,0 +1,45 @@
+<div class="edit-user-modal" *ngIf="open" (click)="onBackdropClick()">
+  <div
+    class="edit-user-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="edit-user-modal-title"
+    aria-describedby="edit-user-modal-desc"
+    (click)="onDialogClick($event)"
+  >
+    <p class="edit-user-modal__kicker">Admin Users</p>
+    <h2 id="edit-user-modal-title" class="edit-user-modal__title">Edit User</h2>
+    <p id="edit-user-modal-desc" class="edit-user-modal__desc">Update role and account details for this user.</p>
+
+    <label class="edit-user-modal__field">
+      <span>Full Name</span>
+      <input type="text" [(ngModel)]="draftFullName" maxlength="100" />
+    </label>
+
+    <label class="edit-user-modal__field">
+      <span>Email</span>
+      <input type="email" [(ngModel)]="draftEmail" maxlength="320" />
+    </label>
+
+    <label class="edit-user-modal__field">
+      <span>Role</span>
+      <select [(ngModel)]="draftRole">
+        <option value="Admin">Admin</option>
+        <option value="Seller">Seller</option>
+        <option value="Bidder">Bidder</option>
+      </select>
+    </label>
+
+    <label class="edit-user-modal__checkbox">
+      <input type="checkbox" [(ngModel)]="draftActive" />
+      <span>Active Account</span>
+    </label>
+
+    <p class="edit-user-modal__error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <div class="edit-user-modal__actions">
+      <button type="button" class="edit-user-modal__btn edit-user-modal__btn--save" (click)="save()">Save</button>
+      <button type="button" class="edit-user-modal__btn edit-user-modal__btn--ghost" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+</div>

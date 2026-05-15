@@ -1,0 +1,91 @@
+@use 'styles/shared/auth-mixins' as auth;
+@use 'styles/shared/modal-mixins' as modal;
+
+.register {
+  @include auth.auth-card($max-width: 440px);
+}
+
+.register::before {
+  @include auth.auth-card-highlight();
+}
+
+.register__header h1 {
+  @include auth.auth-title();
+}
+
+.register__header p {
+  @include auth.auth-subtitle();
+}
+
+.register__form {
+  @include auth.auth-form();
+}
+
+.register__field {
+  @include auth.auth-field();
+}
+
+.register__field input {
+  @include auth.auth-input();
+}
+
+.register__field input:focus {
+  @include auth.auth-input-focus();
+}
+
+.register__field--error input {
+  box-shadow: 0 0 0 1px rgba(255, 59, 92, 0.7) inset, 0 0 12px rgba(255, 59, 92, 0.35);
+}
+
+.register__field small {
+  color: var(--danger);
+}
+
+.register__checkbox {
+  @include modal.checkbox-row($margin-top: 0, $font-size: 0.9rem);
+}
+
+.register__checkbox input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--neon-cyan);
+}
+
+.register__link {
+  color: var(--neon-cyan);
+  text-decoration: none;
+  text-shadow: var(--icon-shadow-primary);
+}
+
+button {
+  @include auth.auth-button();
+}
+
+button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.register__message {
+  margin: 0;
+}
+
+.register__message--success {
+  color: var(--success);
+}
+
+.register__message--error {
+  color: var(--danger);
+}
+
+.register__error {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--danger);
+}
+
+.register__footer {
+  margin: 0;
+  text-align: center;
+  color: var(--text-1);
+}

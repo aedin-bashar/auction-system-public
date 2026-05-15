@@ -1,0 +1,25 @@
+<div class="logout-modal" *ngIf="open" (click)="onBackdropClick()">
+  <div
+    class="logout-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="logout-modal-title"
+    aria-describedby="logout-modal-desc"
+    (click)="onDialogClick($event)"
+  >
+    <h2 id="logout-modal-title" class="logout-modal__title">Confirm Log Out</h2>
+    <p id="logout-modal-desc" class="logout-modal__desc">
+      Are you sure you want to log out of your account?
+    </p>
+
+    <div class="logout-modal__actions">
+      <button type="button" class="logout-modal__btn logout-modal__btn--danger" (click)="confirmLogout()">
+        Log Out
+      </button>
+
+      <button type="button" class="logout-modal__btn logout-modal__btn--ghost" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<section class="won-auctions" aria-label="Won Auctions">
+  <header class="won-auctions__header glass-panel neon-border">
+    <div>
+      <p class="won-auctions__kicker">Victory Ledger</p>
+      <h1>Won Auctions</h1>
+      <p class="won-auctions__subtitle">Your completed wins with final price, seller details, and payment status.</p>
+    </div>
+
+    <div class="won-auctions__stats">
+      <div class="won-auctions__stat">
+        <span>Auctions Won</span>
+        <strong>{{ totalWonCount }}</strong>
+      </div>
+      <div class="won-auctions__stat">
+        <span>Total Spent</span>
+        <strong>USD {{ totalSpent | number: '1.0-0' }}</strong>
+      </div>
+    </div>
+  </header>
+
+  <div class="won-auctions__list">
+    <article class="won-card" *ngFor="let item of items; trackBy: trackById">
+      <div class="won-card__image-wrap">
+        <img [src]="item.imageUrl" [alt]="item.title" loading="lazy" decoding="async" (error)="onImageError($event)" />
+      </div>
+
+      <div class="won-card__content">
+        <div class="won-card__top-row">
+          <h2>{{ item.title }}</h2>
+          <span class="won-card__badge">
+            <i class="fa-solid fa-trophy" aria-hidden="true"></i>
+            Won
+          </span>
+        </div>
+
+        <div class="won-card__meta">
+          <span><i class="fa-regular fa-calendar-check" aria-hidden="true"></i> {{ item.wonAtLabel }}</span>
+          <span><i class="fa-regular fa-user" aria-hidden="true"></i> Seller: {{ item.seller }}</span>
+        </div>
+
+        <div class="won-card__prices">
+          <p>
+            Final Price
+            <strong>{{ item.currency }} {{ item.finalPrice | number: '1.0-0' }}</strong>
+          </p>
+          <p>
+            Your Winning Bid
+            <strong>{{ item.currency }} {{ item.myWinningBid | number: '1.0-0' }}</strong>
+          </p>
+        </div>
+
+        <p class="won-card__payment" [class.won-card__payment--pending]="!isPaid(item)">
+          <ng-container *ngIf="isPaid(item); else pendingPayment">Payment completed successfully.</ng-container>
+          <ng-template #pendingPayment>Payment pending. Complete checkout to finalize this win.</ng-template>
+        </p>
+      </div>
+    </article>
+  </div>
+</section>

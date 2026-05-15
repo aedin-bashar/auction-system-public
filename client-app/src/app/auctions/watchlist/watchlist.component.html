@@ -1,0 +1,94 @@
+<section class="watchlist" aria-label="Watchlist">
+  <header class="watchlist__header glass-panel neon-border">
+    <div>
+      <p class="watchlist__kicker">Bidding Radar</p>
+      <h1>Watchlist</h1>
+      <p class="watchlist__subtitle">Monitor saved auctions, price movement, and next minimum bid in real time.</p>
+    </div>
+
+    <div class="watchlist__stats">
+      <div class="watchlist__stat">
+        <span>Watching</span>
+        <strong>{{ totalWatching }}</strong>
+      </div>
+      <div class="watchlist__stat watchlist__stat--alert">
+        <span>Ending Soon</span>
+        <strong>{{ endingSoonCount }}</strong>
+      </div>
+    </div>
+  </header>
+
+  <p class="watchlist__subtitle" *ngIf="isLoading">Loading your watchlist...</p>
+  <p class="watchlist__subtitle" *ngIf="!isLoading && loadError">{{ loadError }}</p>
+  <p class="watchlist__subtitle" *ngIf="!isLoading && !loadError && items.length === 0">No watched auctions yet. Use the heart button on auction cards to add items.</p>
+
+  <div class="watchlist__list" *ngIf="!isLoading && !loadError && items.length > 0">
+    <article class="watch-card" *ngFor="let item of items; trackBy: trackById">
+      <div class="watch-card__image-wrap">
+        <img [src]="item.imageUrl" [alt]="item.title" loading="lazy" decoding="async" (error)="onImageError($event)" />
+      </div>
+
+      <div class="watch-card__content">
+        <div class="watch-card__top-row">
+          <div>
+            <h2>{{ item.title }}</h2>
+            <p class="watch-card__category">{{ item.category }}</p>
+          </div>
+
+          <span class="watch-card__trend" [class.watch-card__trend--steady]="!isRising(item)">
+            <i class="fa-solid" [class.fa-arrow-trend-up]="isRising(item)" [class.fa-wave-square]="!isRising(item)" aria-hidden="true"></i>
+            {{ isRising(item) ? 'Rising' : 'Steady' }}
+          </span>
+        </div>
+
+        <div class="watch-card__meta">
+          <span><i class="fa-regular fa-clock" aria-hidden="true"></i> {{ item.timeLeft }}</span>
+          <span><i class="fa-solid fa-gavel" aria-hidden="true"></i> {{ item.bidsCount }} bids</span>
+        </div>
+
+        <div class="watch-card__prices">
+          <p>
+            Current Bid
+            <strong>{{ item.currency }} {{ item.currentBid | number: '1.0-0' }}</strong>
+          </p>
+          <p>
+            Next Minimum Bid
+            <strong>{{ item.currency }} {{ item.minNextBid | number: '1.0-0' }}</strong>
+          </p>
+        </div>
+
+        <div class="watch-card__actions">
+          <button
+            type="button"
+            class="watch-card__btn watch-card__btn--primary watch-card__btn--icon"
+            [disabled]="isAuthenticated && !canCurrentUserBid"
+            [attr.aria-label]="isAuthenticated && !canCurrentUserBid ? 'Only bidder accounts can place bids' : 'Place bid'"
+            [title]="isAuthenticated && !canCurrentUserBid ? 'Only bidder accounts can place bids' : 'Place bid'"
+            (click)="onPlaceBid(item)"
+          >
+            <i class="fa-solid fa-gavel" aria-hidden="true"></i>
+          </button>
+          <button
+            type="button"
+            class="watch-card__btn watch-card__btn--ghost watch-card__btn--icon"
+            aria-label="Remove from watchlist"
+            title="Remove from watchlist"
+            (click)="onRemove(item)"
+          >
+            <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <app-place-bid-modal
+    [open]="placeBidModalOpen"
+    [item]="selectedBidModalItem"
+    [pending]="bidRequestPending"
+    [serverError]="bidRequestError"
+    [bidRealtimeState]="null"
+    (openChange)="onPlaceBidModalOpenChange($event)"
+    (submitted)="onPlaceBidSubmitted($event)"
+  ></app-place-bid-modal>
+</section>

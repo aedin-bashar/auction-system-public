@@ -1,0 +1,182 @@
+<section class="create-auction">
+  <header class="create-auction__header">
+    <p class="create-auction__kicker">Seller Portal</p>
+    <h1>Create Auction</h1>
+    <p class="create-auction__subtitle">Publish a new lot with pricing, timing, and product details.</p>
+  </header>
+
+  <form class="create-auction__form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div class="create-auction__grid">
+      <div class="create-auction__field">
+        <label for="title">Title</label>
+        <input id="title" type="text" formControlName="title" placeholder="e.g. Vintage Leica Camera" />
+      </div>
+
+      <div class="create-auction__field">
+        <label for="category">Category</label>
+        <div class="create-auction__category" #categoryDropdown>
+          <button
+            id="category"
+            type="button"
+            class="create-auction__category-trigger"
+            aria-label="Category"
+            [attr.aria-expanded]="categoryMenuOpen"
+            (click)="toggleCategoryMenu()"
+          >
+            <span class="create-auction__category-icon">
+              <i [class]="selectedCategoryOption?.icon ?? 'fa-solid fa-tag'" aria-hidden="true"></i>
+            </span>
+            <span class="create-auction__category-label">{{ selectedCategoryOption?.label ?? 'Select category' }}</span>
+            <i class="fa-solid fa-chevron-down create-auction__category-chevron" aria-hidden="true"></i>
+          </button>
+
+          <div class="create-auction__category-menu" *ngIf="categoryMenuOpen">
+            <button
+              *ngFor="let category of categoryOptions"
+              type="button"
+              class="create-auction__category-option"
+              [class.is-selected]="form.controls.category.value === category.value"
+              (click)="selectCategory(category)"
+            >
+              <i [class]="category.icon" aria-hidden="true"></i>
+              <span>{{ category.label }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="create-auction__field create-auction__field--price">
+        <label for="startingPriceAmount">Starting Price</label>
+        <div class="create-auction__split-input">
+          <input id="startingPriceAmount" type="number" min="0" step="0.01" formControlName="startingPriceAmount" />
+          <div class="create-auction__currency" #currencyDropdown>
+            <button
+              id="currency"
+              type="button"
+              class="create-auction__currency-trigger create-auction__category-trigger"
+              aria-label="Currency"
+              [attr.aria-expanded]="currencyMenuOpen"
+              (click)="toggleCurrencyMenu()"
+            >
+              <img
+                class="create-auction__currency-flag"
+                [src]="flagUrl(selectedCurrencyOption?.countryCode ?? 'us')"
+                [alt]="(selectedCurrencyOption?.label ?? 'USD') + ' flag'"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="create-auction__currency-label">{{ selectedCurrencyOption?.label ?? 'USD' }}</span>
+              <i class="fa-solid fa-chevron-down create-auction__currency-chevron" aria-hidden="true"></i>
+            </button>
+
+            <div class="create-auction__currency-menu create-auction__category-menu" *ngIf="currencyMenuOpen">
+              <button
+                *ngFor="let currency of currencyOptions"
+                type="button"
+                class="create-auction__currency-option create-auction__category-option"
+                [class.is-selected]="form.controls.currency.value === currency.value"
+                (click)="selectCurrency(currency)"
+              >
+                <img
+                  class="create-auction__currency-flag"
+                  [src]="flagUrl(currency.countryCode)"
+                  [alt]="currency.label + ' flag'"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span>{{ currency.label }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="create-auction__field create-auction__field--full">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          rows="5"
+          formControlName="description"
+          placeholder="Describe the product condition, authenticity, and included items"
+        ></textarea>
+      </div>
+
+      <div class="create-auction__field">
+        <label for="endDateUtc">End Date (UTC)</label>
+        <div class="create-auction__date-time-wrap">
+          <div class="create-auction__date-input-wrap">
+            <input
+              #endDateInput
+              id="endDateUtc"
+              type="text"
+              [value]="endDateTimeDisplay"
+              placeholder="yyyy-mm-dd 23:59:59"
+              readonly
+              (click)="openDatePicker()"
+              (focus)="openDatePicker()"
+            />
+            <i class="fa-regular fa-calendar create-auction__calendar-icon" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="create-auction__field create-auction__field--upload">
+        <label>Item Image</label>
+        <div
+          class="create-auction__dropzone"
+          [class.create-auction__dropzone--active]="isDraggingFile"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDrop($event)"
+        >
+          <ng-container *ngIf="selectedImagePreviewUrl as previewUrl; else uploadPrompt">
+            <div class="create-auction__preview-wrap">
+              <button
+                type="button"
+                class="create-auction__preview-remove"
+                aria-label="Remove selected image"
+                title="Remove selected image"
+                (click)="removeSelectedImage()"
+              >
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+              </button>
+
+              <img
+                class="create-auction__preview-image"
+                [src]="previewUrl"
+                [alt]="selectedFileName ?? 'Selected image preview'"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </ng-container>
+
+          <ng-template #uploadPrompt>
+            <i class="fa-regular fa-image" aria-hidden="true"></i>
+            <p>Drag & drop image here</p>
+            <span>or</span>
+          </ng-template>
+
+          <label class="create-auction__upload-btn" for="imageUpload">{{ selectedImageFile ? 'Replace File' : 'Select File' }}</label>
+          <input #imageUploadInput id="imageUpload" type="file" accept="image/*" (change)="onFileSelected($event)" />
+          <small *ngIf="selectedFileName as name">Selected: {{ name }}</small>
+        </div>
+      </div>
+    </div>
+
+    <p class="create-auction__error" *ngIf="submitError">{{ submitError }}</p>
+
+    <footer class="create-auction__actions">
+      <button type="button" class="create-auction__btn create-auction__btn--ghost">Cancel</button>
+      <button
+        type="submit"
+        class="create-auction__btn create-auction__btn--primary"
+        [disabled]="isSubmitting"
+      >
+        {{ isSubmitting ? 'Creating...' : 'Create Auction' }}
+      </button>
+    </footer>
+  </form>
+</section>
+
+
