@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auction Admin</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>🏷️ Auction System — Admin</h1>
+        <nav>
+            <a href="index.html">Bidding</a>
+            <a href="admin.html">Admin</a>
+            <span id="user-info"></span>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div id="message-area"></div>
+
+        <!-- Admin Login -->
+        <div id="login-section" class="card">
+            <h2>Admin Login</h2>
+            <div style="max-width:400px">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="login-username" placeholder="admin">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" placeholder="admin123">
+                </div>
+                <button class="btn btn-primary" onclick="login()">Login</button>
+                <button class="btn btn-secondary" style="margin-left:0.5rem" onclick="logout()">Logout</button>
+                <p style="font-size:0.8rem;color:#888;margin-top:0.5rem">Default: admin / admin123</p>
+            </div>
+        </div>
+
+        <!-- Admin Panel (shown after login) -->
+        <div id="admin-panel" style="display:none">
+            <!-- Create Auction -->
+            <div class="card">
+                <h2>Create New Auction</h2>
+                <div class="two-col">
+                    <div>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" id="new-title" placeholder="Auction title">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="new-description" placeholder="Auction description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Starting Price ($)</label>
+                            <input type="number" id="new-price" placeholder="0.00" step="0.01">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label>Start Time</label>
+                            <input type="datetime-local" id="new-start">
+                        </div>
+                        <div class="form-group">
+                            <label>End Time</label>
+                            <input type="datetime-local" id="new-end">
+                        </div>
+                        <button class="btn btn-success" onclick="createAuction()">Create Auction</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auctions List -->
+            <div class="card">
+                <div class="section-header">
+                    <h2>All Auctions</h2>
+                    <button class="btn btn-secondary btn-sm" onclick="loadAuctions()">↻ Refresh</button>
+                </div>
+                <div style="overflow-x:auto">
+                    <table id="auctions-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Starting Price</th>
+                                <th>Current Price</th>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="auctions-tbody">
+                            <tr><td colspan="8" style="color:#888;text-align:center">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="edit-modal">
+        <div class="modal">
+            <h2>Edit Auction</h2>
+            <input type="hidden" id="edit-id">
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="edit-title">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="edit-description"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Start Time</label>
+                <input type="datetime-local" id="edit-start">
+            </div>
+            <div class="form-group">
+                <label>End Time</label>
+                <input type="datetime-local" id="edit-end">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveEdit()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://localhost:5000';
+
+        function getToken() { return localStorage.getItem('adminToken'); }
+
+        function showMessage(msg, type = 'info') {
+            const area = document.getElementById('message-area');
+            area.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+            setTimeout(() => area.innerHTML = '', 4000);
+        }
+
+        function updateUserInfo() {
+            const username = localStorage.getItem('adminUsername');
+            document.getElementById('user-info').textContent = username ? `👤 ${username} (Admin)` : '';
+        }
+
+        function checkAuth() {
+            const token = getToken();
+            document.getElementById('admin-panel').style.display = token ? 'block' : 'none';
+            if (token) loadAuctions();
+        }
+
+        async function login() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            try {
+                const res = await fetch(`${API}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    localStorage.setItem('adminToken', data.token);
+                    localStorage.setItem('adminUsername', username);
+                    updateUserInfo();
+                    showMessage('Logged in as admin!', 'success');
+                    checkAuth();
+                } else {
+                    showMessage('Invalid credentials', 'error');
+                }
+            } catch (e) {
+                showMessage('Connection error. Is the API running?', 'error');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUsername');
+            updateUserInfo();
+            document.getElementById('admin-panel').style.display = 'none';
+            showMessage('Logged out', 'info');
+        }
+
+        async function loadAuctions() {
+            try {
+                const res = await fetch(`${API}/api/auctions`);
+                const auctions = await res.json();
+                const tbody = document.getElementById('auctions-tbody');
+                if (auctions.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" style="color:#888;text-align:center">No auctions yet</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = auctions.map(a => `
+                    <tr>
+                        <td>${a.id}</td>
+                        <td>${escHtml(a.title)}</td>
+                        <td>$${a.startingPrice.toFixed(2)}</td>
+                        <td>$${a.currentPrice.toFixed(2)}</td>
+                        <td>${new Date(a.startTime).toLocaleString()}</td>
+                        <td>${new Date(a.endTime).toLocaleString()}</td>
+                        <td><span class="status ${a.isActive ? 'active' : 'ended'}">${a.isActive ? 'Active' : 'Ended'}</span></td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" onclick="openEdit(${a.id}, '${escAttr(a.title)}', '${escAttr(a.description)}', '${a.startTime}', '${a.endTime}')">Edit</button>
+                            <button class="btn btn-danger btn-sm" style="margin-left:0.3rem" onclick="deleteAuction(${a.id})">Delete</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (e) {
+                showMessage('Failed to load auctions', 'error');
+            }
+        }
+
+        async function createAuction() {
+            const title = document.getElementById('new-title').value;
+            const description = document.getElementById('new-description').value;
+            const startingPrice = parseFloat(document.getElementById('new-price').value);
+            const startTime = document.getElementById('new-start').value;
+            const endTime = document.getElementById('new-end').value;
+
+            if (!title || !startTime || !endTime || isNaN(startingPrice)) {
+                showMessage('Please fill all fields', 'error');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API}/api/auctions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getToken()}`
+                    },
+                    body: JSON.stringify({
+                        title, description, startingPrice,
+                        startTime: new Date(startTime).toISOString(),
+                        endTime: new Date(endTime).toISOString()
+                    })
+                });
+                if (res.ok) {
+                    showMessage('Auction created!', 'success');
+                    document.getElementById('new-title').value = '';
+                    document.getElementById('new-description').value = '';
+                    document.getElementById('new-price').value = '';
+                    document.getElementById('new-start').value = '';
+                    document.getElementById('new-end').value = '';
+                    await loadAuctions();
+                } else {
+                    const err = await res.text();
+                    showMessage(`Error: ${err}`, 'error');
+                }
+            } catch (e) {
+                showMessage('Failed to create auction', 'error');
+            }
+        }
+
+        function openEdit(id, title, description, startTime, endTime) {
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-title').value = title;
+            document.getElementById('edit-description').value = description;
+            document.getElementById('edit-start').value = toLocalDatetimeInput(startTime);
+            document.getElementById('edit-end').value = toLocalDatetimeInput(endTime);
+            document.getElementById('edit-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('edit-modal').classList.remove('active');
+        }
+
+        async function saveEdit() {
+            const id = document.getElementById('edit-id').value;
+            const title = document.getElementById('edit-title').value;
+            const description = document.getElementById('edit-description').value;
+            const startTime = document.getElementById('edit-start').value;
+            const endTime = document.getElementById('edit-end').value;
+
+            try {
+                const res = await fetch(`${API}/api/auctions/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getToken()}`
+                    },
+                    body: JSON.stringify({
+                        title, description,
+                        startTime: new Date(startTime).toISOString(),
+                        endTime: new Date(endTime).toISOString()
+                    })
+                });
+                if (res.ok) {
+                    showMessage('Auction updated!', 'success');
+                    closeModal();
+                    await loadAuctions();
+                } else {
+                    showMessage('Failed to update auction', 'error');
+                }
+            } catch (e) {
+                showMessage('Error updating auction', 'error');
+            }
+        }
+
+        async function deleteAuction(id) {
+            if (!confirm('Delete this auction?')) return;
+            try {
+                const res = await fetch(`${API}/api/auctions/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                });
+                if (res.ok) {
+                    showMessage('Auction deleted', 'success');
+                    await loadAuctions();
+                } else {
+                    showMessage('Failed to delete auction', 'error');
+                }
+            } catch (e) {
+                showMessage('Error deleting auction', 'error');
+            }
+        }
+
+        function toLocalDatetimeInput(isoString) {
+            const d = new Date(isoString);
+            const pad = n => String(n).padStart(2, '0');
+            return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+        }
+
+        function escHtml(str) {
+            const d = document.createElement('div');
+            d.appendChild(document.createTextNode(str));
+            return d.innerHTML;
+        }
+
+        function escAttr(str) {
+            return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+
+        updateUserInfo();
+        checkAuth();
+    </script>
+</body>
+</html>
