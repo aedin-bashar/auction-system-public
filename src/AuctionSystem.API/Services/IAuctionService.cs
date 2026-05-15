@@ -7,7 +7,7 @@ public interface IAuctionService
 {
     Task<List<Auction>> GetAllAuctions();
     Task<Auction?> GetAuctionById(int id);
-    Task<Auction> CreateAuction(CreateAuctionDto dto);
+    Task<Auction> CreateAuction(CreateAuctionDto dto, int createdByUserId);
     Task<bool> UpdateAuction(int id, UpdateAuctionDto dto);
     Task<bool> DeleteAuction(int id);
     Task<Bid> PlaceBid(int auctionId, int userId, decimal amount);

@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using AuctionSystem.API.DTOs;
 using AuctionSystem.API.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -30,7 +31,10 @@ public class AuctionsController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create([FromBody] CreateAuctionDto dto)
     {
-        var auction = await _auctionService.CreateAuction(dto);
+        var userIdClaim = User.FindFirst("id")?.Value;
+        if (userIdClaim == null || !int.TryParse(userIdClaim, out var userId))
+            return Unauthorized();
+        var auction = await _auctionService.CreateAuction(dto, userId);
         return CreatedAtAction(nameof(GetById), new { id = auction.Id }, auction);
     }
 

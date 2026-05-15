@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using AuctionSystem.API.DTOs;
 using AuctionSystem.API.Hubs;
 using AuctionSystem.API.Services;
@@ -35,7 +36,7 @@ public class BidsController : ControllerBase
         try
         {
             var bid = await _auctionService.PlaceBid(auctionId, userId, dto.Amount);
-            var username = User.Identity?.Name ?? "Unknown";
+            var username = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? "Unknown";
             await _hubContext.Clients.Group($"auction-{auctionId}")
                 .SendAsync("BidUpdate", auctionId, bid.Amount, username);
             return Ok(bid);

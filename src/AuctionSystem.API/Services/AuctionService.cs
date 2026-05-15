@@ -13,7 +13,7 @@ public class AuctionService : IAuctionService
     public async Task<List<Auction>> GetAllAuctions() => await _context.Auctions.Include(a => a.Bids).ToListAsync();
     public async Task<Auction?> GetAuctionById(int id) => await _context.Auctions.Include(a => a.Bids).FirstOrDefaultAsync(a => a.Id == id);
 
-    public async Task<Auction> CreateAuction(CreateAuctionDto dto)
+    public async Task<Auction> CreateAuction(CreateAuctionDto dto, int createdByUserId)
     {
         var auction = new Auction
         {
@@ -22,7 +22,8 @@ public class AuctionService : IAuctionService
             StartingPrice = dto.StartingPrice,
             CurrentPrice = dto.StartingPrice,
             StartTime = dto.StartTime,
-            EndTime = dto.EndTime
+            EndTime = dto.EndTime,
+            CreatedByUserId = createdByUserId
         };
         _context.Auctions.Add(auction);
         await _context.SaveChangesAsync();

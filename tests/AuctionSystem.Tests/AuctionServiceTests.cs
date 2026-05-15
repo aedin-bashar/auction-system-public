@@ -46,7 +46,7 @@ public class AuctionServiceTests
             EndTime = DateTime.UtcNow.AddDays(1)
         };
 
-        var result = await service.CreateAuction(dto);
+        var result = await service.CreateAuction(dto, 0);
 
         Assert.NotNull(result);
         Assert.Equal("Test Auction", result.Title);
