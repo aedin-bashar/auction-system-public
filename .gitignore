@@ -412,3 +412,4 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+*.lscache
