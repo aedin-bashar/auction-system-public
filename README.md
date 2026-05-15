@@ -11,6 +11,10 @@
 
 Auction System is a Clean Architecture auction platform with a CQRS-driven ASP.NET Core backend and an Angular 21 frontend. It supports authenticated bidding, live auction updates over SignalR, moderation and reporting workflows, and a broad admin surface for marketplace operations.
 
+## Live Site
+
+This project is live at [bashar.se/projects/auctions](https://bashar.se/projects/auctions).
+
 ## Highlights
 
 - Real-time bid broadcasts over SignalR with automatic client reconnect.
