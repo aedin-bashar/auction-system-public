@@ -17,9 +17,12 @@ using Microsoft.IdentityModel.Tokens;
 
 public partial class Program
 {
+    private const string PlaceholderJwtSigningKey = "ReplaceThisWithASecureAtLeast32CharSecretKey123!";
+
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        ValidatePublicConfiguration(builder.Configuration, builder.Environment);
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options =>
@@ -105,5 +108,33 @@ public partial class Program
         app.MapHub<AuctionHub>("/hubs/auctions");
 
         app.Run();
+    }
+
+    private static void ValidatePublicConfiguration(IConfiguration configuration, IHostEnvironment environment)
+    {
+        if (environment.IsDevelopment())
+        {
+            return;
+        }
+
+        var signingKey = configuration["Jwt:SigningKey"];
+        if (string.IsNullOrWhiteSpace(signingKey) ||
+            string.Equals(signingKey, PlaceholderJwtSigningKey, StringComparison.Ordinal))
+        {
+            throw new InvalidOperationException(
+                "Jwt:SigningKey must be supplied from private configuration outside Development.");
+        }
+
+        var seedingEnabled = configuration.GetValue<bool?>("DatabaseSeeding:Enabled") ?? false;
+        if (!seedingEnabled)
+        {
+            return;
+        }
+
+        if (configuration.GetValue<bool?>("DatabaseSeeding:ResetDatabaseOnStartup") ?? false)
+        {
+            throw new InvalidOperationException(
+                "DatabaseSeeding:ResetDatabaseOnStartup cannot be enabled outside Development.");
+        }
     }
 }

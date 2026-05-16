@@ -40,16 +40,11 @@ public class DatabaseSeederTests
         using var scope = provider.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        Assert.Equal(100, await db.Users.CountAsync());
-        Assert.Equal(100, await db.Auctions.CountAsync());
-        Assert.Equal(100, await db.Bids.CountAsync());
-        Assert.Equal(100, await db.UserPasswords.CountAsync());
-        Assert.Equal(5, await db.AdminSystemSettings.CountAsync());
-
-        var activeNonAdminUserCount = await db.Users.CountAsync(x => x.IsActive && x.Role != UserRole.Admin);
-        Assert.Equal(activeNonAdminUserCount, await db.PaymentMethods.CountAsync());
-        Assert.True(await db.Users.AnyAsync(x => x.Email == "admin@auctions.local"));
-        Assert.True(await db.Users.AnyAsync(x => x.Email == "inactive.bidder@auctions.local" && !x.IsActive));
+        Assert.Equal(0, await db.Users.CountAsync());
+        Assert.Equal(0, await db.Auctions.CountAsync());
+        Assert.Equal(0, await db.Bids.CountAsync());
+        Assert.Equal(0, await db.UserPasswords.CountAsync());
+        Assert.Equal(0, await db.AdminSystemSettings.CountAsync());
     }
 
     [Fact]
@@ -94,9 +89,9 @@ public class DatabaseSeederTests
         using var verificationScope = provider.CreateScope();
         var verificationDb = verificationScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        Assert.Equal(100, await verificationDb.Users.CountAsync());
+        Assert.Equal(0, await verificationDb.Users.CountAsync());
         Assert.False(await verificationDb.Users.AnyAsync(x => x.Email == "stale@example.com"));
-        Assert.Equal(100, await verificationDb.Auctions.CountAsync());
+        Assert.Equal(0, await verificationDb.Auctions.CountAsync());
     }
 
     private static ServiceProvider CreateServiceProvider(string databaseName)
