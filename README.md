@@ -142,8 +142,8 @@ Detailed implementation notes, API group summaries, configuration keys, and curr
 
 - EF Core migrations are applied automatically on API startup.
 - `DatabaseSeeding:Enabled` is disabled by default in development.
-- If seeding is enabled, the app generates local sample users, auctions, payment methods, and admin settings.
-- Seeded passwords are development-only test credentials and should never be used outside local environments.
+- The public `DatabaseSeeder` intentionally does not include seeded users, passwords, or demo accounts. Add local/private seed data only when needed.
+- Non-development startup fails if the public placeholder JWT signing key is still configured, or if database reset is enabled.
 
 ## Public Release Notes
 

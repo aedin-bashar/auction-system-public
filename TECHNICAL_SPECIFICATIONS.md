@@ -179,6 +179,10 @@ Primary configuration keys:
 - `DatabaseSeeding:Enabled`
 - `DatabaseSeeding:ResetDatabaseOnStartup`
 
+Production/runtime safety checks reject the public placeholder JWT signing key outside Development.
+The public database seeder prepares the schema only and intentionally does not include seeded
+users, passwords, or demo accounts.
+
 Development launch profiles expose:
 
 - HTTP: `http://localhost:5266`
