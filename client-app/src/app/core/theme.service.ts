@@ -42,7 +42,7 @@ export class ThemeService {
     } catch {
     }
 
-    return globalThis.matchMedia?.('(prefers-color-scheme: dark)').matches === false ? 'light' : 'dark';
+    return globalThis.matchMedia?.('(prefers-color-scheme: dark)').matches === true ? 'dark' : 'light';
   }
 
   private applyTheme(theme: AppTheme): void {

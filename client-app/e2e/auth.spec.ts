@@ -66,13 +66,94 @@ test('guest can register and is routed into the app', async ({ page }) => {
   await page.goto('/register');
   await page.getByLabel('Full Name').fill('Pat Collector');
   await page.getByLabel('Email').fill('collector@example.com');
-  await page.getByLabel('Password', { exact: true }).fill('Secret123!');
-  await page.getByLabel('Confirm Password').fill('Secret123!');
+  await page.getByRole('textbox', { name: 'Password', exact: true }).fill('Secret123!');
+  await page.getByRole('textbox', { name: 'Confirm Password' }).fill('Secret123!');
   await page.getByRole('checkbox').check();
   await page.getByRole('button', { name: 'Sign Up' }).click();
 
   await expect(page).toHaveURL('/');
   await expect(page.getByRole('heading', { name: 'Active Auctions' })).toBeVisible();
+});
+
+test('register surfaces duplicate email errors and unlocks the form', async ({ page }) => {
+  const state = createMockState();
+  await setupMockApp(page, state);
+  await page.route('**/api/auth/register', async (route) => {
+    await route.fulfill({
+      status: 400,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        details: 'A user with this email address is already registered.'
+      })
+    });
+  });
+
+  await page.goto('/register');
+  await page.getByLabel('Full Name').fill('Pat Collector');
+  await page.getByLabel('Email').fill('collector@example.com');
+  await page.getByRole('textbox', { name: 'Password', exact: true }).fill('Secret123!');
+  await page.getByRole('textbox', { name: 'Confirm Password' }).fill('Secret123!');
+  await page.getByRole('checkbox').check();
+  await page.getByRole('button', { name: 'Sign Up' }).click();
+
+  await expect(page.getByText('A user with this email address is already registered.')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Sign Up' })).toBeEnabled();
+});
+
+test('register form can show and hide password fields', async ({ page }) => {
+  const state = createMockState();
+  await setupMockApp(page, state);
+
+  await page.goto('/register');
+
+  const password = page.getByRole('textbox', { name: 'Password', exact: true });
+  const confirmPassword = page.getByRole('textbox', { name: 'Confirm Password' });
+
+  await password.fill('Secret123!');
+  await confirmPassword.fill('Secret123!');
+
+  await expect(password).toHaveAttribute('type', 'password');
+  await expect(confirmPassword).toHaveAttribute('type', 'password');
+
+  await page.getByRole('button', { name: 'Show password' }).click();
+  await page.getByRole('button', { name: 'Show confirm password' }).click();
+
+  await expect(password).toHaveAttribute('type', 'text');
+  await expect(confirmPassword).toHaveAttribute('type', 'text');
+
+  await page.getByRole('button', { name: 'Hide password' }).click();
+  await page.getByRole('button', { name: 'Hide confirm password' }).click();
+
+  await expect(password).toHaveAttribute('type', 'password');
+  await expect(confirmPassword).toHaveAttribute('type', 'password');
+});
+
+test('reset password form can show and hide password fields', async ({ page }) => {
+  const state = createMockState();
+  await setupMockApp(page, state);
+
+  await page.goto('/reset-password?token=test-token');
+
+  const newPassword = page.getByRole('textbox', { name: 'New Password', exact: true });
+  const confirmPassword = page.getByRole('textbox', { name: 'Confirm New Password' });
+
+  await newPassword.fill('Secret123!');
+  await confirmPassword.fill('Secret123!');
+
+  await expect(newPassword).toHaveAttribute('type', 'password');
+  await expect(confirmPassword).toHaveAttribute('type', 'password');
+
+  await page.getByRole('button', { name: 'Show new password' }).click();
+  await page.getByRole('button', { name: 'Show confirm new password' }).click();
+
+  await expect(newPassword).toHaveAttribute('type', 'text');
+  await expect(confirmPassword).toHaveAttribute('type', 'text');
+
+  await page.getByRole('button', { name: 'Hide new password' }).click();
+  await page.getByRole('button', { name: 'Hide confirm new password' }).click();
+
+  await expect(newPassword).toHaveAttribute('type', 'password');
+  await expect(confirmPassword).toHaveAttribute('type', 'password');
 });
 
 test('non-admin sessions are redirected away from admin routes', async ({ page }) => {

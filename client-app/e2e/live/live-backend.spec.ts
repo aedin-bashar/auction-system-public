@@ -15,8 +15,8 @@ test('live backend profile supports register, profile access, logout, and login'
   await page.goto('/register');
   await page.getByLabel('Full Name').fill(fullName);
   await page.getByLabel('Email').fill(email);
-  await page.getByLabel('Password', { exact: true }).fill(password);
-  await page.getByLabel('Confirm Password').fill(password);
+  await page.getByRole('textbox', { name: 'Password', exact: true }).fill(password);
+  await page.getByRole('textbox', { name: 'Confirm Password' }).fill(password);
   await page.getByRole('checkbox').check();
   await page.getByRole('button', { name: 'Sign Up' }).click();
 

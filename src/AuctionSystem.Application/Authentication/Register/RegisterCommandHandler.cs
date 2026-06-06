@@ -32,7 +32,7 @@ public sealed class RegisterCommandHandler : IRequestHandler<RegisterCommand, Lo
         var existingUser = await _users.GetByEmailAsync(request.Email, cancellationToken);
         if (existingUser is not null)
         {
-            throw new InvalidOperationException("Email is already in use.");
+            throw new InvalidOperationException("A user with this email address is already registered.");
         }
 
         var user = User.Register(

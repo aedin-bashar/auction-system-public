@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { finalize, timeout } from 'rxjs';
@@ -16,9 +16,13 @@ import { RegisterRequest } from '../auth.models';
   styleUrls: ['register.component.scss']
 })
 export class RegisterComponent {
+  private readonly cdr = inject(ChangeDetectorRef);
+
   isSubmitting = false;
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  showPassword = false;
+  showConfirmPassword = false;
   readonly form;
 
   constructor(
@@ -61,6 +65,7 @@ export class RegisterComponent {
         timeout(15000),
         finalize(() => {
           this.isSubmitting = false;
+          this.cdr.markForCheck();
         })
       )
       .subscribe({
@@ -93,4 +98,12 @@ export class RegisterComponent {
 
     return password === confirmPassword ? null : { passwordMismatch: true };
   };
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
 }

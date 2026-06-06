@@ -26,13 +26,50 @@ test('settings can change the password through the modal workflow', async ({ pag
   await page.getByRole('button', { name: 'Change Password' }).click();
 
   const dialog = page.getByRole('dialog', { name: 'Change Password' });
-  await dialog.getByLabel('Current Password').fill('Secret123!');
-  await dialog.getByLabel('New Password', { exact: true }).fill('EvenMoreSecret123!');
-  await dialog.getByLabel('Confirm New Password').fill('EvenMoreSecret123!');
+  await dialog.getByRole('textbox', { name: 'Current Password' }).fill('Secret123!');
+  await dialog.getByRole('textbox', { name: 'New Password', exact: true }).fill('EvenMoreSecret123!');
+  await dialog.getByRole('textbox', { name: 'Confirm New Password' }).fill('EvenMoreSecret123!');
   await dialog.getByRole('button', { name: 'Save Changes' }).click();
 
   await expect(dialog).toBeHidden();
   await expect(page.getByText('Last updated: Just now')).toBeVisible();
+});
+
+test('change password modal can show and hide password fields', async ({ page }) => {
+  const state = createMockState();
+  await setupMockApp(page, state, { session: bidderSession });
+
+  await page.goto('/settings');
+  await page.getByRole('button', { name: 'Change Password' }).click();
+
+  const dialog = page.getByRole('dialog', { name: 'Change Password' });
+  const currentPassword = dialog.getByRole('textbox', { name: 'Current Password' });
+  const newPassword = dialog.getByRole('textbox', { name: 'New Password', exact: true });
+  const confirmPassword = dialog.getByRole('textbox', { name: 'Confirm New Password' });
+
+  await currentPassword.fill('Secret123!');
+  await newPassword.fill('EvenMoreSecret123!');
+  await confirmPassword.fill('EvenMoreSecret123!');
+
+  await expect(currentPassword).toHaveAttribute('type', 'password');
+  await expect(newPassword).toHaveAttribute('type', 'password');
+  await expect(confirmPassword).toHaveAttribute('type', 'password');
+
+  await dialog.getByRole('button', { name: 'Show current password' }).click();
+  await dialog.getByRole('button', { name: 'Show new password' }).click();
+  await dialog.getByRole('button', { name: 'Show confirm new password' }).click();
+
+  await expect(currentPassword).toHaveAttribute('type', 'text');
+  await expect(newPassword).toHaveAttribute('type', 'text');
+  await expect(confirmPassword).toHaveAttribute('type', 'text');
+
+  await dialog.getByRole('button', { name: 'Hide current password' }).click();
+  await dialog.getByRole('button', { name: 'Hide new password' }).click();
+  await dialog.getByRole('button', { name: 'Hide confirm new password' }).click();
+
+  await expect(currentPassword).toHaveAttribute('type', 'password');
+  await expect(newPassword).toHaveAttribute('type', 'password');
+  await expect(confirmPassword).toHaveAttribute('type', 'password');
 });
 
 test('payment methods support add, edit, and remove flows', async ({ page }) => {

@@ -12,17 +12,17 @@ using AuctionSystem.Infrastructure;
 using AuctionSystem.Infrastructure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using System.Threading.RateLimiting;
 
 public partial class Program
 {
-    private const string PlaceholderJwtSigningKey = "ReplaceThisWithASecureAtLeast32CharSecretKey123!";
-
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        ValidatePublicConfiguration(builder.Configuration, builder.Environment);
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options =>
@@ -51,6 +51,24 @@ public partial class Program
         builder.Services.AddValidatorsFromAssembly(typeof(LoginCommand).Assembly);
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         builder.Services.AddScoped<IAuctionRealtimeNotifier, SignalRAuctionRealtimeNotifier>();
+        builder.Services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders =
+                ForwardedHeaders.XForwardedFor |
+                ForwardedHeaders.XForwardedHost |
+                ForwardedHeaders.XForwardedProto;
+        });
+        builder.Services.AddRateLimiter(options =>
+        {
+            options.AddFixedWindowLimiter("ForgotPassword", limiterOptions =>
+            {
+                limiterOptions.PermitLimit = 5;
+                limiterOptions.Window = TimeSpan.FromMinutes(15);
+                limiterOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                limiterOptions.QueueLimit = 0;
+            });
+            options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+        });
         var jwtSection = builder.Configuration.GetSection("Jwt");
         var jwtOptions = jwtSection.Get<JwtOptions>() ?? new JwtOptions();
 
@@ -94,6 +112,17 @@ public partial class Program
         }
 
         app.UseMiddleware<ApiExceptionMiddleware>();
+        app.UseForwardedHeaders();
+        app.Use((context, next) =>
+        {
+            if (TryGetForwardedPrefix(context.Request, out var pathBase))
+            {
+                context.Request.PathBase = pathBase;
+            }
+
+            return next();
+        });
+
         if (!app.Environment.IsDevelopment())
         {
             app.UseHttpsRedirection();
@@ -101,6 +130,7 @@ public partial class Program
 
         app.UseStaticFiles();
         app.UseCors("ClientApp");
+        app.UseRateLimiter();
         app.UseAuthentication();
         app.UseAuthorization();
 
@@ -110,31 +140,27 @@ public partial class Program
         app.Run();
     }
 
-    private static void ValidatePublicConfiguration(IConfiguration configuration, IHostEnvironment environment)
+    private static bool TryGetForwardedPrefix(HttpRequest request, out PathString pathBase)
     {
-        if (environment.IsDevelopment())
+        pathBase = PathString.Empty;
+
+        if (!request.Headers.TryGetValue("X-Forwarded-Prefix", out var values))
         {
-            return;
+            return false;
         }
 
-        var signingKey = configuration["Jwt:SigningKey"];
-        if (string.IsNullOrWhiteSpace(signingKey) ||
-            string.Equals(signingKey, PlaceholderJwtSigningKey, StringComparison.Ordinal))
+        var prefix = values.ToString().Split(',', 2)[0].Trim().TrimEnd('/');
+
+        if (string.IsNullOrWhiteSpace(prefix) ||
+            !prefix.StartsWith("/", StringComparison.Ordinal) ||
+            prefix.Contains("://", StringComparison.Ordinal) ||
+            prefix.Contains('?') ||
+            prefix.Contains('#'))
         {
-            throw new InvalidOperationException(
-                "Jwt:SigningKey must be supplied from private configuration outside Development.");
+            return false;
         }
 
-        var seedingEnabled = configuration.GetValue<bool?>("DatabaseSeeding:Enabled") ?? false;
-        if (!seedingEnabled)
-        {
-            return;
-        }
-
-        if (configuration.GetValue<bool?>("DatabaseSeeding:ResetDatabaseOnStartup") ?? false)
-        {
-            throw new InvalidOperationException(
-                "DatabaseSeeding:ResetDatabaseOnStartup cannot be enabled outside Development.");
-        }
+        pathBase = new PathString(prefix);
+        return true;
     }
 }

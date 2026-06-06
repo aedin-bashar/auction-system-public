@@ -4,8 +4,12 @@ using AuctionSystem.Application.Admin.Reports;
 using AuctionSystem.Application.Admin.SystemSettings;
 using AuctionSystem.Domain.Abstractions;
 using AuctionSystem.Application.Payments.Admin.TransactionManagement;
+using AuctionSystem.Application.Abstractions.Email;
 using AuctionSystem.Application.Abstractions.Security;
+using AuctionSystem.Application.Authentication.ForgotPassword;
+using AuctionSystem.Application.Authentication.ResetPassword;
 using AuctionSystem.Application.Users.PaymentMethods;
+using AuctionSystem.Infrastructure.Email;
 using AuctionSystem.Infrastructure.Persistence;
 using AuctionSystem.Infrastructure.Repositories;
 using AuctionSystem.Infrastructure.Security;
@@ -80,6 +84,13 @@ public static class DependencyInjection
         services.AddScoped<IPasswordStore, PasswordStore>();
         services.AddScoped<IPasswordVerifier, PasswordVerifier>();
         services.AddScoped<ITokenService, TokenService>();
+
+        services.Configure<EmailSettings>(configuration.GetSection("Email"));
+        services.AddTransient<IEmailSender, SmtpEmailSender>();
+
+        services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
+        services.AddScoped<ForgotPasswordHandler>();
+        services.AddScoped<ResetPasswordHandler>();
 
         return services;
     }

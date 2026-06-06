@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
+using AuctionSystem.API.Controllers;
 using AuctionSystem.Application.Authentication.Login;
 using AuctionSystem.Application.Authentication.Models;
 using AuctionSystem.Application.Authentication.Register;
@@ -106,5 +107,47 @@ public class AuthControllerTests
         var loginResponse = await client.PostAsJsonAsync("/api/auth/login", login);
 
         Assert.False(loginResponse.IsSuccessStatusCode);
+    }
+
+    [Fact]
+    public async Task ForgotPassword_WithSubPathReferer_SendsResetLinkUnderSubPath()
+    {
+        await using var factory = new CustomWebApplicationFactory();
+
+        var token = new TokenResult("test-token", new DateTime(2030, 01, 01, 0, 0, 0, DateTimeKind.Utc));
+        factory.TokenServiceMock
+            .Setup(x => x.CreateAccessTokenAsync(It.IsAny<TokenRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(token);
+        factory.PasswordStoreMock
+            .Setup(x => x.SetPasswordAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        string? emailBody = null;
+        factory.EmailSenderMock
+            .Setup(x => x.SendAsync(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<CancellationToken>()))
+            .Callback<string, string, string, CancellationToken>((_, _, body, _) => emailBody = body)
+            .Returns(Task.CompletedTask);
+
+        var client = factory.CreateClient();
+
+        var register = new RegisterCommand("john@example.com", "Secret123!", "John Doe", null);
+        var registerResponse = await client.PostAsJsonAsync("/api/auth/register", register);
+        await EnsureSuccessAsync(registerResponse);
+
+        using var request = new HttpRequestMessage(HttpMethod.Post, "/api/auth/forgot-password")
+        {
+            Content = JsonContent.Create(new ForgotPasswordRequest("john@example.com"))
+        };
+        request.Headers.Referrer = new Uri("http://localhost/projects/auctions/forgot-password");
+
+        var response = await client.SendAsync(request);
+
+        await EnsureSuccessAsync(response);
+        Assert.NotNull(emailBody);
+        Assert.Contains("http://localhost/projects/auctions/reset-password?token=", emailBody);
     }
 }

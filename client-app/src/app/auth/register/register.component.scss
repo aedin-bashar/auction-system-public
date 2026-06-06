@@ -66,6 +66,40 @@ button[disabled] {
   cursor: not-allowed;
 }
 
+.register__password-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.register__password-control input {
+  width: 100%;
+  padding-right: 3.5rem;
+}
+
+.register__visibility-toggle {
+  position: absolute;
+  right: 0.65rem;
+  width: 2.35rem;
+  height: 2.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-1);
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.register__visibility-toggle:hover,
+.register__visibility-toggle:focus-visible {
+  color: var(--neon-cyan);
+  outline: none;
+  text-shadow: var(--icon-shadow-primary);
+}
+
 .register__message {
   margin: 0;
 }

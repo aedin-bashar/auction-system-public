@@ -2,6 +2,7 @@ using AuctionSystem.Domain.Auctions;
 using AuctionSystem.Domain.Users;
 using AuctionSystem.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AuctionSystem.Infrastructure.Persistence;
 
@@ -21,6 +22,7 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<AdminSystemSetting> AdminSystemSettings => Set<AdminSystemSetting>();
     public DbSet<PaymentMethod> PaymentMethods => Set<PaymentMethod>();
     public DbSet<UserPassword> UserPasswords => Set<UserPassword>();
+    public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -35,6 +37,7 @@ public sealed class ApplicationDbContext : DbContext
         ConfigureAdminSystemSettings(modelBuilder);
         ConfigurePaymentMethods(modelBuilder);
         ConfigureUserPasswords(modelBuilder);
+        ConfigurePasswordResetTokens(modelBuilder);
     }
 
     private static void ConfigureUsers(ModelBuilder modelBuilder)
@@ -323,5 +326,26 @@ public sealed class ApplicationDbContext : DbContext
             .WithOne()
             .HasForeignKey<UserPassword>(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+    }
+
+    private static void ConfigurePasswordResetTokens(ModelBuilder modelBuilder)
+    {
+        var token = modelBuilder.Entity<PasswordResetToken>();
+
+        token.ToTable("PasswordResetTokens");
+
+        token.HasKey(x => x.Id);
+        token.Property(x => x.Id).ValueGeneratedNever();
+
+        token.Property(x => x.UserId).IsRequired();
+
+        token.Property(x => x.TokenHash)
+            .HasMaxLength(512)
+            .IsRequired();
+
+        token.Property(x => x.ExpiresAtUtc).IsRequired();
+
+        token.HasIndex(x => x.TokenHash).IsUnique();
+        token.HasIndex(x => x.UserId);
     }
 }

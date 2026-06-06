@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
 import { API_BASE_URL } from '../core/api.constants';
-import { AuthSession, LoginRequest, LoginResult, RegisterRequest } from './auth.models';
+import { AuthSession, ForgotPasswordRequest, LoginRequest, LoginResult, RegisterRequest, ResetPasswordRequest } from './auth.models';
 
 const AUTH_STORAGE_KEY = 'auction.auth.session';
 const GUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -31,6 +31,14 @@ export class AuthService {
     }
 
     localStorage.removeItem(AUTH_STORAGE_KEY);
+  }
+
+  forgotPassword(request: ForgotPasswordRequest): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/forgot-password`, request);
+  }
+
+  resetPassword(request: ResetPasswordRequest): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/reset-password`, request);
   }
 
   getSession(): AuthSession | null {

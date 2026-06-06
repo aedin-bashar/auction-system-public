@@ -13,18 +13,18 @@ function applyStoredThemePreference(): void {
   }
 
   const storageKey = 'auction-system:theme';
-  let theme = 'dark';
+  let theme = 'light';
 
   try {
     const storedTheme = globalThis.localStorage?.getItem(storageKey);
     if (storedTheme === 'dark' || storedTheme === 'light') {
       theme = storedTheme;
-    } else if (globalThis.matchMedia?.('(prefers-color-scheme: dark)').matches === false) {
-      theme = 'light';
+    } else if (globalThis.matchMedia?.('(prefers-color-scheme: dark)').matches === true) {
+      theme = 'dark';
     }
   } catch {
-    if (globalThis.matchMedia?.('(prefers-color-scheme: dark)').matches === false) {
-      theme = 'light';
+    if (globalThis.matchMedia?.('(prefers-color-scheme: dark)').matches === true) {
+      theme = 'dark';
     }
   }
 

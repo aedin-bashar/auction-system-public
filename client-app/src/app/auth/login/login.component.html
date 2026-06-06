@@ -31,7 +31,7 @@
       <small *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
         Password is required.
       </small>
-      <a class="login__link" href="#">Forgot Password?</a>
+      <a class="login__link" routerLink="/forgot-password">Forgot Password?</a>
     </div>
 
     <p class="login__error" *ngIf="errorMessage">{{ errorMessage }}</p>

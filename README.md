@@ -18,7 +18,7 @@ This project is live at [bashar.se/projects/auctions](https://bashar.se/projects
 ## Highlights
 
 - Real-time bid broadcasts over SignalR with automatic client reconnect.
-- JWT-based authentication with Bidder, Seller, and Admin roles.
+- JWT-based authentication with Bidder, Seller, and Admin roles plus password reset by email.
 - Auction creation with optional image upload and streamed image delivery.
 - Public auction discovery with filtering, pagination, and live price refresh.
 - User profile editing, password changes, and a secured payment-method API.
@@ -27,7 +27,7 @@ This project is live at [bashar.se/projects/auctions](https://bashar.se/projects
 
 ## Current Status
 
-- Backend and API flows are implemented for authentication, auctions, bidding, reporting, moderation, admin operations, and payment-method management.
+- Backend and API flows are implemented for authentication, password reset, auctions, bidding, reporting, moderation, admin operations, and payment-method management.
 - Frontend routes are implemented for marketplace browsing, account areas, and admin dashboards.
 - Watchlists are currently stored in browser localStorage per authenticated user.
 - The Won Auctions screen is currently a demo-only frontend view with placeholder data and no backing API yet.
@@ -114,6 +114,7 @@ Detailed implementation notes, API group summaries, configuration keys, and curr
 
    - Set `ConnectionStrings:DefaultConnection` to a working local SQL Server instance.
    - Replace the placeholder `Jwt:SigningKey` with a real development secret.
+   - Configure `Email:*` with local SMTP settings if you want forgot-password emails to send.
    - Prefer User Secrets or environment variables for real secrets instead of committing them.
 
 4. Start the API.

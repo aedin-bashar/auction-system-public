@@ -35,13 +35,25 @@
 
     <div class="register__field">
       <label for="password">Password</label>
-      <input
-        id="password"
-        type="password"
-        formControlName="password"
-        placeholder="Password"
-        autocomplete="new-password"
-      />
+      <div class="register__password-control">
+        <input
+          id="password"
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="Password"
+          autocomplete="new-password"
+        />
+        <button
+          type="button"
+          class="register__visibility-toggle"
+          (click)="togglePasswordVisibility()"
+          [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+          [attr.aria-pressed]="showPassword"
+          [title]="showPassword ? 'Hide password' : 'Show password'"
+        >
+          <i class="fa-solid" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" aria-hidden="true"></i>
+        </button>
+      </div>
       <small *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
         Password is required.
       </small>
@@ -49,13 +61,25 @@
 
     <div class="register__field" [class.register__field--error]="form.errors?.['passwordMismatch']">
       <label for="confirmPassword">Confirm Password</label>
-      <input
-        id="confirmPassword"
-        type="password"
-        formControlName="confirmPassword"
-        placeholder="Confirm Password"
-        autocomplete="new-password"
-      />
+      <div class="register__password-control">
+        <input
+          id="confirmPassword"
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          formControlName="confirmPassword"
+          placeholder="Confirm Password"
+          autocomplete="new-password"
+        />
+        <button
+          type="button"
+          class="register__visibility-toggle"
+          (click)="toggleConfirmPasswordVisibility()"
+          [attr.aria-label]="showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'"
+          [attr.aria-pressed]="showConfirmPassword"
+          [title]="showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'"
+        >
+          <i class="fa-solid" [class.fa-eye]="!showConfirmPassword" [class.fa-eye-slash]="showConfirmPassword" aria-hidden="true"></i>
+        </button>
+      </div>
       <small *ngIf="form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid">
         Confirm your password.
       </small>

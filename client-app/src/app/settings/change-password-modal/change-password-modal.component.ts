@@ -42,6 +42,9 @@ export class ChangePasswordModalComponent implements OnChanges {
   currentPassword = '';
   newPassword = '';
   confirmPassword = '';
+  showCurrentPassword = false;
+  showNewPassword = false;
+  showConfirmPassword = false;
   errorMessage: string | null = null;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -95,6 +98,18 @@ export class ChangePasswordModalComponent implements OnChanges {
     });
   }
 
+  toggleCurrentPasswordVisibility(): void {
+    this.showCurrentPassword = !this.showCurrentPassword;
+  }
+
+  toggleNewPasswordVisibility(): void {
+    this.showNewPassword = !this.showNewPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
   @HostListener('document:keydown.escape')
   onEscape(): void {
     if (!this.open) return;
@@ -105,6 +120,9 @@ export class ChangePasswordModalComponent implements OnChanges {
     this.currentPassword = '';
     this.newPassword = '';
     this.confirmPassword = '';
+    this.showCurrentPassword = false;
+    this.showNewPassword = false;
+    this.showConfirmPassword = false;
     this.errorMessage = null;
   }
 
