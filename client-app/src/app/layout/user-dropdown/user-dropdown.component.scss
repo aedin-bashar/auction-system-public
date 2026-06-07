@@ -163,3 +163,23 @@
 .user-dropdown--compact .user-dropdown__chevron {
   margin-right: 0.15rem;
 }
+
+/* Phone: collapse trigger to avatar + chevron, hide name/role text */
+@media (max-width: 760px) {
+  .user-dropdown__trigger {
+    min-width: auto;
+    grid-template-columns: 36px auto;
+    gap: 0.4rem;
+    padding: 0.35rem 0.45rem;
+  }
+
+  .user-dropdown__meta {
+    display: none;
+  }
+
+  .user-dropdown__menu {
+    width: max-content;
+    min-width: 200px;
+    max-width: calc(100vw - 1.5rem);
+  }
+}

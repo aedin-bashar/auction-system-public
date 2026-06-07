@@ -175,7 +175,9 @@
   .my-bids__stat {
     flex: 1;
   }
+}
 
+@media (max-width: 640px) {
   .my-bid-card {
     grid-template-columns: minmax(0, 1fr);
   }

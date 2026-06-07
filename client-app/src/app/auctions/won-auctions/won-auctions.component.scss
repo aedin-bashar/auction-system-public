@@ -163,7 +163,9 @@
   .won-auctions__stat {
     flex: 1;
   }
+}
 
+@media (max-width: 640px) {
   .won-card {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -171,9 +173,7 @@
   .won-card__image-wrap {
     min-height: 180px;
   }
-}
 
-@media (max-width: 640px) {
   .won-card__top-row {
     flex-direction: column;
   }

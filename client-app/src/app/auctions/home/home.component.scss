@@ -77,9 +77,10 @@
   align-items: stretch;
 }
 
-@media (min-width: 900px) {
+/* Tablet+: sidebar beside content, 2-col cards */
+@media (min-width: 720px) {
   .home__content {
-    grid-template-columns: 260px minmax(0, 1fr);
+    grid-template-columns: 240px minmax(0, 1fr);
   }
 
   .home__grid {
@@ -87,7 +88,12 @@
   }
 }
 
-@media (min-width: 1080px) {
+/* Desktop: 3-col cap (wide premium cards, matches production) */
+@media (min-width: 992px) {
+  .home__content {
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
+
   .home__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -171,6 +177,12 @@
   font-size: 0.8rem;
   white-space: nowrap;
   text-align: center;
+}
+
+@media (max-width: 600px) {
+  .home__page-btn--skip {
+    display: none;
+  }
 }
 
 .home__page-count {

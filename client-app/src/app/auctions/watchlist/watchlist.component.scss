@@ -212,6 +212,12 @@
   .watchlist__stat {
     flex: 1;
   }
+}
+
+@media (max-width: 640px) {
+  .watchlist {
+    margin-top: 0;
+  }
 
   .watch-card {
     grid-template-columns: minmax(0, 1fr);
@@ -219,12 +225,6 @@
 
   .watch-card__image-wrap {
     min-height: 180px;
-  }
-}
-
-@media (max-width: 640px) {
-  .watchlist {
-    margin-top: 0;
   }
 
   .watch-card__top-row {

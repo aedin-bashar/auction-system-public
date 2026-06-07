@@ -32,7 +32,7 @@
       <nav class="home__pagination" *ngIf="totalPages > 1" aria-label="Auction pages">
         <div class="home__pagination-controls">
           <button
-            class="home__page-btn home__page-btn--nav"
+            class="home__page-btn home__page-btn--nav home__page-btn--skip"
             (click)="onPageChange(1)"
             [disabled]="currentPage === 1"
             aria-label="First page"
@@ -70,7 +70,7 @@
           </button>
 
           <button
-            class="home__page-btn home__page-btn--nav"
+            class="home__page-btn home__page-btn--nav home__page-btn--skip"
             (click)="onPageChange(totalPages)"
             [disabled]="currentPage === totalPages"
             aria-label="Last page"

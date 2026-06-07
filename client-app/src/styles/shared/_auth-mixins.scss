@@ -17,7 +17,7 @@
 @mixin auth-card-highlight {
   content: '';
   position: absolute;
-  inset: -1px;
+  inset: 0;
   border-radius: inherit;
   box-shadow: var(--button-shadow-subtle);
   pointer-events: none;
